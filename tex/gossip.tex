@@ -110,7 +110,7 @@ Gossip协议的目的是为了在系统内对节点进行多播，我们可以�
 \begin{align*}
     MulticastSpec_\mathsf{N}&\stackrel{def}{=}accept_1(x).\overline{deliver_1}(x).Multicast_{\mathsf{N},\{1\}}(x)\\
     Multicast_{\mathsf{N},\mathsf{KNOWN}}(x)&\stackrel{def}{=}\tau.Multicasting_{\mathsf{N},\mathsf{KNOWN}}(x)\\
-    Multicasting_{\mathsf{N},\mathsf{KNOWN}}(x)&\stackrel{def}{=}\overline{deliver_i}(x).Multicast_{\mathsf{N},\mathsf{KNOWN}\cup\{i\}}(x), \\
+    Multicasting_{\mathsf{N},\mathsf{KNOWN}}(x)&\stackrel{def}{=}\overline{deliver_i}(x).Multicasting_{\mathsf{N},\mathsf{KNOWN}\cup\{i\}}(x), \\
     &i\in \mathsf{N}-\mathsf{KNOWN} \wedge |\mathsf{N}|\neq |\mathsf{KNOWN}|
  \end{align*}
 \end{definition} 
@@ -152,17 +152,24 @@ Gossip协议的目的是为了在系统内对节点进行多播，我们可以�
     \item {
         对于$(GossipSystem_{\mathsf{N},(a,b,c)}(x), Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x))\mid |\mathsf{KNOWN}| = a \wedge b\neq 0$:
 
-        $GossipSystem_{\mathsf{N},(a,b,c)}(x)$的$\top \mathcal{S}$-tree $t$如图所示:
-
-        对$t$的叶子结点有$L\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} GossipSystem_{\mathsf{N},(a+1,b-1,c)}(x)$。
-        即
-        
-        $(GossipSystem_{\mathsf{N},(a,b,c)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(a+1,b',c')}(x)]_{\top\mathcal{S}},b'+c'=b+c-1$。
-
         % 对应的$Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top\mathcal{S}} []$
         \begin{itemize}
-            \item {\textbf{Case 1. $b>1$}}
-            \item {\textbf{Case 2. $b=1$}}
+            \item {\textbf{Case 1: $a<n-1$。}
+            $GossipSystem_{\mathsf{N},(a,b,c)}(x)$的$\top \mathcal{S}$-tree $t$如图所示:
+
+            对$t$的叶子结点有$GossipSystem_{\mathsf{N},(a,n-a,0)}(x)\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} GossipSystem_{\mathsf{N},(a+1,n-1-a,0)}(x)$。
+            即
+            
+            $(GossipSystem_{\mathsf{N},(a,b,c)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(a+1,b',c')}(x)]_{\top\mathcal{S}},b'+c'=b+c-1$。
+
+            我们可以用$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{KNOWN}'}$来模拟。
+            }
+            \item {\textbf{Case 2: $a=n-1$。}
+            $GossipSystem_{\mathsf{N},(n-1,1,0)}(x)$的$\top \mathcal{S}$-tree $t$只有一个根节点:
+
+            $(GossipSystem_{\mathsf{N},(n-1,1,0)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(n,0,0)}(x)]_{\top\mathcal{S}}$。
+            我们可以用$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{N}}$来模拟。
+            }
         \end{itemize}
     }
     \item {
