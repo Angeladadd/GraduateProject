@@ -28,39 +28,37 @@ Gossip协议分为push gossip和pull gossip两种。
 因此在使用Gossip协议时，常使用Push Gossip与Pull Gossip的混合：
 在消息传播$\frac{n}{2}$节点之前使用Push Gossip，在消息传播$\frac{n}{2}$之后使用Pull Gossip。
 
-\subsection{Gossip Style Membership协议}
+\subsection{Membership协议}
 
 在数据中心中会频繁的出现节点的失效，
 我们会为每一个节点维护一个Membership List来记录数据中心中其他节点的运行情况。
 Membership Protocol是一个通过网络检测节点失效和传播失效信息的机制，
 常用的Membership Protocol有Heartbeating Protocol, Gossip-Style Membership Protocol, SWIM Failure Detector Protocol等。
 
-Gossip-Style Membership Protocol使用Gossip协议传递每个节点的Membership List。
-每个节点周期性的随机选择$k$个节点发送自己的Membership List，
-收到Membership List的节点根据其他节点的Membership List更新自己的Membership List。
-
 \section{Gossip Style Membership的实现}
 \subsection{Push Gossip协议的实现}
 由于Push Gossip实现难度较小，并且单一的Push Gossip协议仍然可以达到$O(\log N)$时间复杂度的消息传播，
 我们以Push Gossip协议的实现作为Random VPC的demo。
-其中Gossip单节点的通道示意图如图1。
-以Gossip协议作为通信协议的四节点的Peer-to-Peer Sysyem的示意图如图2。
+其中Gossip单节点的通道示意图如图
+% \ref{fig1}。
+以Gossip协议作为通信协议的四节点的Peer-to-Peer Sysyem的示意图如图
+% \ref{fig2}。
 
-\begin{figure}[!htbp]
-	\small
-	\centering
-	\includegraphics[width=6cm]{../figure/gossip1.jpg}
-    \caption{\textbf{Gossip 节点示意图}}
-    \label{fig1}
-\end{figure}
+% \begin{figure}[!htbp]
+% 	\small
+% 	\centering
+% 	\includegraphics[width=6cm]{../figure/Node_gossip.png}
+%     \caption{\textbf{Gossip 节点示意图}}
+%     \label{fig1}
+% \end{figure}
 
-\begin{figure}[!htbp]
-	\small
-	\centering
-	\includegraphics[width=11cm]{../figure/gossip2.jpg}
-    \caption{\textbf{以Gossip协议作为通信协议的四节点的Peer-to-Peer Sysyem示意图}}
-    \label{fig2}
-\end{figure}
+% \begin{figure}[!htbp]
+% 	\small
+% 	\centering
+% 	\includegraphics[width=10cm]{../figure/GossipSystem_4.png}
+%     \caption{\textbf{以Gossip协议作为通信协议的四节点的Peer-to-Peer Sysyem示意图(省略Timer)}}
+%     \label{fig2}
+% \end{figure}
 
 Gossip节点Node的状态有以下几种，分别对应Gossip协议中节点的状态:
 \begin{table}[!hpt]
@@ -196,5 +194,66 @@ Gossip协议的目的是为了在系统内对节点进行多播，我们可以�
 
 \end{proof}
 \subsection{Gossip Style Membership的实现}
+
+\subsubsection{Gossip Style Membership Protocol}
+Gossip-Style Membership Protocol使用Gossip协议传递每个节点的Membership List。
+每个节点周期性的随机选择$k$个节点发送自己的Membership List，
+收到Membership List的节点根据其他节点的Membership List更新自己的Membership List。
+
+\subsubsection{对GossipSystem的调整}
+由于Gossip-Style Membership无需与外界的输入输出，并且需要提供判定和修改Membership List的函数，我们需要对之前的Gossip System进行调整。
+同时，系统内的节点也会有失效的可能，我们可以用gail$p_{fail}$来定义一个节点失效的概率，同时经过一个内部动作$\tau$，这个节点就会被修复。
+另外，由于在系统中的所有节点都是消息源，且Membership List在系统中不停的更新，因此也没有了感染者与被感染者的角色区分，
+也需要对名称进行了修改。
+
+在Gossip System节点的基础上，将原本对外暴露的$accept,deliver$通道连接$Membership Node$，
+修改后的节点如图
+% \ref{fig_membership_node}
+所示。
+
+% \begin{figure}[!htbp]
+% 	\small
+% 	\centering
+% 	\includegraphics[width=8cm]{../figure/Node_membership.png}
+%     \caption{\textbf{Gossip-Style Membership Protocol 节点示意图}}
+%     \label{fig_membership_node}
+% \end{figure}
+\begin{align*}
+    FragileNode_i&\stackrel{def}{=}p_{fail}\tau.BadNode_i\oplus (1-p_{fail})\tau.Node_i\\
+    BadNode_i&\stackrel{def}{=}\tau.FragileNode_i\\
+    Node_i&\stackrel{def}{=}timeout.accept(x).(\bigoplus_{perm\in \mathsf{PERM}_i} p_{perm}\tau.GossipingNode_{i,perm}(x))\\
+     &+\sum_{j\in \mathsf{N}/\{i\}}trans_{j,i}(x).\overline{deliver}(x).Node_i\\
+    GossipingNode_{i,perm}(x)&\stackrel{def}{=}\overline{trans_{i,perm_{1}}}(x).\dots \overline{trans_{i,perm_{b}}}(x).\overline{time}.Node_i\\
+    GossipSystem_\mathsf{N}&\stackrel{def}{=}(Node_1\mid Node_2\mid \dots \mid Node_n)\\
+    &\backslash \{trans_{i,j}\mid i\in \mathsf{N} \wedge j\in \mathsf{N} \wedge i\neq j\}\cup \{time, timeout, accept, deliver\}
+ \end{align*}
+ 其中我们需要定义Membership函数，来处理Membership List的更新。
+
+Membership List的内容一般为：
+\begin{table}[!hpt]
+    \caption[Membership List]{Membership List\footnotemark}
+    \label{tab:firstone}
+    \centering
+    \begin{tabular}{@{}ccc@{}} \toprule
+    %   \multicolumn{2}{c}{Item} \\ \cmidrule(r){1-2}
+      Address & HeartBeat & Time(local) \\ \midrule
+      1 & 10120 & 66\\
+      2 & 10103 & 62\\
+      3 & 10098 & 63\\ \bottomrule
+    \end{tabular}
+  \end{table}
+因此$Membership$需要有一个本地计时器$Timer$、一个心跳计数器$Counter$，一个本地$MembershipList(X)$，
+$X$应为一个$(Address, HeartBeat)$的二元组的数组。
+\begin{align*}
+    Membership&\stackrel{def}{=}select(Y).\overline{hb\_input}(Y).hb\_output(Z).\overline{accept}(Z).Membership\\
+    &+deliver(X).select(Y).Updating(X,Y)\\
+    HeartBeating&\stackrel{def}{=}hb\_input(X).counter(t).\overline{hb\_output}(\mathsf{heartbeating}(X,t))\\
+    Counter(t)&\stackrel{def}{=}\overline{counter}(t).Counter(\mathsf{s}(t))\\
+    Updating(X,Y)&\stackrel{def}{=}\overline{f\_input}(X,Y).f\_output(Z).\overline{update}(Z).Membership\\
+    Fresher\stackrel{def}{=}& f\_input(X,Y).\overline{f\_output}(\mathsf{fresher}(X,Y)).Fresher\\
+    MembershipList(X)&\stackrel{def}{=}\overline{select}(X).MembershipList(X)+update(Y).Membership(Y)
+\end{align*}
+$\mathsf{fresher}(X,Y)$为取$(Address, HeartBeat)$的二元组的数组$X,Y$中相同$Address$下$HeartBeat$较大的一项并输出新数组的函数，
+由于numeric system[此处应有引用]具有图灵完备性，我们可以用numeric system实现$\mathsf{fresher}(X,Y)$。
 
 \section{Gossip Style Membership的仿真模拟}
