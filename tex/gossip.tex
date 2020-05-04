@@ -47,7 +47,7 @@ Membership Protocol是一个通过网络检测节点失效和传播失效信息�
 \begin{figure}[!htbp]
 	\small
 	\centering
-	\includegraphics[width=6cm]{../figure/Node_gossip.png}
+	\includegraphics[width=5cm]{../figure/Node_gossip.png}
     \caption{\textbf{Gossip 节点示意图}}
     \label{fig1}
 \end{figure}
@@ -55,7 +55,7 @@ Membership Protocol是一个通过网络检测节点失效和传播失效信息�
 \begin{figure}[!htbp]
 	\small
 	\centering
-	\includegraphics[width=10cm]{../figure/GossipSystem_4.png}
+	\includegraphics[width=8cm]{../figure/GossipSystem_4.png}
     \caption{\textbf{以Gossip协议作为通信协议的四节点的Peer-to-Peer Sysyem示意图(省略Timer)}}
     \label{fig2}
 \end{figure}
@@ -93,9 +93,8 @@ Gossip节点Node的状态有以下几种，分别对应Gossip协议中节点的�
 \begin{itemize}
    \item [(1)] {网络传输可靠。然而现实中的网络传输存在丢包、延迟、比特反转等问题，
    我们可以通过ACK机制来解决[此处应有引用]。对不可靠网络下的Gossip协议，我们在上述理想条件下增加对网络传输的过程的建模，建模过程在Milner的CCS中有提及[此处应有引用]。}
-   \item [(2)] {节点不会损坏。在现实中节点（也就是主机），是有寿命的，即在运行了一定时间后主机就会宕机，对于多个节点构成的p2p系统，存在节点失效的概率只会更高[此处应有引用：可参照MTTF]，在后文对Membership的建模过程中我们会增加对这个问题的解决方案。}
-   \item [(3)] {系统中只存在一个消息的传输。对于单个消息源的多个消息，我们仍然可以看作单个Gossip Message一起发送；对于多个消息源，我们可以为每个节点提供消息队列机制，来保存多个消息。
-   在后续的Membership建模过程中还会提到。}
+   \item [(2)] {节点不会损坏。在现实中节点（也就是主机）在运行了一定时间后就会宕机，对于多个节点构成的p2p系统，存在节点失效的概率只会更高[此处应有引用(MTTF)]，后文的Membership协议就是来解决此类问题的。}
+   \item [(3)] {系统中只存在一个消息的传输。对于单个消息源的多个消息，我们仍然可以看作单个Gossip Message一起发送；对于多个消息源，我们可以为每个节点提供消息队列机制，来保存多个消息，后文对Membership的建模提供了一个多消息源的解决思路。}
 \end{itemize}
 
 为了方便建模，我们假设一个节点选择任意其他节点作为Gossip的目标节点的概率是相同的，
@@ -104,16 +103,15 @@ Gossip节点Node的状态有以下几种，分别对应Gossip协议中节点的�
 \subsection{Push Gossip协议的等价性}
 
 Gossip协议的目的是为了在系统内对节点进行多播，我们可以定义一个多播的Specification，同样我们只关注一个消息的多播：
-\begin{definition} 
-\begin{align*}
-    MulticastSpec_\mathsf{N}&\stackrel{def}{=}accept_1(x).\overline{deliver_1}(x).Multicast_{\mathsf{N},\{1\}}(x)\\
-    Multicast_{\mathsf{N},\mathsf{KNOWN}}(x)&\stackrel{def}{=}\tau.Multicasting_{\mathsf{N},\mathsf{KNOWN}}(x)\\
+\begin{definition} 单消息源的多播定义如下，其中$|\mathsf{KNOWN}|$为已经得到此消息的节点编号集合，节点可以通过$deliver$通道告知通信系统外（如本地的其他进程）节点已收到信息。
+\begin{align*} 
+    MulticastSpec_\mathsf{N}&\stackrel{def}{=}accept_1(x).\overline{deliver_1}(x).Multicasting_{\mathsf{N},\{1\}}(x)\\
     Multicasting_{\mathsf{N},\mathsf{KNOWN}}(x)&\stackrel{def}{=}\overline{deliver_i}(x).Multicasting_{\mathsf{N},\mathsf{KNOWN}\cup\{i\}}(x), \\
     &i\in \mathsf{N}-\mathsf{KNOWN} \wedge |\mathsf{N}|\neq |\mathsf{KNOWN}|
  \end{align*}
 \end{definition} 
 
- \begin{definition} 
+ \begin{definition} 为了方便后续的证明，我们给出特定状态下的$GossipSystem$的记法，其中Composition算子符合交换律。
     \begin{align*}
    &GossipSystem_{\mathsf{N},(a,b,c)}(x)\\
    &= (\stackrel{a}{\overbrace{InfectiousNode(x)\mid \dots \mid InfectiousNode(x)}}\\
@@ -137,8 +135,7 @@ Gossip协议的目的是为了在系统内对节点进行多播，我们可以�
 \begin{align*}
    \mathcal{S}&=\{(GossipSystem_{\mathsf{N}}, MulticastSpec_{\mathsf{N}}), \\
       &(GossipSystem_{\mathsf{N},(n,0,0)}(x), Multicasting_{\mathsf{N},\mathsf{N}}(x))\}\\
-      & \cup \{(GossipSystem_{\mathsf{N},(a,b,c)}(x), Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x))\mid |\mathsf{KNOWN}| = a \wedge b\neq 0\}\\
-      &\cup \{(GossipSystem_{\mathsf{N},(a,b,c)}(x), Multicast_{\mathsf{N}, \mathsf{KNOWN}}(x))\mid |\mathsf{KNOWN}| = a \wedge b= 0\}
+      & \cup \{(GossipSystem_{\mathsf{N},(a,b,c)}(x), Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x))\mid |\mathsf{KNOWN}| = a\neq n\}
 \end{align*}
 
 我们来依次证明$\mathcal{S}$中的每一对等价关系为symbolic bisimulation:
@@ -148,50 +145,63 @@ Gossip协议的目的是为了在系统内对节点进行多播，我们可以�
        且不能转移至其他等价集，他们的互模拟性是显然的，实际上$GossipSystem_{\mathsf{N},(n,0,0)}(x)=Multicasting_{\mathsf{N},\mathsf{N}}(x)=0$。
     }
     \item {
-        对于$(GossipSystem_{\mathsf{N},(a,b,c)}(x), Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x))\mid |\mathsf{KNOWN}| = a \wedge b\neq 0$:
+        对于$(GossipSystem_{\mathsf{N},(a,b,c)}(x), Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x))\mid |\mathsf{KNOWN}| = a\neq n$:
 
         % 对应的$Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top\mathcal{S}} []$
         \begin{itemize}
             \item {\textbf{Case 1: $a<n-1$。}
             $GossipSystem_{\mathsf{N},(a,b,c)}(x)$的$\top \mathcal{S}$-tree $t$如图所示:
-
-            对$t$的叶子结点有$GossipSystem_{\mathsf{N},(a,n-a,0)}(x)\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} GossipSystem_{\mathsf{N},(a+1,n-1-a,0)}(x)$。
+            \begin{figure}[!htbp]
+            	\small
+            	\centering
+            	\includegraphics[width=14cm]{../figure/epsilon_tree.png}
+                \caption{\textbf{$GossipSystem_{\mathsf{N},(a,b,c)}(x)$的$\top\mathcal{S}$-tree $t$}}
+                \label{fig_epsilon_1}
+            \end{figure}
+            当$t$上的节点进入$GossipSystem_{\mathsf{N},(a,b+c,0)}(x)$状态时，
+            等价的$\tau$转移就会终止，因此$GossipSystem_{\mathsf{N},(a,b+c,0)}(x)$为$t$的叶子结点。
+            很显然，对$t$上的每一个非叶结点，都会经过$Node_j\stackrel{p'_j}{\rightarrow}_{\top}GossipSystem_{\mathsf{N},(a,b+c,0)}(x),p'_j=p_{j_1}p_{j_2}\dots p_{j_m}<1$。
+            对$t$的叶子结点有$GossipSystem_{\mathsf{N},(a,b+c,0)}(x)\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} GossipSystem_{\mathsf{N},(a+1,b+c-1,0)}(x)$。
             即
-            
-            $(GossipSystem_{\mathsf{N},(a,b,c)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(a+1,b',c')}(x)]_{\top\mathcal{S}},b'+c'=b+c-1$。
-
-            我们可以用$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{KNOWN}'}$来模拟。
+            $$GossipSystem_{\mathsf{N},(a,b,c)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(a+1,b',c')}(x)]_{\top\mathcal{S}}$$
+            其中$b'+c'=b+c-1$。
+            对应的我们可以用$$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{KNOWN}'}$$来模拟。
+            对称的模拟依然成立。
             }
             \item {\textbf{Case 2: $a=n-1$。}
-            $GossipSystem_{\mathsf{N},(n-1,1,0)}(x)$的$\top \mathcal{S}$-tree $t$只有一个根节点:
+            \begin{itemize}
+               \item {
+                  {\textbf{Case 2.1:} $b=1$。}
+                  $GossipSystem_{\mathsf{N},(n-1,1,0)}(x)$的$\top \mathcal{S}$-tree $t$只有一个根节点:
 
-            $(GossipSystem_{\mathsf{N},(n-1,1,0)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(n,0,0)}(x)]_{\top\mathcal{S}}$。
-            我们可以用$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{N}}$来模拟。
+                  $(GossipSystem_{\mathsf{N},(n-1,1,0)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(n,0,0)}(x)]_{\top\mathcal{S}}$。
+                  我们可以用$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{N}}$来模拟。
+               }
+               \item {
+                  {\textbf{Case 2.1:} $b=0$。}
+                  $GossipSystem_{\mathsf{N},(n-1,0,1)}(x)$的$\top \mathcal{S}$-tree $t$如图所示:
+                  \begin{figure}[!htbp]
+                     \small
+                     \centering
+                     \includegraphics[width=10cm]{../figure/epsilon_tree_n-1.png}
+                      \caption{\textbf{$GossipSystem_{\mathsf{N},(a,b,c)}(x)$的$\top\mathcal{S}$-tree $t$}}
+                      \label{fig_epsilon_2}
+                  \end{figure}
+                  
+                  $(GossipSystem_{\mathsf{N},(n-1,1,0)}$为$t$的叶节点。
+                  因此，$(GossipSystem_{\mathsf{N},(n-1,0,1)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(n,0,0)}(x)]_{\top\mathcal{S}}$。
+                  我们可以用$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{N}}$来模拟。
+               }
+            \end{itemize}
             }
         \end{itemize}
     }
     \item {
-        对于$(GossipSystem_{\mathsf{N},(a,b,c)}(x), Multicast_{\mathsf{N}, \mathsf{KNOWN}}(x))\mid |\mathsf{KNOWN}| = a < n \wedge b= 0$：
-
-        $Multicast_{\mathsf{N}, \mathsf{KNOWN}}(x)$的$\top \mathcal{S}$-tree只有一个根节点，
-        且有$Multicast_{\mathsf{N}, \mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{1}{\rightarrow}_{\top}[Multicasting_{\mathsf{N}, \mathsf{KNOWN}}]_{\top \mathcal{S}}$。
-
-        $GossipSystem_{\mathsf{N},(a,b,c)}(x)$的$\epsilon$-tree $t$如图所示：
-
-        $GossipSystem_{\mathsf{N},(a,b,c)}(x)$的$\top\mathcal{S}$-tree $t'$为：
-        $GossipSystem_{\mathsf{N},(a,b,c)}(x)\stackrel{(\top,p')}{\rightarrow}GossipSystem_{\mathsf{N},(a,b,c)}(x)\stackrel{(\top,p')}{\rightarrow}\cdots$，
-        其中$p'= (\frac{A^k_{a-1}}{A^k_{n-1}})^a = (\frac{(a-1)!}{(n-1)!})^a = O(\frac{1}{n})<1$。
-        $\mathsf{P}^f(t) = 1-\lim_{level\rightarrow \infty} (p')^{level} = 1$，则$GossipSystem_{\mathsf{N},(a,b,c)}(x)$的$\epsilon$-tree $t$为regular tree，
-        且$\mathsf{P}^f(t) = \sum \{p_i\mid L_i\stackrel{p_i\tau}{\rightarrow} [GossipSystem_{\mathsf{N},(a,b',c')}(x)]_{\top \mathcal{S}}\}$，
-        其中$b'>0 \wedge b'+c'=b+c$，
-        则
-        $$GossipSystem_{\mathsf{N},(a,b,c)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{1}{\rightarrow}_{\top}[GossipSystem_{\mathsf{N},(a,b',c')}(x)]_{\top \mathcal{S}}$$
-    }
-    \item {
-        余下的一组证明是常规的VPC证明。
+        对$(GossipSystem_{\mathsf{N}}, MulticastSpec_{\mathsf{N}})$，
+        我们可以用$$GossipSystem_{\mathsf{N}}\stackrel{accept(x).\overline{deliver(x)}}{\longrightarrow}_{\top}GossipSystem_{\mathsf{N},(1,0,0)}(x)$$
+        $$MulticastSpec_{\mathsf{N}}\stackrel{accept(x).\overline{deliver(x)}}{\longrightarrow}_{\top}Multicasting_{\mathsf{N},\{1\}}$$来相互模拟。
     }
  \end{itemize}
-
 \end{proof}
 \subsection{Gossip Style Membership的实现}
 
@@ -202,11 +212,11 @@ Gossip-Style Membership Protocol使用Gossip协议传递每个节点的Membershi
 
 \subsubsection{对GossipSystem的调整}
 由于Gossip-Style Membership无需与外界的输入输出，并且需要提供判定和修改Membership List的函数，我们需要对之前的Gossip System进行调整。
-同时，系统内的节点也会有失效的可能，我们可以用gail$p_{fail}$来定义一个节点失效的概率，同时经过一个内部动作$\tau$，这个节点就会被修复。
+同时，系统内的节点也会有失效的可能，我们可以用$p_{fail}$来定义一个节点失效的概率，同时经过一个内部动作$\tau$，这个节点就会被修复。
 另外，由于在系统中的所有节点都是消息源，且Membership List在系统中不停的更新，因此也没有了感染者与被感染者的角色区分，
 也需要对名称进行了修改。
 
-在Gossip System节点的基础上，将原本对外暴露的$accept,deliver$通道连接$Membership Node$，
+在Gossip System节点的基础上，将原本对外暴露的$accept,deliver$通道用于连接$Membership$，作为网络中的节点获取和更新本地Membership List的通道，
 修改后的节点如图
 \ref{fig_membership_node}
 所示。
@@ -227,7 +237,7 @@ Gossip-Style Membership Protocol使用Gossip协议传递每个节点的Membershi
     GossipSystem_\mathsf{N}&\stackrel{def}{=}(Node_1\mid Node_2\mid \dots \mid Node_n)\\
     &\backslash \{trans_{i,j}\mid i\in \mathsf{N} \wedge j\in \mathsf{N} \wedge i\neq j\}\cup \{time, timeout, accept, deliver\}
  \end{align*}
- 其中我们需要定义Membership函数，来处理Membership List的更新。
+ 其中我们需要定义Membership，来处理Membership List的获取和更新。
 
 Membership List的内容一般为：
 \begin{table}[!hpt]
@@ -242,16 +252,26 @@ Membership List的内容一般为：
       3 & 10098 & 63\\ \bottomrule
     \end{tabular}
   \end{table}
-因此$Membership$需要有一个本地计时器$Timer$、一个心跳计数器$Counter$，一个本地$MembershipList(X)$，
+因此Membership系统需要有一个本地计时器Timer、一个心跳计数器Counter，一个本地$MembershipList(X)$，
 $X$应为一个$(Address, HeartBeat)$的二元组的数组，一个记录本地地址的$AddrInfo(address)$（地址应在加入网络时由DNS分配，此处不考虑它的分配过程）。
 定义$x_i[Address]$为取Address的值的操作子，$x_i[HeartBeat]$同理。
 其中$n$为MembershipList的最大容量。
+
+Membership系统的实现如图所示：
+\begin{figure}[!htbp]
+	\small
+	\centering
+	\includegraphics[width=11cm]{../figure/membership.png}
+    \caption{\textbf{Membership示意图}}
+    \label{fig_membership}
+\end{figure}
+
 \begin{align*}
-    &Membership\stackrel{def}{=}addr(address).hbeat(heartbeat).select_1(x_1)\dots select_n(x_n).\\
-    &\quad\overline{accept}(\{Address:address,HeartBeat:heartbeat\},x_1,\dots,x_n).Membership\\
+    &Membership\stackrel{def}{=}address(addr).heartbeat(hb).select_1(x_1)\dots select_n(x_n).\\
+    &\quad\overline{accept}(\{Address:addr,HeartBeat:hb\},x_1,\dots,x_n).Membership\\
     &\quad+deliver(x_1,x_2,\dots,x_n).Hashing(x_1,x_2,\dots,x_n)\\
     &Hashing(x_1,x_2,\dots,x_n)\stackrel{def}{=}(Check(x_1)\mid  \dots \mid Check(x_n) \mid Membership)\\
-    &Check(x)\stackrel{def}{=}addr(address).((address=x[Address])0|\urcorner(address=x[Address])Find_1(x))\\
+    &Check(x)\stackrel{def}{=}address(addr).((addr=x[Address])0|\urcorner(addr=x[Address])Find_1(x))\\
     &FindAndUpdate_i(x)\stackrel{def}{=}select_i(x_i).(\\
     &\quad(x_i = \epsilon) (\overline{update_i}(x).0)\\
     &\quad| \urcorner(x_i = \epsilon)(\\
@@ -259,13 +279,15 @@ $X$应为一个$(Address, HeartBeat)$的二元组的数组，一个记录本地�
     &\quad(x_i[HeartBeat]<x[HeartBeat])(\overline{update_i}(x).0)\\
     &\quad\mid \urcorner (x_i[HeartBeat]<x[HeartBeat])0)\\
     &\quad\mid \urcorner (x_i[Address]=x[Address])FindAndUpdate_{i+1}(x))),i\leq n\\
-    &FindAndUpdate_i(x)\stackrel{def}{=}0,i>n\\
+    &FindAndUpdate_i(x)\stackrel{def}{=}0,i>n
+   \end{align*}
+   \begin{align*}
     &MembershipCell_i(addr,hb,t)\stackrel{def}{=}\\
     &\quad\overline{select_i}(\{Address:addr,HeartBeat:hb\}).MembershipCell_i(addr,hb,t)\\
     &\quad+update_i(\{Address:addr',HeartBeat:hb'\}).time(t').MembershipCell_i(addr',hb',t')\\
     &MembershipList\stackrel{def}{=}(MembershipCell_1(\epsilon)\mid \dots MembershipCell_n(\epsilon))\\
-    &AddrInfo(address)\stackrel{def}{=}\overline{addr}(address)\\
-    &Counter(heartbeat)\stackrel{def}{=}\overline{hbeat}(\mathsf{s}(heartbeat)).Counter(\mathsf{s}(heartbeat))
+    &AddrInfo(addr)\stackrel{def}{=}\overline{address}(addr)\\
+    &Counter(hb)\stackrel{def}{=}\overline{heartbeat}(\mathsf{s}(hb)).Counter(\mathsf{s}(hb))
 \end{align*}
 其中$\mathsf{s}(x)$表示$\mathsf{s}(x)=x+1$[此处应有引用]。
 \section{Gossip Style Membership的仿真模拟}
