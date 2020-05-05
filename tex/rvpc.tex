@@ -142,14 +142,83 @@ $S\stackrel{p_1\tau}{\rightarrow}_{\varphi_1}\stackrel{p_2\tau}{\rightarrow}_{\v
    $A$的静态转移树是一个$\varphi \mathcal{E}$-tree $t^A_{\varphi \mathcal{E}}$ 则对于树上的节点$B,B',B_i,i\in [k]$：
    \begin{itemize}
       \item {
-         若$B\stackrel{q}{\rightarrow}_{\varphi}B',q\in (0,1)$，则存在$B\stackrel{\coprod_{i\in [k]}}{\longrightarrow}_{\varphi} \coprod_{i\in [k]} B_i$，
+         $B\stackrel{(\psi,q)}{\rightarrow}B',q\in(0,1]$，则$\mathsf{Th}\vdash\psi\Rightarrow\varphi$。
+      }
+      \item {
+         若$B\stackrel{(\psi,q)}{\rightarrow}B',q\in (0,1)$，则存在$B\stackrel{\coprod_{i\in [k]}}{\longrightarrow}_{\psi} \coprod_{i\in [k]} B_i$，
          且$B$有且仅有$B_1,\dots, B_k$这$k$个儿子节点。
       }
       \item {
-         若存在$B\stackrel{1}{\rightarrow}_{\varphi}B'$，则$B\stackrel{\tau}{\rightarrow}_{\varphi}B'$且$B$有且仅有$B'$一个儿子节点。
+         若存在$B\stackrel{(\psi,1)}{\rightarrow}B'$，则$B\stackrel{\tau}{\rightarrow}_{\psi}B'$且$B$有且仅有$B'$一个儿子节点。
       }
    \end{itemize}
 \end{corollary}
+
+条件Epsilon树的定义比较抽象，我们可以看几个简单有趣的例子：
+\begin{example}
+   $H(x)\stackrel{def}{=}(x\leq 3)(\frac{1}{3}\tau.(x=1)G(x)\oplus\frac{1}{3}\tau.(x=2)G(x)\oplus\frac{1}{3}\tau.(x=3)G(x))$
+
+   $[H(x)]_{\mathcal{E}_1} = [G(x)]_{\mathcal{E}_1}$。
+
+   $H(x)$的静态转移树如图~\ref{fig_eg0_1}：
+   \begin{figure}[!htbp]
+      \caption[]{}
+      \small
+      \centering
+      \includegraphics[width=8cm]{../figure/example0_1.png}
+       \label{fig_eg0_1}
+   \end{figure}
+
+   $H(x)$的$\top\mathcal{E}_1$-tree只有一个根节点$H(x)$。
+
+   $H(x)$的$(x>3)\mathcal{E}_1$-tree只有一个根节点$H(x)$。
+
+   $H(x)$的$(x>1)\mathcal{E}_1$-tree如图~\ref{fig_eg0_2}：
+   \begin{figure}[!htbp]
+      \caption[]{}
+      \small
+      \centering
+      \includegraphics[width=5cm]{../figure/example0_2.png}
+       \label{fig_eg0_2}
+   \end{figure}
+\end{example}
+\begin{example}\label{eg:1}
+      假设我们有一个不太行的下课铃系统，每一时刻它坏掉的可能性是$\frac{1}{2}$，可以通过内部自动校准系统($\tau$操作)修复，它的内部有一个计时器，每隔定长时间（$\tau$操作）就会从$a$通道广播录好的一段下课铃。
+      这个下课铃系统可以被抽象为一个Random VPC，
+      我们可以用$G(x)$来表示这个系统：
+      $$G(x)\stackrel{def}{=}\mu X.(\frac{1}{2}\tau.X\oplus \frac{1}{2}\tau.\overline{a}(x).X)$$
+      $G(x)$在$\mathcal{E}_2$的等价集$[G(x)]_{\top\mathcal{E}_2} = [\overline{a}(x).G(x)]_{\top\mathcal{E}_2}$。
+      $G(x)$的$\top \mathcal{E}_2$-tree如图~\ref{fig_eg1}：
+      \begin{figure}[!htbp]
+         \caption[]{}
+         \small
+         \centering
+         \includegraphics[width=5cm]{../figure/example1.png}
+          \label{fig_eg1}
+      \end{figure}
+\end{example}
+\begin{example}\label{eg:2}
+   假设之前的不太行的下课铃系统经过岁月的磨练，年久失修，
+   每自动校准一次音量就会减弱，音量必须满足$y>1$才可以播放，
+   当$y<0$时下课铃系统会崩溃无法修复。
+   为了方便建模，我们用$\mathsf{p}(x)=x-1$来表示这种音量减弱。
+   校长出于节约经费的考虑，只要下课铃还能在他办公室听见($y>3$)就可以继续使用，
+   现在的下课铃系统依然是一个Random VPC，
+   我们可以用修改的$G'(x,y)$来表示这个系统：
+   $$G'(x,y)\stackrel{def}{=}(y>3)(\frac{1}{2}\tau.((y\geq 0)\tau.G'(x,\mathsf{p}(y)))\oplus \frac{1}{2}\tau.((y>1)\overline{a}(x).G'(x,y)))$$
+   $G'(x,y)$在$(y>3)\mathcal{E}_3$的等价集$[G'(x,y)]_{(y>3)\mathcal{E_3}}=[G'(x,y')]_{(y'>3)\mathcal{E_3}}=[a(x).G'(x,y'')]_{(y''>3)\mathcal{E_3}}$，其中$y,y',y''$不一定相等。
+
+   $G'(x,y)$的$(y>3)\mathcal{E}_3$-tree如图~\ref{fig_eg2}
+   \begin{figure}[!htbp]
+      \caption[]{}
+      \small
+      \centering
+      \includegraphics[width=11cm]{../figure/example2.png}
+       \label{fig_eg2}
+   \end{figure}
+
+\end{example}
+
 \subsection{Random VPC的符号互模拟}
 \begin{definition}[条件概率转移:$\varphi q$-transition]
    $A\in \mathcal{T}_{RVPC},\mathcal{B}\in (\mathcal{T}_{RVPC}/\varphi \mathcal{E})\backslash \{[A]_{\varphi\mathcal{E}}\}$，
@@ -186,6 +255,15 @@ $A$到$\mathcal{B}$存在$\varphi q$-transition。写作$A\rightsquigarrow_{\var
 \end{itemize}
 
 \end{definition}
+\begin{example}
+   对于例~\ref{eg:1},~\ref{eg:2}中的两个下课铃系统，我们希望证明在$y>3$时它们是符号互模拟的，
+   以此来证明校长做出了英明的决策。
+\end{example}
+\begin{proof}
+   证明$G(x)，G'(x,y)$互模拟，需要定义它们状态的等价集，并证明等价集中的每一对等价关系满足符号互模拟的定义。
+   定义等价集$\mathcal{S} = \{(G(x),G'(x,y)),(\overline{a}(x).G(x),\overline{a}(x).G'(x,y))\}$。
+   （未完）
+\end{proof}
 
 \section{Random VPC的等价性}
 
