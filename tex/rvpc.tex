@@ -1,111 +1,173 @@
 % !TeX root = ../thesis.tex
 
-\chapter{随机传值进程模型}
+\chapter{随机传值进程}
 
-\section{Random VPC语法}
-根据Uniform Approach， 我们将Uniform Approach中的CCS部分替换为VPC，很容易得到Random VPC的语法。
+\section{随机传值进程模型（Random VPC）}
+我们将Uniform Approach中的CCS部分替换为VPC，可以得到Random VPC的语法。
 $$T:=\bigoplus_{i\in I}p_i \tau.T_i\mid \sum_{i\in I} \varphi_i\lambda_i.T_i\mid T \mid T'\mid (c)T\mid \varphi T\mid !a(x).T \mid !\bar{a}(t).T$$
 
-Uniform Approach修改了CCS的prefix操作符，
-在CCS的基础上增加了$p\tau.T$，使$\tau$操作成为一个随机性的操作。
+$\mathcal{T}_{RVPC}$为所有Random VPC项目的集合。
 
-在扩展VPC时，我们也将重点关注prefix操作符。
+\subsection{Random VPC转移语义}
+Uniform Approach修改了CCS的prefix操作符，
+在CCS的基础上增加了随机性行为，$\oplus p\tau.T$体现了通道的随机性。
+
+对VPC的$\bigoplus_{i\in I}p_i \tau.T_i$算子做对应的概率转移，
+我们可以得到Random VPC的符号转移语义：
+
+\begin{figure}[!htbp]
+	\small
+	\centering
+	\includegraphics[width=13cm]{../figure/symbolic_sematic.png}
+    \caption{\textbf{Symbolic Semantics}}
+    \label{fig_sematic}
+\end{figure}
 
 在VPC的Symbolic Semantics中，
-对于VPC的典型prefix运算$\varphi \lambda. T\stackrel{\lambda}{\rightarrow}_{\varphi} T$，
+对于VPC的典型prefix运算$\sum \varphi \lambda. T\stackrel{\lambda}{\rightarrow}_{\varphi} T$，
 我们可以通过Uniform Approach的方法将它扩展为一个概率的操作
-$p\tau.\varphi \lambda. T\stackrel{p\tau}{\rightarrow}_{\top}\stackrel{\lambda}{\rightarrow}_{\varphi} T$。
-它的语义就会变成：在概率$p$下，我们会经过一个内部$\tau$通道进入一个VPC $\varphi\lambda.T$，
+$\bigoplus p\tau.\varphi \lambda. T\stackrel{p\tau}{\rightarrow}_{\top}\stackrel{\lambda}{\rightarrow}_{\varphi} T$。
+它的语义就会变成：在概率$p$下，我们会经过一个内部$\tau$操作到达一个Random VPC状态:$\varphi\lambda.T$，
 若$\mathsf{Th}\vdash \varphi$（即一阶理论$\mathsf{Th}$下，$\varphi$为真），
-则我们可以经过$\lambda$通道到达$T$， 其中$\lambda \in \{a(x),\bar{a}(x)\mid a\in \mathcal{N}, x\in \mathsf{V}_\Sigma, t\in \mathsf{T}_\Sigma\}\cup \{\tau\}$。
+则我们可以经过$\lambda$操作到达Random VPC状态$T$， 其中$\lambda \in \{a(x),\bar{a}(x)\mid a\in \mathcal{N}, x\in \mathsf{V}_\Sigma, t\in \mathsf{T}_\Sigma\}\cup \{\tau\}$。
 
-\subsection{if then else语法}
+\subsection{VPC延伸性质与定义}
 
-这个语法在VPC和CCS里看起来都非常格格不入，我们尝试用VPC的语法来表示所有的if then else，并给出相应的证明。
+在CCS，Uniform Approach，VPC中，
+对于if then else语法的描述仍然保留着if then else的原始格式，
+我们可以根据VPC的定义给出符合VPC转移规则的if then else语法。
+以下推论中$S,T\in \mathcal{T}_{\mathbb{VPC}}$。
+\begin{corollary} 
+   $\varphi 0 = 0$
+\end{corollary}
+\begin{proof}
+   $\varphi 0 = \varphi 0 + 0 = \varphi 0 + \top 0 = \varphi 0 + (\varphi \vee \urcorner \varphi)0 = \varphi 0 + \varphi 0 + \urcorner \varphi 0 = \varphi 0 + \urcorner \varphi 0 = (\varphi \vee \urcorner \varphi)0 = \top 0 = 0$
+\end{proof}
+\begin{corollary}
+   $\varphi T = (\varphi T\mid \urcorner \varphi 0)$
+\end{corollary}
+\begin{proof}
+   $\varphi T = (\varphi T\mid 0) = (\varphi T\mid \urcorner \varphi 0)$
+\end{proof}
+\begin{corollary}
+   $S=\varphi T$，那么当$\mathsf{Th}\vdash \urcorner \varphi$时，$S=0$。
+\end{corollary}
+进而我们可以得到if then else语法与VPC规则的对照表：
+\begin{table}[!hpt]
+   \caption[If Then Else语法对照表]{If Then Else语法对照表\footnotemark}
+   \label{tab:ifthenelse}
+   \centering
+   \begin{tabular}{@{}cc@{}} \toprule
+   %   \multicolumn{2}{c}{Item} \\ \cmidrule(r){1-2}
+     语法 & $\mathbb{VPC}$规则对照 \\ \midrule
+     $S=$ if $\varphi$ then $T$ else $T'$& $S=(\varphi T|\urcorner \varphi T')$\\
+     $S=$ if $\varphi$ then $T$ & $S=(\varphi T|\urcorner\varphi 0)$\\
+     $S = $if $\bot$ then $T$ & $S=0$\\ \bottomrule
+   \end{tabular}
+ \end{table}
 
-在VPC中，$\varphi T \equiv if\; \varphi \; then \; T$， $(\varphi T\mid \urcorner \varphi S)\equiv if \; \varphi \; then\; T \; else \; S$。
-那么$\varphi T \stackrel{\lambda}{\rightarrow}_{\urcorner \varphi} ?$，$\varphi T$是否等价于$(\varphi T\mid \urcorner \varphi 0)$?
+对类似$S\stackrel{p_1\tau}{\rightarrow}_{\varphi_1}\stackrel{p_2\tau}{\rightarrow}_{\varphi_2}\cdots\stackrel{p_n\tau}{\rightarrow}_{\varphi_n} T$
+考虑将他们写成这种形式: $S\stackrel{p}{\Rightarrow}_{\varphi} T$。
 
-\textbf{Proposition 1} $\varphi 0 = 0$
+\begin{definition}\label{def:continous_vpc}
+   根据VPC[此处应有引用]，若$S,T\in \mathcal{T}_{\mathbb{VPC}}$，$S\stackrel{\tau}{\rightarrow}_{\varphi_1}\stackrel{\tau}{\rightarrow}_{\varphi_2}\dots \stackrel{\tau}{\rightarrow}_{\varphi_n} T$，则可以记成$S\stackrel{}{\Rightarrow}_{\varphi_1\varphi_2\dots\varphi_n} T$。
+\end{definition} 
 
-\textit{Proof.} $\varphi 0 = \varphi 0 + 0 = \varphi 0 + \top 0 = \varphi 0 + (\varphi \vee \urcorner \varphi)0 = \varphi 0 + \varphi 0 + \urcorner \varphi 0 = \varphi 0 + \urcorner \varphi 0 = (\varphi \vee \urcorner \varphi)0 = \top 0 = 0$
+而Uniform Approach中没有对连续的概率转移作类似的缩写定义，
+我们根据定义2.1作出相应的定义。
+\begin{definition}
+   若$S,T\in \mathcal{P}_{RCCS}$，$S\stackrel{p_1\tau}{\rightarrow}\stackrel{p_2\tau}{\rightarrow}\dots\stackrel{p_n\tau}{\rightarrow}T$，则记为$S\stackrel{p_1p_2\dots p_n}{\Longrightarrow}T$。
+\end{definition}
 
-\textbf{Proposition 2} $\varphi T = (\varphi T\mid \urcorner \varphi 0)$
-
-\textit{Proof.} $\varphi T = (\varphi T\mid 0) = (\varphi T\mid \urcorner \varphi 0)$ according to Proposition 1.
-
-\textbf{Proposition 3} $S=\varphi T$，那么$S\stackrel{\epsilon}{\rightarrow}_{\urcorner \varphi} 0$
-
-\subsection{操作子的定义与条件等价集}
-
-对于$S = p\tau.\varphi T+(1-p)\tau.0$，它的意义是在$p$的概率下选择内部通道$\tau$，
-若$\mathsf{Th}\vdash\varphi$，则到达$T$状态。
-在VPC的Symbolic Semantic下，它会经过这样的转移：$S \stackrel{p\tau}{\rightarrow} \stackrel{\epsilon}{\rightarrow}_{\varphi} T$。
-考虑是否可以将其写成这种形式: $S\stackrel{p}{\Rightarrow}_{\varphi} T$。
-
-\textbf{Definition 1} 若$S,T\in \mathcal{T}_{\mathbb{VPC}}$，$S\stackrel{\tau}{\rightarrow}_{\varphi_1}\stackrel{\tau}{\rightarrow}_{\varphi_2}\dots \stackrel{\tau}{\rightarrow}_{\varphi_n} T$，则可以记成$S\stackrel{}{\Rightarrow}_{\varphi_1\varphi_2\dots\varphi_n} T$。
-
-\textbf{Definition 2} 若$S,T\in \mathcal{P}_{RCCS}$，$S\stackrel{p_1\tau}{\rightarrow}\stackrel{p_2\tau}{\rightarrow}\dots\stackrel{p_n\tau}{\rightarrow}T$，则记为$S\stackrel{p_1p_2\dots p_n}{\Rightarrow}T$。
-
-以上，定义1在VPC中有相同的定义，
-而Uniform Approach中没有类似定义2的定义，
-但在方便表达的情境下，我们新增了这样的记号。
-
-\textbf{Definition 3} 若$S,T\in \mathcal{T}_{RVPC}$，
-$S\stackrel{p_1\tau}{\rightarrow}_{\varphi_1}\stackrel{p_2\tau}{\rightarrow}_{\varphi_2}\dots \stackrel{p_n\tau}{\rightarrow}_{\varphi_n} T$，则可以记成$S\stackrel{p_1p_2\dots p_n}{\Rightarrow}_{\varphi_1\varphi_2\dots\varphi_n} T$。
+\begin{definition}
+   若$S,T\in \mathcal{T}_{RVPC}$，
+$S\stackrel{p_1\tau}{\rightarrow}_{\varphi_1}\stackrel{p_2\tau}{\rightarrow}_{\varphi_2}\dots \stackrel{p_n\tau}{\rightarrow}_{\varphi_n} T$，则可以记成$S\stackrel{p_1p_2\dots p_n}{\Longrightarrow}_{\varphi_1\varphi_2\dots\varphi_n} T$。
 若$\varphi = \varphi_1\varphi_2\dots \varphi_n, p=p_1p_2\dots p_n$，
-则$S\stackrel{p}{\Rightarrow}_{\varphi} T$。
+则可以记为$S\stackrel{p}{\Rightarrow}_{\varphi} T$。
+\end{definition} 
 
-\textbf{Definition 4} 若$S=\varphi p\tau.T$，那么$S\stackrel{p\tau}{\rightarrow}_{\varphi} T$
-
- \textbf{Definition 5} $A,A'\in \mathcal{T}_{RVPC}$，若$\varphi A \mathcal{E} \varphi A'$，则$A'\in [A]_{\varphi \mathcal{E}}$。
- $[A]_{\varphi \mathcal{E}}$称为等价关系$\mathcal{E}$在条件$\varphi$下包含$A$的等价集。
-
- 定义5的产生是由于，在symbolic bisimulation中，
- 我们考虑用必要条件下的动作去模拟充分条件下的动作。
- 举个简单的例子
+\begin{definition}
+   条件选择下的符号语义：
+   若$S=\varphi (p\tau.T+(1-p)\tau.T')$，
+   可以记$S\stackrel{p\tau}{\rightarrow}_{\varphi} T$。
+\end{definition} 
+\subsection{条件等价集}
+ \begin{definition}
+   $A,A'\in \mathcal{T}_{RVPC}$，若$\varphi A \mathcal{E} \varphi A'$，则$A'\in [A]_{\varphi \mathcal{E}}$。
+   $[A]_{\varphi \mathcal{E}}$称为等价关系$\mathcal{E}$在条件$\varphi$下包含$A$的等价集。  
+ \end{definition} 
+ 定义5的产生是由于：在$\mathbb{VPC}$的符号互模拟（Symbolic Bisimulation）中，
+ 我们考虑用必要条件下的动作去模拟充分条件下的动作[此处应有引用]。
+ 举个简单的例子：
  对于$A(x)=(x\geq 5)\tau.B(s(x))$
  和$A'(x)=(x\geq 3)\tau.B(s(x))$，
  $A(x)$和$A'(x)$是不符号互模拟的，
  因为不存在$x\geq 3$的划分，
  使得划分中的每一项推出$x\geq 5$的一个划分中的每一项。
- 但是$(x\geq 5) A(x)$和$(x\geq 5) A'(x)$却是互模拟的。
+ 但是$(x\geq 5) A(x)$和$(x\geq 5) A'(x)$却是互模拟的，
+ 此时$A(x)=(x\geq 5)\tau.B(s(x)) = ((x\geq 5)\wedge (x\geq 3))\tau.B(s(x)) = (x\geq 5)A'(x)$，
+ 它们甚至是绝对等价的。
  在$[A]_{\varphi \mathcal{E}}$内部，
  我们可以使$\varphi$对等价性的影响透明。
 
-\section{Epsilon Tree}
+\section{符号互模拟(Symbolic Bisimulation)}
 
-\textbf{Definition 6} smybolic bisimulation在$\mathcal{T}_{VPC}$上的定义 VPC Page 181（此处略）
-
-\textbf{Definition 7} 若$A\in \mathcal{T}_{RVPC}$,
-$A$的silent tree t满足如下定义：
-\begin{itemize}
+% \begin{definition}
+%    对任意$S,T\in \mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$，且$V=fv(S|T)$，
+%    当$S\mathcal{R}T$且满足下列条件时，对称二元关系$\mathcal{R}$是一个符号互模拟(Symbolic Bisimulation)[此处应有引用]。
+%    \begin{itemize}
+%       \item [1.] 
+%    \end{itemize}
+% \end{definition}
+\subsection{条件Epsilon树}
+\begin{definition}
+   \label{def:silent_tree}
+   若$A\in \mathcal{T}_{RVPC}$,
+   $A$的静态转移树$t$满足如下定义：
+   \begin{itemize}
    \item 每一个节点都被标记成$\mathcal{T}_{RVPC}$的一个元素，$A$是根节点。
    \item {
-      边被标记成$(\varphi,p)$，其中$p\in(0,1]$，$\varphi$是一个布尔表达式。
+      节点间的边被标记成$(\varphi,p)$，其中$p\in(0,1]$，$\varphi$是一个布尔表达式。
       如果一条从$A'$到$A''$的有向边被标记成$(\varphi,p)$，表示$A'\stackrel{p\tau}{\rightarrow}_{\varphi} A''$。
-      特别的，如果存在$A'\stackrel{\tau}{\rightarrow}_{\varphi}A''$，
-      那么$A'$到$A''$的边标记为$(\varphi, 1)$；存在$A'\stackrel{p\tau}{\rightarrow}A''$，
-      $A'$到$A''$的边标记为$(\top, 1)$。
    }
-\end{itemize}
+   \end{itemize}
+\end{definition}
 
-\textbf{Definition 8} $A$的silent tree是一个$\varphi \mathcal{E}-tree\; t^A_{\varphi \mathcal{E}}$ 
+\begin{definition}[条件Epsilon树:$\varphi \mathcal{E}$-tree]
+   $A$的静态转移树是一个条件Epsilon树（$\varphi \mathcal{E}$-tree） $t^A_{\varphi \mathcal{E}}$ 
 当且仅当树中的所有结点属于$[A]_{\varphi \mathcal{E}}$。
+\end{definition}
 
-\textbf{Definition 9} $\varphi q$-transition。
-$A\in \mathcal{T}_{RVPC},\mathcal{B}\in (\mathcal{T}_{RVPC}/\varphi \mathcal{E})\backslash \{[A]_{\varphi\mathcal{E}}\}$，
+\begin{corollary}
+   $A$的静态转移树是一个$\varphi \mathcal{E}$-tree $t^A_{\varphi \mathcal{E}}$ 则对于树上的节点$B,B',B_i,i\in [k]$：
+   \begin{itemize}
+      \item {
+         若$B\stackrel{q}{\rightarrow}_{\varphi}B',q\in (0,1)$，则存在$B\stackrel{\coprod_{i\in [k]}}{\longrightarrow}_{\varphi} \coprod_{i\in [k]} B_i$，
+         且$B$有且仅有$B_1,\dots, B_k$这$k$个儿子节点。
+      }
+      \item {
+         若存在$B\stackrel{1}{\rightarrow}_{\varphi}B'$，则$B\stackrel{\tau}{\rightarrow}_{\varphi}B'$且$B$有且仅有$B'$一个儿子节点。
+      }
+   \end{itemize}
+\end{corollary}
+\subsection{Random VPC的符号互模拟}
+\begin{definition}[条件概率转移:$\varphi q$-transition]
+   $A\in \mathcal{T}_{RVPC},\mathcal{B}\in (\mathcal{T}_{RVPC}/\varphi \mathcal{E})\backslash \{[A]_{\varphi\mathcal{E}}\}$，
 对$t^A_{\varphi \mathcal{E}}$的每一个叶子结点$L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i} \coprod_{i\in [k]}L_i$,
-存在$i\in I, L_i\in \mathcal{B}$且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$。
+$i\in I, L_i\in \mathcal{B}$且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$。
+
 定义$\mathsf{P}_\varphi(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B}) = \sum\{p_i\mid L\stackrel{p_i\tau}{\rightarrow}_{\psi_i} L_i\in\mathcal{B} \wedge i\in I \wedge \mathsf{Th}\vdash \varphi \Rightarrow \psi_i\}$。
+
 定义$\mathsf{P}_{\varphi \mathcal{E}}(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B}) = \mathsf{P}_\varphi(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B})/(1-\mathsf{P}_\varphi(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}[A]_{\varphi\mathcal{E}}))$。
+
 当$\mathsf{P}_{\varphi \mathcal{E}}(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B})=q$时，
-$A$到$\mathcal{B}$有$\varphi q$-transition。
-写作$A\rightsquigarrow_{\varphi\mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{B}$。
+$A$到$\mathcal{B}$存在$\varphi q$-transition。写作$A\rightsquigarrow_{\varphi\mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{B}$。
+\end{definition}
 
 
-\textbf{Definition 10} 一个$\mathcal{T}_{RVPC}$上的等价关系$\mathcal{E}$是一个symbolic bisimulation，
-当且仅当， $A\mathcal{E}B$则（$A,B$对称）
+\begin{definition}[符号互模拟]
+   $\mathcal{E}$是一个$\mathcal{T}_{RVPC}$上的二元对称关系，
+当$A\mathcal{E}B$且满足下列条件时，称$\mathcal{E}$是一个符号互模拟(Symbolic Bisimulation)：
 \begin{itemize}
    \item {
       若$ A \rightsquigarrow_{\varphi \mathcal{E}}\stackrel{a(x)}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\varphi\mathcal{E}, \mathcal{C}\neq [A]_{\mathcal{E}}$，
@@ -123,38 +185,44 @@ $A$到$\mathcal{B}$有$\varphi q$-transition。
    }
 \end{itemize}
 
+\end{definition}
+
 \section{Random VPC的等价性}
 
-\textbf{Proposition 4} symbolic bisimulation具有传递性。
-
-\textit{Proof.} 即证明若$\mathcal{E}$是一个symbolic bisimulation，$A\mathcal{E}B, B \mathcal{E} C$，则$A \mathcal{E} C$。
-\begin{itemize}
-   \item {
-      若$A\rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\lambda}{\rightarrow} \mathcal{C}\in \mathcal{T}_{RVPC}/\varphi\mathcal{E}$，
-      由于$A\mathcal{E}B$根据定义存在$\varphi$的划分$\{\varphi_i\}$和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi}\mathcal{C}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}$。
-      对于每一个$B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$，
-      $t^B_{\varphi_i\mathcal{E}}$上的每一个结点一定属于$[B]_{\psi_i\mathcal{E}}$，
-      所以$t^b_{\varphi_i\mathcal{E}}$实际上是$t^b_{\psi_i\mathcal{E}}$的子树，
-      $B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$中的起点终点对$\{(M,N)|(M\in t^B_{\varphi_i\mathcal{E}})\vee(N\in \mathcal{C}) \vee (M\stackrel{\lambda}{\rightarrow}_{\psi_i}N))\}$是
-      $B\rightsquigarrow_{\psi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$中的起点终点对$\{(M',N')|(M'\in t^B_{\psi_i\mathcal{E}})\vee(N'\in \mathcal{C}) \vee (M'\stackrel{\lambda}{\rightarrow}_{\psi_i}N'))\}$的子集。
-      由于$B\mathcal{E}C$，对于每一个$B\rightsquigarrow_{\psi_i}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$，
-      根据定义存在$\psi_i$的划分$\{\psi_{i,j}\}$和集合$S=\{C\rightsquigarrow_{\psi_{i,j}\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\phi_{i,j}}\mathcal{C}|\mathsf{Th}\vdash \psi_{i,j}\Rightarrow \phi_{i,j}\}$，
-      那么存在$S$的子集$S'$的可以模拟$B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$。
-
-      我们只需要再构建$\varphi$的划分$\{\varphi_i'\}_{i\in I}$使其一一对应$S'$中涉及的条件$\{\phi_{i,k}\}_{k\in K}\subset\{\phi_{i,j}\}_{j\in J}$即可。
-      由于存在$\psi_i$的划分$\{\psi_{i,j}\}_{j\in J}$满足$\psi_{i,j}\Rightarrow \phi_{i,j}\}_{j\in J}$，
-      那么我们可以构造$Con=\{\psi_{i,k}\}_{k\in [K-1]}\cup\{\bigvee_{j\in J/[K-1]}\psi_{i,j}\}$，
-      对$c_k\in Con, \bigvee_{k\in K}c_k \Leftrightarrow \psi_i$， 且$Con$中元素两两互斥。
-      进而，我们用$(\bigvee Con_i)\wedge \varphi_i$代替$\varphi_i$，即可得到最终的划分。
-   }
-   \item {
-      $\varphi q$-transition的传递性与以上过程相似。
-   }
-\end{itemize}
-
-\textbf{Proposition 5} 如果每一个$\mathcal{T}_{RVPC}$上的等价关系$\mathcal{E}_i$都是symbolic bisimulation，那么$(\bigcup_{i\in I}\mathcal{E}_i)^*$是一个symbolic bisimulation。
-
-\textit{Proof.} 令$\mathcal{E}=(\bigcup_{i\in I}\mathcal{E}_i)$。若因为$\varphi A_0\mathcal{E}_1 \varphi A_1 \mathcal{E}_2 \dots \mathcal{E}_k \varphi A_k$ ,
+\begin{lemma}
+   符号互模拟具有传递性。
+\end{lemma} 
+\begin{proof}
+   即证明若$\mathcal{E}$是一个symbolic bisimulation，$A\mathcal{E}B, B \mathcal{E} C$，则$A \mathcal{E} C$。
+   \begin{itemize}
+      \item {
+         若$A\rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\lambda}{\rightarrow} \mathcal{C}\in \mathcal{T}_{RVPC}/\varphi\mathcal{E}$，
+         由于$A\mathcal{E}B$根据定义存在$\varphi$的划分$\{\varphi_i\}$和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi}\mathcal{C}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}$。
+         对于每一个$B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$，
+         $t^B_{\varphi_i\mathcal{E}}$上的每一个结点一定属于$[B]_{\psi_i\mathcal{E}}$，
+         所以$t^b_{\varphi_i\mathcal{E}}$实际上是$t^b_{\psi_i\mathcal{E}}$的子树，
+         $B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$中的起点终点对$\{(M,N)|(M\in t^B_{\varphi_i\mathcal{E}})\vee(N\in \mathcal{C}) \vee (M\stackrel{\lambda}{\rightarrow}_{\psi_i}N))\}$是
+         $B\rightsquigarrow_{\psi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$中的起点终点对$\{(M',N')|(M'\in t^B_{\psi_i\mathcal{E}})\vee(N'\in \mathcal{C}) \vee (M'\stackrel{\lambda}{\rightarrow}_{\psi_i}N'))\}$的子集。
+         由于$B\mathcal{E}C$，对于每一个$B\rightsquigarrow_{\psi_i}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$，
+         根据定义存在$\psi_i$的划分$\{\psi_{i,j}\}$和集合$S=\{C\rightsquigarrow_{\psi_{i,j}\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\phi_{i,j}}\mathcal{C}|\mathsf{Th}\vdash \psi_{i,j}\Rightarrow \phi_{i,j}\}$，
+         那么存在$S$的子集$S'$的可以模拟$B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$。
+   
+         我们只需要再构建$\varphi$的划分$\{\varphi_i'\}_{i\in I}$使其一一对应$S'$中涉及的条件$\{\phi_{i,k}\}_{k\in K}\subset\{\phi_{i,j}\}_{j\in J}$即可。
+         由于存在$\psi_i$的划分$\{\psi_{i,j}\}_{j\in J}$满足$\psi_{i,j}\Rightarrow \phi_{i,j}\}_{j\in J}$，
+         那么我们可以构造$Con=\{\psi_{i,k}\}_{k\in [K-1]}\cup\{\bigvee_{j\in J/[K-1]}\psi_{i,j}\}$，
+         对$c_k\in Con, \bigvee_{k\in K}c_k \Leftrightarrow \psi_i$， 且$Con$中元素两两互斥。
+         我们用$(\bigvee Con_i)\wedge \varphi_i$代替$\varphi_i$，即可得到最终的划分。
+      }
+      \item {
+         $\varphi q$-transition的传递性与以上过程相似。
+      }
+   \end{itemize}
+\end{proof}
+\begin{lemma}
+   如果每一个$\mathcal{T}_{RVPC}$上的关系$\mathcal{E}_i$都是符号互模拟，那么$(\bigcup_{i\in I}\mathcal{E}_i)^*$是符号互模拟。
+\end{lemma}
+\begin{proof}
+   令$\mathcal{E}=(\bigcup_{i\in I}\mathcal{E}_i)^*$。若因为$\varphi A_0\mathcal{E}_1 \varphi A_1 \mathcal{E}_2 \dots \mathcal{E}_k \varphi A_k$ ,
 $(\varphi A_0, \varphi A_k)\in \mathcal{E}$，由于互模拟具有传递性，通过依次证明$A_0\mathcal{E}A_1, A_1\mathcal{E}A_2 \dots$，我们可以证明$A_0$和$A_k$互模拟。
 
 我们可以通过$A_0$的$\varphi\mathcal{E}$-tree，$t_{A_0}$递归的构建$A_1$的$\varphi\mathcal{E}$-tree，$t_{A_1}$，
@@ -199,16 +267,21 @@ $(\varphi A_0, \varphi A_k)\in \mathcal{E}$，由于互模拟具有传递性，�
       由于$\mathcal{E}_1\in (\bigcup_{i\in I}\mathcal{E}_i)^*$， 我们可以得到存在集合$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i} \in \mathcal{C}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}$。
    }
 \end{itemize}
+\end{proof}
 
-\textbf{Definition 11} 如果$\mathcal{E}_i$是一个$\mathcal{T}_{RVPC}$上的symbolic bisimulation，那么观察等价性$\approxeq^s_{\mathsf{Th}}$定义等价为最大的symbolic bisimulation。
+\begin{definition}
+   $\mathcal{T}_{RVPC}$上的观察等价性$\approxeq^s_{\mathsf{Th}}$定义为$\mathsf{Th}$上的符号互模拟的全集。
+\end{definition}
 
-以下$\approxeq^s_{\mathsf{Th}}$均为$\mathcal{T}_{RVPC}$上的symbolic bisimulation。
+\begin{theorem}
+   $\approxeq^s_{\mathsf{Th}}$是一个等价关系。
+\end{theorem}
 
-\textbf{Proposition 5} $\approxeq^s_{\mathsf{Th}}$是一个等价关系。
-
-\textbf{Proposition 6} $\approxeq^s_{\mathsf{Th}}$具有同余性。
-
-\textit{Proof.} $\approxeq^s_{\mathsf{Th}}$对于随机选择和非确定性选择的封闭性比较容易证明。
+\begin{theorem}
+   $\approxeq^s_{\mathsf{Th}}$具有同余性。
+\end{theorem}
+\begin{proof}
+   $\approxeq^s_{\mathsf{Th}}$对于随机选择和非确定性选择的封闭性比较容易证明。
 
 对条件操作运算的封闭性在于，$S\approxeq^s_{\mathsf{Th}} T$可以推出$\varphi S \approxeq^s_{\mathsf{Th}} \varphi T$
 对$\varphi S\rightsquigarrow_{\psi \approxeq^s_{\mathsf{Th}}}\stackrel{\lambda}{\rightarrow}_{\psi} \mathcal{C}\in \mathcal{T}/\psi \approxeq^s_{\mathsf{Th}}$，
@@ -221,7 +294,11 @@ Composition和Localization的证明与Uniform Approach中的基本类似，
 因为Random VPC没有对CCS的Composition和Localization做改动。
 
 （由于时间原因这里证明的比较草率，中期检查之后会继续完善）
+\end{proof}
 
-\textbf{Proposition 7} 若$S \approxeq^s_{\mathsf{Th}} T$，则对于每一个代换$\rho$,$S\rho \approxeq^s_{\mathsf{Th}} T\rho$
-
-\textit{Proof.} 可以通过VPC的Lemma 3证明。
+\begin{theorem}
+   若$S \approxeq^s_{\mathsf{Th}} T$，则对于每一个代换$\rho$,$S\rho \approxeq^s_{\mathsf{Th}} T\rho$
+\end{theorem}
+\begin{proof}
+   
+\end{proof}

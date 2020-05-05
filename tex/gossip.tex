@@ -242,7 +242,7 @@ Gossip-Style Membership Protocol使用Gossip协议传递每个节点的Membershi
 Membership List的内容一般为：
 \begin{table}[!hpt]
     \caption[Membership List]{Membership List\footnotemark}
-    \label{tab:firstone}
+    \label{tab:secondone}
     \centering
     \begin{tabular}{@{}ccc@{}} \toprule
     %   \multicolumn{2}{c}{Item} \\ \cmidrule(r){1-2}
@@ -290,4 +290,29 @@ Membership系统的实现如图所示：
     &Counter(hb)\stackrel{def}{=}\overline{heartbeat}(\mathsf{s}(hb)).Counter(\mathsf{s}(hb))
 \end{align*}
 其中$\mathsf{s}(x)$表示$\mathsf{s}(x)=x+1$[此处应有引用]。
-\section{Gossip Style Membership的仿真模拟}
+\section{Gossip-Style Membership的仿真模拟}
+在本章节我们会根据本章的模型来实现一个Gossip-Style Membership Protocol，
+由于资源限制，不能实际部署在多个主机构成的集群，我们将使用多进程来模拟多个主机。
+
+\subsection{Go语言与CSP}
+我们将使用Go语言实现Gossip-Style Membership Protocol，
+Go语言实现了两种并发模型，一种是C++，Java使用的多线程，一种是CSP并发模型。
+
+CSP与CCS存在相似和差异[引用]，本实现主要利用了Go语言的通道特性，
+通道的概念是CSP的组成部分，在CCS中对应port的概念，其本质是相似的。
+使用Go语言的通道可以更加直观的展示出对上述模型的代码实现。
+
+\subsection{说明与实现效果}
+本节仿真实现的Gossip-Style Membership Protocol参数如下：
+\begin{table}[!hpt]
+   \caption[Gossip-Style Membership Protocol仿真参数]{Gossip-Style Membership Protocol仿真参数\footnotemark}
+   \label{tab:thirdone}
+   \centering
+   \begin{tabular}{@{}ccc@{}} \toprule
+   %   \multicolumn{2}{c}{Item} \\ \cmidrule(r){1-2}
+     参数名称 & 参数值 & 参数含义 \\ \midrule
+     $n$ & 8 & 系统节点数量\\
+     $k$ & 2 & Gossip协议中每次感染的其他节点数\\
+     $p_{fail}$ & 0.1 & 节点失效概率\\ \bottomrule
+   \end{tabular}
+ \end{table}
