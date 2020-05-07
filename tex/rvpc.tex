@@ -204,12 +204,12 @@ $S\stackrel{p_1\tau}{\rightarrow}_{\varphi_1}\stackrel{p_2\tau}{\rightarrow}_{\v
 \begin{example}\label{eg:2}
    假设之前的不太行的下课铃系统经过岁月的磨练，年久失修，
    每自动校准一次音量就会减弱，音量必须满足$y>1$才可以播放，
-   当$y<0$时下课铃系统会崩溃无法修复。
+   当$y\leq 0$时下课铃系统音量就无法减弱了。
    为了方便建模，我们用$\mathsf{p}(x)=x-1$来表示这种音量减弱。
    校长出于节约经费的考虑，只要下课铃还能在他办公室听见($y>3$)就可以继续使用，
    现在的下课铃系统依然是一个Random VPC，
    我们可以用修改的$G'(x,y)$来表示这个系统：
-   $$G'(x,y)\stackrel{def}{=}(y>3)(\frac{1}{2}\tau.((y\geq 0)\tau.G'(x,\mathsf{p}(y)))\oplus \frac{1}{2}\tau.((y>1)\overline{a}(x).G'(x,y)))$$
+   $$G'(x,y)\stackrel{def}{=}(y>3)(\frac{1}{2}\tau.((y>0)\tau.G'(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G'(x,y))\oplus \frac{1}{2}\tau.((y>1)\overline{a}(x).G'(x,y)))$$
    $G'(x,y)$在$(y>3)\mathcal{E}_3$的等价集$[G'(x,y)]_{(y>3)\mathcal{E_3}}=[G'(x,y')]_{(y'>3)\mathcal{E_3}}=[a(x).G'(x,y'')]_{(y''>3)\mathcal{E_3}}$，其中$y,y',y''$不一定相等。
 
    $G'(x,y)$的$(y>3)\mathcal{E}_3$-tree如图~\ref{fig_eg2}
@@ -259,27 +259,75 @@ $A$到$\mathcal{B}$存在$\varphi q$-transition。写作$A\rightsquigarrow_{\var
 \end{itemize}
 
 \end{definition}
+
 \begin{example}
-   对于例~\ref{eg:1},~\ref{eg:2}中的两个下课铃系统，我们希望证明在$y>3$时它们是符号互模拟的，
-   以此来证明校长做出了英明的决策。
+   假设学校负责看管设备的老师发现例~\ref{eg:2}中的下课铃系统其实只有在$y\geq 5$时才能被所有教室的同学们听到，
+   为了不违抗校长的决定又同时让同学们都听到下课铃，他决定当$(y<5)$时用自己的电脑通过$a$通道播放下课铃，
+   这时校长以为下课铃系统被工人修好成~\ref{eg:1}中的样子了，决定一直使用这个下课铃。校长的感觉是错觉吗？
+
+   此时，看管设备的老师和之前不太行的下课铃系统依旧是一个Random VPC，我们可以用$G''(x,y)$来表示:
+
+   $G''(x,y) = (\frac{1}{2}\tau.((y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y))\oplus \frac{1}{2}\tau.((y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y))$。
+
+   我们只需要证明$G(x)$与$G''(x,y)$符号互模拟即可。
 \end{example}
 \begin{proof}
-   证明$G(x)，G'(x,y)$互模拟，需要定义它们状态的等价集，并证明等价集中的每一对等价关系满足符号互模拟的定义。
-   定义等价集$\mathcal{S} = \{(G(x),G'(x,y)),(\overline{a}(x).G(x),\overline{a}(x).G'(x,y))\}$。
+   设等价集$\mathcal{S} = \{(G(t),G''(t,s)),(G(t),(y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y)),(\overline{a}.G(t),(s>1)\overline{a}(t).G''(t,s)|(s<5)\overline{a}(t).G''(t,s))\mid t\in V,s\in U\}$，$V$是$x$的所有赋值的集合，$U$是$y$的所有赋值的集合，
+   我们只需证明$\mathcal{S}$是一个符号互模拟关系即可。
    \begin{itemize}
       \item {
-         对于$(\overline{a}(x).G(x),\overline{a}(x).G'(x,y)$：
-
-         对于$x$的任意赋值$t$，$\overline{a}(x).G'(x,y)\stackrel{\overline{a}(t')}{\longrightarrow}_{\top} G'(t',y)$
-         可以模拟动作$\overline{a}(x).G(x)\stackrel{\overline{a}(t)}{\longrightarrow}_{\top} G(t)$，
-         当且仅当$\mathsf{Th}\vdash t=t'$。对称的证明同理。
+         $\overline{a}(x).G(x)$和$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)$的$\top\mathcal{S}$-tree只有一个根节点(这里的证明实际可以是$\mathbb{VPC}$的符号互模拟的证明，但可以使用Random VPC的证明方式，下面用Random VPC的证明)，
+         \begin{itemize}
+            \item {
+               对于$x$的每一个赋值$t$，
+               $\overline{a}(x).G(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{a}(t)}{\longrightarrow}_{\top}G(t)$。
+               我们可以得到$\top$的一个划分：$\top=(y>1)\vee (y\leq 1)$。
+      
+               这时存在集合
+               $$\{(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(y>1)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(y>1)}G''(t,s),$$
+               $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(y\leq 1)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(y<5)}G''(t,s)\}$$
+               可以模拟上述操作。
+            }
+            \item {
+               对$x$的每一个赋值$t$，
+               $(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(y>1)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(y>1)}G''(t,s)$，
+               存在集合$\{\overline{a}(x).G(x)\rightsquigarrow_{(y>1)\mathcal{S}}\stackrel{\overline{a}(t)}{\longrightarrow}_{(y>1)}G(t)\}$可以模拟上述操作。
+               另一个操作的证明是相似的。
+            }
+         \end{itemize}
       }
       \item {
+         $(G(t),(y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y))$的这一对等价关系也是常规的$\mathcal{VPC}$证明[此处应有引用]。
+      }
+      \item {
+         $G(x)$的静态转移树如图~\ref{fig_eg4_1}，$G''(x,y)$的静态转移树如图~\ref{fig_eg4_2}。
+         \begin{figure}[!htbp]
+            \caption[]{}
+            \small
+            \centering
+            \includegraphics[width=5cm]{../figure/example1.png}
+             \label{fig_eg4_1}
+         \end{figure}
+         \begin{figure}[!htbp]
+            \caption[]{}
+            \small
+            \centering
+            \includegraphics[width=13cm]{../figure/example4_2.png}
+             \label{fig_eg4_2}
+         \end{figure}
 
+         对于$G(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\frac{1}{2}}{\rightarrow}_{\top} [\overline{a}(x).G(x)]_{\top\mathcal{S}}$，
+         我们可以用$G''(x,y)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\frac{1}{2}}{\rightarrow}_{\top}[(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)]_{\top\mathcal{S}}$模拟。
+         对称的，因为$\mathcal{S}$是一个等价关系，具有传递性，$(G(x),G''(x,y))\in\mathcal{S}\wedge (G(x),(y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y))\Rightarrow (y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y)\in [G(x)]_{\top\mathcal{S}}$，
+         我们也只需要证明右侧的转移，右侧的转移是相似的。
       }
    \end{itemize}
-   （未完）
+   因此我们可以得出校长的判断是正确的。
 \end{proof}
+
+\begin{theorem}
+   若$S,T\in \mathcal{T}_{RVPC},S\approxeq^s_{\mathsf{Th}} T$，则$\varphi S \approxeq^s_{\mathsf{Th}} \varphi T$，$\varphi$是一个判定条件。
+\end{theorem}
 
 \section{Random VPC的等价性}
 
@@ -384,10 +432,7 @@ $(\varphi A_0, \varphi A_k)\in \mathcal{E}$，由于互模拟具有传递性，�
 又因为$\mathsf{Th}\vdash \varphi\psi$，所以存在$j\in J\subset I, \mathsf{Th}\vdash \varphi\psi_j$，$\{\varphi T\rightsquigarrow_{\psi_j \approxeq^s_{\mathsf{Th}}}\stackrel{\lambda}{\rightarrow}_{\phi_j}\mathcal{C}|\mathsf{Th}\vdash \psi_j\Rightarrow\phi_j\}$，
 重新构造$\psi$的划分为$\{\psi_j\}_{j\in [J-1]}\cup \{\bigvee_{i\in [I]/[J-1]}\psi_i\}$。q-transition的证明是类似的。
 
-Composition和Localization的证明与Uniform Approach中的基本类似，
-因为Random VPC没有对CCS的Composition和Localization做改动。
-
-（由于时间原因这里证明的比较草率，中期检查之后会继续完善）
+Composition,Localization,Recursion的运算与$\mathbb{VPC}$的运算[此处应有引用]相同。
 \end{proof}
 
 \begin{theorem}
