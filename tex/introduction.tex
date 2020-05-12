@@ -1,8 +1,39 @@
 % !TeX root = ../thesis.tex
 
 \chapter{引言}
-\section{背景与现状}
-\section{并发进程模型}
-\section{传值并发模型}
-\section{随机进程模型}
-\section{目的与意义}
+   传统的多线程模型是用共享内存的方式进行同步的。
+   但当并行度变高，不确定性就会增加，需要用锁等机制保证正确性。
+   由于锁是原子性操作，容易成为性能瓶颈，并且在多线程编程过程中容易出错，产生死锁。
+   于是一些编程模型使用消息传递来代替共享内存和锁，认为用通信实现进程同步会更优雅。
+   比如在Effective Go中对并发的描述中有这样一句话：
+   \textit{“Do not communicate by sharing memory; instead, share memory by communicating."}\cite{1}
+
+
+   \section{并发进程模型}
+   20世纪80年代，英国学者Milner提出了通信系统演算(A Calculus of Communicating System，简称\textbf{CCS})\cite{2}，
+   同时期Hoare提出了CSP\cite{3}，
+   Bergstra和Klop等提出了ACP\cite{4}，Hennessy提出ATP\cite{5}等使用代数方法研究通信并发系统，统称为进程代数理论。这些代数理论都使用通信而不是共享内存作为进程之间交互的手段。
+   
+   CCS及其扩展模型可以用于并发系统的建模并评估系统特性。
+   提出CCS时，Milner在\cite{2}中对有界缓冲区，存在并行工作的工人的工厂，支持并行计算的编程语言进行了建模。
+   基于CCS的建模还有Guo等的欧洲列车控制系统\cite{16}，
+   Issad等的铁路系统\cite{17}，
+   Cleaveland等的图坐标系语言\cite{18}等。
+
+   \section{随机进程模型}
+
+   进程代数将进程看作带标号的变迁系统，将并发性归结为非确定性，
+   将并发执行的进程看作单个进程所有可能的行为的交错，即交错语义。
+   在进程模型中，一个行为通常不是真的随机行为，但可能近似的满足某种随机分布。
+   而计算机算法都是确定性算法，引入随机性后可以对模型更好的模拟实现。
+
+   作为经典并发模型的扩展，概率进程模型被广为研究。
+   其中有对CCS的概率性扩展\cite{9,10},
+   概率CSP\cite{11} 和概率ACP\cite{12}等。
+
+   由于随机性是可计算的，将现实问题建模成概率模型有助于我们对现实问题进行深入计算研究。
+   \cite{7}提供了一个模型无关的方法(Uniform Approach)，将进程模型(Process Model)扩展为随机进程模型(Random Process Model)。
+   Uniform Approach区分了非确定性和概率性的行为，建立了RCCS的语法和等价关系。
+   由于Uniform Approach具有模型无关性，我们可以用它来扩展其他的进程模型，
+   进而使非概率模型概率化。概率化后，模型将会拥有更可计算、可模拟的性质。
+   进而可以更好的对现实问题进行仿真和分析。

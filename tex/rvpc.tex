@@ -2,6 +2,32 @@
 
 \chapter{随机传值进程}
 
+由于Uniform Approach是模型无关的概率扩展方法，
+我们可以使用该方法概率化扩展其他的进程模型，
+本文选择对传值进程模型（A value-passing calculus）进行概率化扩展。
+
+\section{传值进程模型}
+传值进程模型（A value-passing calculus）
+可以将某个域重的值作为通信的内容，
+并且可以在特定逻辑条件执行某个动作的并发进程模型。
+传值进程模型赋予了进程传递数据的能力，
+我们可以通过进程之间传递的数据来控制进程的交互，
+这种控制能力显著的增强了并发进程模型的表达能力，拓宽了应用场景。
+在网络通信中，各种通信协议通过在主机间传值进而控制主机的行为，
+通信协议的过程就可以被抽象为传值进程模型。
+支持并发的编程语言也可以被解释为传值进程模型，如erlang[https://pure.tue.nl/ws/portalfiles/portal/25268307/HY13.pdf]\dots
+
+\subsection{Fu's VPC}
+对传值进程模型的研究很多都是基于一个提供值、计算函数、判定逻辑条件的“神域”，
+“神域”通常不包括在传值进程模型中，且通常是未定义的，或只在特定场景下定义，
+由于“神域”的存在，对于这些传值进程模型表达能力的衡量变得十分困难，
+Fu在The Value-Passing Calculus中取缔了“神域”的概念，
+提出了一个封闭的传值进程模型。
+
+\subsubsection{语法及转移语义}
+
+\subsubsection{Numeric System}
+
 \section{随机传值进程模型（Random VPC）}
 我们将Uniform Approach中的CCS部分替换为VPC，可以得到Random VPC的语法。
 $$T:=\bigoplus_{i\in I}p_i \tau.T_i\mid \sum_{i\in I} \varphi_i\lambda_i.T_i\mid T \mid T'\mid (c)T\mid \varphi T\mid !a(x).T \mid !\bar{a}(t).T$$
@@ -110,8 +136,23 @@ $S\stackrel{p_1\tau}{\rightarrow}_{\varphi_1}\stackrel{p_2\tau}{\rightarrow}_{\v
  在$[A]_{\varphi \mathcal{E}}$内部，
  我们可以使$\varphi$对等价性的影响透明。
 
-\section{符号互模拟(Symbolic Bisimulation)}
+\section{随机传值进程模型中的互模拟关系}
 
+\subsection{互模拟关系与观察等价性}
+
+   程序理论的基本问题是进程的等价性。对通信并发系统程序等价的定义和验证，现在已有很多研究。
+   在提出CCS时Milner提出了\textit{观察等价(observation equivalence)}，即\textit{弱互模拟(weak bisimulation)}\cite{2}。
+   Glabbeek和Weijland提出的\textit{branching互模拟(branching bisimulation)}\cite{6}也是十分著名的研究。
+
+   对于概率模型的等价性，目前有对同步概率进程模型互模拟关系的研究\cite{13}，
+   仅适用于有限状态的概率进程模型的研究\cite{14,15}，
+   这些模型都有一定的局限性。
+   2019年，\cite{7}提出了一个模型无关的方法，在CCS的基础上对非概率模型进行概率化扩展，
+   并在branching bisimulation\cite{6}的基础上给出了概率进程模型branching互模拟关系的语义，以及等价关系同余性的证明。
+
+   \subsubsection{分支互模拟}
+
+   \subsubsection{符号互模拟}
 % \begin{definition}
 %    对任意$S,T\in \mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$，且$V=fv(S|T)$，
 %    当$S\mathcal{R}T$且满足下列条件时，对称二元关系$\mathcal{R}$是一个符号互模拟(Symbolic Bisimulation)[此处应有引用]。
@@ -223,7 +264,7 @@ $S\stackrel{p_1\tau}{\rightarrow}_{\varphi_1}\stackrel{p_2\tau}{\rightarrow}_{\v
 
 \end{example}
 
-\subsection{Random VPC的符号互模拟}
+\subsection{随机传值进程模型的符号互模拟}
 \begin{definition}[条件概率转移:$\varphi q$-transition]
    $A\in \mathcal{T}_{RVPC},\mathcal{B}\in (\mathcal{T}_{RVPC}/\varphi \mathcal{E})\backslash \{[A]_{\varphi\mathcal{E}}\}$，
 对$t^A_{\varphi \mathcal{E}}$的每一个叶子结点$L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i} \coprod_{i\in [k]}L_i$,
@@ -330,7 +371,7 @@ $A$到$\mathcal{B}$存在$\varphi q$-transition。写作$A\rightsquigarrow_{\var
 \end{theorem}
 该定理的证明在下一节。
 
-\section{Random VPC的等价性}
+\section{随机传值进程模型的等价性}
 
 \begin{lemma}
    符号互模拟具有传递性。
