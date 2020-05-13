@@ -46,12 +46,31 @@ $A(x)$在满足条件$\varphi(x)$时会通过通道$a$输出函数$f(t)$的值�
 Fu在The Value-Passing Calculus中取缔了“神域”的概念，
 提出了一个封闭的传值进程模型。
 
-\subsubsection{语法及转移语义}
 The Value-Passing Calculus中的传值进程模型$\mathbb{VPC}_{\mathsf{Th}}$
 的语法可以表示为：
 $$T:=\sum_{i\in I}\varphi_i a(x).T_i|\sum_{i\in I}\varphi_i\overline{a}(t_i).T_i|T|T'|(c)T|\varphi T|!a(x).T|!\overline{a}(t).T$$
-其中
-\subsubsection{可判定理论与数值系统}
+其中$T$是一个$\mathbb{VPC}_{\mathsf{Th}}$项，$\mathsf{Th}$是可判定的逻辑，
+$\varphi_i$是一个布尔表达式，可以通过$\mathsf{Th}$证明或证伪，
+若$\mathsf{Th}$可以给出$\varphi_i$的一个证明，记为$\mathsf{Th}\vdash \varphi_i$。
+$a(x)$是一个输入前缀，$\overline{a}(t_i)$是一个输出前缀，
+我们可以用$\sum_{i\in I}\varphi_i\lambda_i.T_i$来表示$\sum_{i\in I}\varphi_i a(x).T_i$或$\sum_{i\in I}\varphi_i \overline{a}(t).T_i$。
+$!a(x).T$和$!\overline{a}(t).T$对应递归操作，$\mu X.E$可以表示为
+$(c)(E\{c(z).0/X\}|!\overline{c}(r).E\{c(z).0/X\})$。
+其余的表达与第一章CCS语法定义的解释相同。
+
+The Value-Passing Calculus提出了两种转移语义的描述：具体语义（Concrete Semantics）和符号语义（Symbolic Semantics）。
+后文我们只用到了符号语义，因此我们忽略具体语义的相关内容。
+
+$\mathbb{VPC}_{\mathsf{Th}}$的符号语义如图所示。
+
+其中，$T=\varphi \lambda.T'$在$\varphi$条件下执行$\lambda$动作到达$T'$状态，
+在符号语义下可以写作$T\stackrel{\lambda}{\rightarrow}_{\varphi}T'$。
+符号语义中的动作集合$Act=\{a(x),\overline{a}(t)| a\in Chan, x\in \mathsf{V}_{\Sigma}, t\in \mathsf{T}_{\Sigma}\}\cup \{\tau\}$，
+$Act$中的元素可以用$\lambda$表示，其中$\mathsf{V}_{\Sigma},\mathsf{T}_{\Sigma}$为可判定逻辑$\mathsf{Th}$中变量的集合和项的集合[引用]。
+
+The Value-Passing Calculus使用可判定的一阶理论判定条件，
+提出了一个图灵完备的数值系统（Numeric System）作为底层模型，
+用来实现可计算的函数。通过这两种方式，将Value-Passing Calculus从“神域”中解放出来。
 
 \section{随机传值进程模型（Random VPC）}
 我们将Uniform Approach中的CCS部分替换为VPC，可以得到Random VPC的语法。
