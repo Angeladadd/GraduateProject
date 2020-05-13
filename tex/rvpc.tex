@@ -1,32 +1,57 @@
 % !TeX root = ../thesis.tex
 
-\chapter{随机传值进程}
+\chapter{随机传值进程模型}
 
 由于Uniform Approach是模型无关的概率扩展方法，
-我们可以使用该方法概率化扩展其他的进程模型，
-本文选择对传值进程模型（A value-passing calculus）进行概率化扩展。
+我们可以使用该方法概率化扩展其他的进程模型。
+本章会对传值进程模型进行概率化扩展。
+传值进程模型是经典的进程模型，
+在Milner的Communication and Concurrency一书中，
+也是使用传值的通信并发模型——消息的发送者、接受者和通信媒介——引入并发和通信的概念。
+我们选择传值进程模型的一种定义——The Value-Passing Calculus进行扩展。
 
 \section{传值进程模型}
-传值进程模型（A value-passing calculus）
-可以将某个域重的值作为通信的内容，
+传值进程模型（Value-Passing Calculus）是一种
+可以将某个域中的值作为通信的内容，
 并且可以在特定逻辑条件执行某个动作的并发进程模型。
+一个经典的例子是Milner书中的一单元缓冲区，它可以接受、储存、发送消息：
+\begin{align*}
+   C&\stackrel{def}{=}in(x).C'(x)\\
+   C'(x)&\stackrel{def}{=}\overline{out}(x).C
+\end{align*}
+更“普遍”的传值进程模型也可以对输入进行逻辑判定，
+根据特定的“条件”执行特定的“动作”，
+通过输入控制进程的执行。我们以进程$A(x)$为例：
+$$A(x)=\textrm{if }\varphi(x)\textrm{ then }\overline{a}(f(t))\textrm{ else }B(x)$$
+$A(x)$在满足条件$\varphi(x)$时会通过通道$a$输出函数$f(t)$的值，
+其中$t$可能是$x$的函数，也可能与$x$无关；若不满足$\varphi(x)$，则执行程序$B(x)$。
+
 传值进程模型赋予了进程传递数据的能力，
-我们可以通过进程之间传递的数据来控制进程的交互，
+我们可以通过进程之间传递的数据来控制进程的执行和进程间的交互，
 这种控制能力显著的增强了并发进程模型的表达能力，拓宽了应用场景。
 在网络通信中，各种通信协议通过在主机间传值进而控制主机的行为，
-通信协议的过程就可以被抽象为传值进程模型。
-支持并发的编程语言也可以被解释为传值进程模型，如erlang[https://pure.tue.nl/ws/portalfiles/portal/25268307/HY13.pdf]\dots
+通信协议的过程就可以被抽象为传值进程模型，
+支持并发的编程语言也可以被解释为传值进程模型，如Erlang。
+很多通过传值，计算解决的现实问题也都可以抽象为传值进程模型。
 
-\subsection{Fu's VPC}
-对传值进程模型的研究很多都是基于一个提供值、计算函数、判定逻辑条件的“神域”，
-“神域”通常不包括在传值进程模型中，且通常是未定义的，或只在特定场景下定义，
+
+\subsection{The Value-Passing Calculus}
+对传值进程模型的研究很多都会依赖一个“神域”，
+这个“神域”提供条件的判定，函数的计算和变量的取值范围。
+如在执行$A(x)$时，我们会将$\varphi(x)$传给“神域”，
+“神域”判定是否满足条件，并将判定结果返回给我们，
+同样的，我们也会将$f(t)$传给“神域”，“神域”帮我们计算这个函数，并将结果返回给我们。
+“神域”通常不包括在传值进程模型中，且通常是未定义的，或只在特定场景下定义。
 由于“神域”的存在，对于这些传值进程模型表达能力的衡量变得十分困难，
 Fu在The Value-Passing Calculus中取缔了“神域”的概念，
 提出了一个封闭的传值进程模型。
 
 \subsubsection{语法及转移语义}
-
-\subsubsection{Numeric System}
+The Value-Passing Calculus中的传值进程模型$\mathbb{VPC}_{\mathsf{Th}}$
+的语法可以表示为：
+$$T:=\sum_{i\in I}\varphi_i a(x).T_i|\sum_{i\in I}\varphi_i\overline{a}(t_i).T_i|T|T'|(c)T|\varphi T|!a(x).T|!\overline{a}(t).T$$
+其中
+\subsubsection{可判定理论与数值系统}
 
 \section{随机传值进程模型（Random VPC）}
 我们将Uniform Approach中的CCS部分替换为VPC，可以得到Random VPC的语法。
@@ -34,7 +59,7 @@ $$T:=\bigoplus_{i\in I}p_i \tau.T_i\mid \sum_{i\in I} \varphi_i\lambda_i.T_i\mid
 
 $\mathcal{T}_{RVPC}$为所有Random VPC项目的集合。
 
-\subsection{Random VPC转移语义}
+\subsection{随机传值进程模型转移语义}
 Uniform Approach修改了CCS的prefix操作符，
 在CCS的基础上增加了随机性行为，$\oplus p\tau.T$体现了通道的随机性。
 
