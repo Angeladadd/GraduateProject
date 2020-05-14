@@ -35,7 +35,7 @@ $A(x)$在满足条件$\varphi(x)$时会通过通道$a$输出函数$f(t)$的值�
 很多通过传值，计算解决的现实问题也都可以抽象为传值进程模型。
 
 
-\subsection{The Value-Passing Calculus}
+\subsection{The Value-Passing Calculus}\label{ch:vpc}
 对传值进程模型的研究很多都会依赖一个“神域”，
 这个“神域”提供条件的判定，函数的计算和变量的取值范围。
 如在执行$A(x)$时，我们会将$\varphi(x)$传给“神域”，
@@ -48,7 +48,9 @@ Fu在The Value-Passing Calculus中取缔了“神域”的概念，
 
 The Value-Passing Calculus中的传值进程模型$\mathbb{VPC}_{\mathsf{Th}}$
 的语法可以表示为：
-$$T:=\sum_{i\in I}\varphi_i a(x).T_i|\sum_{i\in I}\varphi_i\overline{a}(t_i).T_i|T|T'|(c)T|\varphi T|!a(x).T|!\overline{a}(t).T$$
+\begin{equation}\label{eq:vpc}
+   T:=\sum_{i\in I}\varphi_i a(x).T_i|\sum_{i\in I}\varphi_i\overline{a}(t_i).T_i|T|T'|(c)T|\varphi T|!a(x).T|!\overline{a}(t).T
+\end{equation}
 其中$T$是一个$\mathbb{VPC}_{\mathsf{Th}}$项，$\mathsf{Th}$是可判定的逻辑，
 $\varphi_i$是一个布尔表达式，可以通过$\mathsf{Th}$证明或证伪，
 若$\mathsf{Th}$可以给出$\varphi_i$的一个证明，记为$\mathsf{Th}\vdash \varphi_i$。
@@ -75,44 +77,24 @@ $\mathbb{VPC}_{\mathsf{Th}}$的符号语义如图~\ref{fig_vpc}所示。
 符号语义中的动作集合$Act=\{a(x),\overline{a}(t)| a\in Chan, x\in \mathsf{V}_{\Sigma}, t\in \mathsf{T}_{\Sigma}\}\cup \{\tau\}$，
 $Act$中的元素可以用$\lambda$表示，其中$\mathsf{V}_{\Sigma},\mathsf{T}_{\Sigma}$为可判定逻辑$\mathsf{Th}$中变量的集合和项的集合[引用]。
 
-The Value-Passing Calculus使用可判定的一阶理论判定条件，
-提出了一个图灵完备的数值系统（Numeric System）作为底层模型，
-用来实现可计算的函数。通过这两种方式，将Value-Passing Calculus从“神域”中解放出来。
+The Value-Passing Calculus使用可判定的一阶理论判定条件并
+提出了一个图灵完备的数值系统（Numeric System）作为底层模型来实现可计算的函数。
+通过这两种方式，将Value-Passing Calculus从“神域”中解放出来。
 
-\section{随机传值进程模型（Random VPC）}
-我们将Uniform Approach中的CCS部分替换为VPC，可以得到Random VPC的语法。
-$$T:=\bigoplus_{i\in I}p_i \tau.T_i\mid \sum_{i\in I} \varphi_i\lambda_i.T_i\mid T \mid T'\mid (c)T\mid \varphi T\mid !a(x).T \mid !\bar{a}(t).T$$
+\subsection{If Then Else语法符号化}
+进程$A(x)$中出现了If Then Else语法，
+If Then Else语法实现的分支控制在编程中也是非常重要的组成部分。
+在Milner的Communication and Concurrency一书中也多次使用If Then Else语法，
+然而在CCS的定义中，我们无法通过CCS代理的语法规则来实现这种分支控制；
+书中对分支控制的使用，如第五章（Bisimulation and Observation Equivalence）中对JobShop的建模，
+也比较随意，没有严格的定义也没有判断If条件的可判定性。
+在Fu的The Value-Passing Calculus中，
+规定了If条件是通过一阶理论$\mathsf{Th}$可判定的布尔表达式，
+并说明$\textrm{if }\varphi\textrm{ then }S\textrm{ else }T$
+可以被定义为$\varphi S|\urcorner \varphi T$。
+以下推论依据The Value-Passing Calculus中对If Then Else语法的定义和$\mathbb{VPC}_{\mathsf{Th}}$的Proof System，
+给出If Then Else的变体的符号化定义，在本文的后续章节会统一使用这些符号。
 
-$\mathcal{T}_{RVPC}$为所有Random VPC项目的集合。
-
-\subsection{随机传值进程模型转移语义}
-Uniform Approach修改了CCS的prefix操作符，
-在CCS的基础上增加了随机性行为，$\oplus p\tau.T$体现了通道的随机性。
-
-对VPC的$\bigoplus_{i\in I}p_i \tau.T_i$算子做对应的概率转移，
-我们可以得到Random VPC的符号转移语义：
-
-\begin{figure}[!htbp]
-	\small
-	\centering
-	\includegraphics[width=13cm]{../figure/symbolic_sematic.png}
-    \caption{\textbf{Symbolic Semantics}}
-    \label{fig_sematic}
-\end{figure}
-
-在VPC的Symbolic Semantics中，
-对于VPC的典型prefix运算$\sum \varphi \lambda. T\stackrel{\lambda}{\rightarrow}_{\varphi} T$，
-我们可以通过Uniform Approach的方法将它扩展为一个概率的操作
-$\bigoplus p\tau.\varphi \lambda. T\stackrel{p\tau}{\rightarrow}_{\top}\stackrel{\lambda}{\rightarrow}_{\varphi} T$。
-它的语义就会变成：在概率$p$下，我们会经过一个内部$\tau$操作到达一个Random VPC状态:$\varphi\lambda.T$，
-若$\mathsf{Th}\vdash \varphi$（即一阶理论$\mathsf{Th}$下，$\varphi$为真），
-则我们可以经过$\lambda$操作到达Random VPC状态$T$， 其中$\lambda \in \{a(x),\bar{a}(x)\mid a\in \mathcal{N}, x\in \mathsf{V}_\Sigma, t\in \mathsf{T}_\Sigma\}\cup \{\tau\}$。
-
-\subsection{VPC延伸性质与定义}
-
-在CCS，Uniform Approach，VPC中，
-对于if then else语法的描述仍然保留着if then else的原始格式，
-我们可以根据VPC的定义给出符合VPC转移规则的if then else语法。
 以下推论中$S,T\in \mathcal{T}_{\mathbb{VPC}}$。
 \begin{corollary} 
    $\varphi 0 = 0$
@@ -127,9 +109,12 @@ $\bigoplus p\tau.\varphi \lambda. T\stackrel{p\tau}{\rightarrow}_{\top}\stackrel
    $\varphi T = (\varphi T\mid 0) = (\varphi T\mid \urcorner \varphi 0)$
 \end{proof}
 \begin{corollary}
-   $S=\varphi T$，那么当$\mathsf{Th}\vdash \urcorner \varphi$时，$S=0$。
+   $S=\urcorner\varphi \varphi T$，则$S=0$。
 \end{corollary}
-进而我们可以得到if then else语法与VPC规则的对照表：
+\begin{proof}
+   $S=\urcorner\varphi \varphi T = (\urcorner\varphi\wedge\varphi)T=\bot T=0$
+\end{proof}
+进而我们可以得到If Then Else语法与VPC规则的对照表：
 \begin{table}[!hpt]
    \caption[If Then Else语法对照表]{If Then Else语法对照表\footnotemark}
    \label{tab:ifthenelse}
@@ -139,35 +124,83 @@ $\bigoplus p\tau.\varphi \lambda. T\stackrel{p\tau}{\rightarrow}_{\top}\stackrel
      语法 & $\mathbb{VPC}$规则对照 \\ \midrule
      $S=$ if $\varphi$ then $T$ else $T'$& $S=(\varphi T|\urcorner \varphi T')$\\
      $S=$ if $\varphi$ then $T$ & $S=(\varphi T|\urcorner\varphi 0)$\\
-     $S = $if $\bot$ then $T$ & $S=0$\\ \bottomrule
+     $S = $if $\urcorner \varphi$ then if $\varphi$ then $T$ & $S=0$\\ \bottomrule
    \end{tabular}
  \end{table}
 
-对类似$S\stackrel{p_1\tau}{\rightarrow}_{\varphi_1}\stackrel{p_2\tau}{\rightarrow}_{\varphi_2}\cdots\stackrel{p_n\tau}{\rightarrow}_{\varphi_n} T$
-考虑将他们写成这种形式: $S\stackrel{p}{\Rightarrow}_{\varphi} T$。
+\section{随机传值进程模型（Random VPC）}
+随机传值进程模型定义在$\mathbb{VPC}_{\mathsf{Th}}$的基础上，
+我们可以用Uniform Approach中的随机选择$\bigoplus_{i\in I}p_i\tau.T_i$
+扩展公式~\ref{eq:vpc}中$\mathbb{VPC}_{\mathsf{Th}}$项的定义。
+我们可以得到随机传值进程模型（Random VPC，记为$\mathbb{RVPC}_{\mathsf{Th}}$）项的定义：
+\begin{equation}\label{eq:rvpc}
+   T:=\bigoplus_{i\in I}p_i \tau.T_i\mid \sum_{i\in I} \varphi_i\lambda_i.T_i\mid T \mid T'\mid (c)T\mid \varphi T\mid !a(x).T \mid !\bar{a}(t).T
+\end{equation}
+其中，与~\ref{ch:vpc}中定义的一样：$\lambda_i \in Act$，$\mathsf{Th}$为可判定的一阶理论。
+随机选择操作子$\bigoplus_{i\in I}p_i\tau.T_i$中，$0<p_i<1, \sum_{i\in I}p_i = 1$。
+$S=\bigoplus_{i\in I}p_i\tau.T_i$意味着$S$在$p_i$的概率下经过内部动作$\tau$到达$T_i$状态。
 
-\begin{definition}\label{def:continous_vpc}
-   根据VPC[此处应有引用]，若$S,T\in \mathcal{T}_{\mathbb{VPC}}$，$S\stackrel{\tau}{\rightarrow}_{\varphi_1}\stackrel{\tau}{\rightarrow}_{\varphi_2}\dots \stackrel{\tau}{\rightarrow}_{\varphi_n} T$，则可以记成$S\stackrel{}{\Rightarrow}_{\varphi_1\varphi_2\dots\varphi_n} T$。
-\end{definition} 
+$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$为所有$\mathbb{RVPC}_\mathsf{Th}$的项$T$的集合。
 
-而Uniform Approach中没有对连续的概率转移作类似的缩写定义，
-我们根据定义2.1作出相应的定义。
-\begin{definition}
-   若$S,T\in \mathcal{P}_{RCCS}$，$S\stackrel{p_1\tau}{\rightarrow}\stackrel{p_2\tau}{\rightarrow}\dots\stackrel{p_n\tau}{\rightarrow}T$，则记为$S\stackrel{p_1p_2\dots p_n}{\Longrightarrow}T$。
-\end{definition}
+\subsection{随机传值进程模型转移语义}
+在~\ref{ch:vpc}中$\mathbb{VPC}_{\mathsf{Th}}$的符号语义的基础上，
+增加\label{fig_rccs}定义的随机选择操作子的转移规则，
+我们可以得到随机传值进程模型的符号语义，
+其中随机选择的条件为$\top$，
+表明该操作在任意条件下可执行；
+若随机选择也需要在特定条件下执行，
+我们可以配合$\mathbb{VPC}_{\mathsf{Th}}$中的条件操作子，
+得到$\varphi (\bigoplus_{i\in I}p_i\tau.T_i)$。
 
-\begin{definition}
-   若$S,T\in \mathcal{T}_{RVPC}$，
-$S\stackrel{p_1\tau}{\rightarrow}_{\varphi_1}\stackrel{p_2\tau}{\rightarrow}_{\varphi_2}\dots \stackrel{p_n\tau}{\rightarrow}_{\varphi_n} T$，则可以记成$S\stackrel{p_1p_2\dots p_n}{\Longrightarrow}_{\varphi_1\varphi_2\dots\varphi_n} T$。
-若$\varphi = \varphi_1\varphi_2\dots \varphi_n, p=p_1p_2\dots p_n$，
-则可以记为$S\stackrel{p}{\Rightarrow}_{\varphi} T$。
-\end{definition} 
+\begin{figure}[!htbp]
+	\small
+	\centering
+	\includegraphics[width=14cm]{../figure/symbolic_sematic.png}
+    \caption{\textbf{随机传值进程模型的符号语义}}
+    \label{fig_sematic}
+\end{figure}
 
-\begin{definition}
-   条件选择下的符号语义：
-   若$S=\varphi (p\tau.T+(1-p)\tau.T')$，
-   可以记$S\stackrel{p\tau}{\rightarrow}_{\varphi} T$。
-\end{definition} 
+对于$\mathbb{VPC}_{\mathsf{Th}}$的前缀操作子的转移规则：
+$\sum_{i\in I} \varphi_i \lambda_i. T_i\stackrel{\lambda_i}{\rightarrow}_{\varphi_i} T_i$，
+它本质上代表了非确定选择，
+即作出$\varphi_i$条件下的$\lambda_i$动作到达$T_i$状态是非确定的，
+我们可以通过Uniform Approach的方法将它扩展为一个概率性选择，
+即在概率$p_i$下会作出$\varphi_i$条件下的$\lambda_i$动作：
+$\bigoplus_{i\in I} p_i\tau.\varphi_i \lambda_i. T_i\stackrel{p_i\tau}{\rightarrow}_{\top}\stackrel{\lambda_i}{\rightarrow}_{\varphi_i} T_i$。
+它的语义为：在概率$p_i$下，我们会经过一个内部$\tau$操作到达一个$\mathbb{RVPC}_{\mathsf{Th}}$状态:
+$\varphi_i\lambda_i.T_i$，
+若$\mathsf{Th}\vdash \varphi_i$（即一阶理论$\mathsf{Th}$下，$\varphi_i$为真），
+则我们可以经过$\lambda_i$操作到达$\mathbb{RVPC}_{\mathsf{Th}}$状态$T_i$， 
+其中$\lambda_i \in \{a(x),\bar{a}(x)\mid a\in \mathcal{N}, x\in \mathsf{V}_\Sigma, t\in \mathsf{T}_\Sigma\}\cup \{\tau\}$。
+
+% \subsection{延伸性质与定义}
+
+% 对类似$S\stackrel{p_1\tau}{\rightarrow}_{\varphi_1}\stackrel{p_2\tau}{\rightarrow}_{\varphi_2}\cdots\stackrel{p_n\tau}{\rightarrow}_{\varphi_n} T$
+% 考虑将他们写成这种形式: $S\stackrel{p}{\Rightarrow}_{\varphi} T$。
+
+% \begin{definition}\label{def:continous_vpc}
+%    根据VPC[此处应有引用]，若$S,T\in \mathcal{T}_{\mathbb{VPC}}$，$S\stackrel{\tau}{\rightarrow}_{\varphi_1}\stackrel{\tau}{\rightarrow}_{\varphi_2}\dots \stackrel{\tau}{\rightarrow}_{\varphi_n} T$，则可以记成$S\stackrel{}{\Rightarrow}_{\varphi_1\varphi_2\dots\varphi_n} T$。
+% \end{definition} 
+
+% 而Uniform Approach中没有对连续的概率转移作类似的缩写定义，
+% 我们根据定义2.1作出相应的定义。
+% \begin{definition}
+%    若$S,T\in \mathcal{P}_{RCCS}$，$S\stackrel{p_1\tau}{\rightarrow}\stackrel{p_2\tau}{\rightarrow}\dots\stackrel{p_n\tau}{\rightarrow}T$，则记为$S\stackrel{p_1p_2\dots p_n}{\Longrightarrow}T$。
+% \end{definition}
+
+% \begin{definition}
+%    若$S,T\in \mathcal{T}_{RVPC}$，
+% $S\stackrel{p_1\tau}{\rightarrow}_{\varphi_1}\stackrel{p_2\tau}{\rightarrow}_{\varphi_2}\dots \stackrel{p_n\tau}{\rightarrow}_{\varphi_n} T$，则可以记成$S\stackrel{p_1p_2\dots p_n}{\Longrightarrow}_{\varphi_1\varphi_2\dots\varphi_n} T$。
+% 若$\varphi = \varphi_1\varphi_2\dots \varphi_n, p=p_1p_2\dots p_n$，
+% 则可以记为$S\stackrel{p}{\Rightarrow}_{\varphi} T$。
+% \end{definition} 
+
+% \begin{definition}
+%    条件选择下的符号语义：
+%    若$S=\varphi (p\tau.T+(1-p)\tau.T')$，
+%    可以记$S\stackrel{p\tau}{\rightarrow}_{\varphi} T$。
+% \end{definition} 
+
 \subsection{条件等价集}
  \begin{definition}
    $A,A'\in \mathcal{T}_{RVPC}$，若$\varphi A \mathcal{E} \varphi A'$，则$A'\in [A]_{\varphi \mathcal{E}}$。
@@ -527,3 +560,5 @@ $(\varphi A_0, \varphi A_k)\in \mathcal{E}$，由于互模拟具有传递性，�
 
 Composition,Localization,Recursion的运算与$\mathbb{VPC}$的运算[此处应有引用]相同。
 \end{proof}
+
+\section{本章小结}
