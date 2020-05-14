@@ -61,8 +61,15 @@ $(c)(E\{c(z).0/X\}|!\overline{c}(r).E\{c(z).0/X\})$。
 The Value-Passing Calculus提出了两种转移语义的描述：具体语义（Concrete Semantics）和符号语义（Symbolic Semantics）。
 后文我们只用到了符号语义，因此我们忽略具体语义的相关内容。
 
-$\mathbb{VPC}_{\mathsf{Th}}$的符号语义如图所示。
+$\mathbb{VPC}_{\mathsf{Th}}$的符号语义如图~\ref{fig_vpc}所示。
 
+\begin{figure}[!htbp]
+   \small
+   \centering
+   \includegraphics[width=13cm]{../figure/vpc.png}
+    \caption[]{$\mathbb{VPC}_{\mathsf{Th}}$的符号语义规则}
+    \label{fig_vpc}
+\end{figure}
 其中，$T=\varphi \lambda.T'$在$\varphi$条件下执行$\lambda$动作到达$T'$状态，
 在符号语义下可以写作$T\stackrel{\lambda}{\rightarrow}_{\varphi}T'$。
 符号语义中的动作集合$Act=\{a(x),\overline{a}(t)| a\in Chan, x\in \mathsf{V}_{\Sigma}, t\in \mathsf{T}_{\Sigma}\}\cup \{\tau\}$，
