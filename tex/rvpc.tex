@@ -95,7 +95,7 @@ If Then Else语法实现的分支控制在编程中也是非常重要的组成�
 以下推论依据The Value-Passing Calculus中对If Then Else语法的定义和$\mathbb{VPC}_{\mathsf{Th}}$的Proof System，
 给出If Then Else的变体的符号化定义，在本文的后续章节会统一使用这些符号。
 
-以下推论中$S,T\in \mathcal{T}_{\mathbb{VPC}}$。
+以下推论中$S,T\in \mathcal{T}_{\mathbb{VPC}_\mathsf{Th}}$。
 \begin{corollary} 
    $\varphi 0 = 0$
 \end{corollary}
@@ -114,14 +114,14 @@ If Then Else语法实现的分支控制在编程中也是非常重要的组成�
 \begin{proof}
    $S=\urcorner\varphi \varphi T = (\urcorner\varphi\wedge\varphi)T=\bot T=0$
 \end{proof}
-进而我们可以得到If Then Else语法与VPC规则的对照表：
+进而我们可以得到If Then Else语法与$\mathbb{VPC}_\mathsf{Th}$规则的对照表：
 \begin{table}[!hpt]
    \caption[If Then Else语法对照表]{If Then Else语法对照表\footnotemark}
    \label{tab:ifthenelse}
    \centering
    \begin{tabular}{@{}cc@{}} \toprule
    %   \multicolumn{2}{c}{Item} \\ \cmidrule(r){1-2}
-     语法 & $\mathbb{VPC}$规则对照 \\ \midrule
+     语法 & $\mathbb{VPC}_{\mathsf{Th}}$规则对照 \\ \midrule
      $S=$ if $\varphi$ then $T$ else $T'$& $S=(\varphi T|\urcorner \varphi T')$\\
      $S=$ if $\varphi$ then $T$ & $S=(\varphi T|\urcorner\varphi 0)$\\
      $S = $if $\urcorner \varphi$ then if $\varphi$ then $T$ & $S=0$\\ \bottomrule
@@ -142,7 +142,6 @@ $S=\bigoplus_{i\in I}p_i\tau.T_i$意味着$S$在$p_i$的概率下经过内部动
 
 $\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$为所有$\mathbb{RVPC}_\mathsf{Th}$的项$T$的集合。
 
-\subsection{随机传值进程模型转移语义}
 在~\ref{ch:vpc}中$\mathbb{VPC}_{\mathsf{Th}}$的符号语义的基础上，
 增加\label{fig_rccs}定义的随机选择操作子的转移规则，
 我们可以得到随机传值进程模型的符号语义，
@@ -173,78 +172,106 @@ $\varphi_i\lambda_i.T_i$，
 则我们可以经过$\lambda_i$操作到达$\mathbb{RVPC}_{\mathsf{Th}}$状态$T_i$， 
 其中$\lambda_i \in \{a(x),\bar{a}(x)\mid a\in \mathcal{N}, x\in \mathsf{V}_\Sigma, t\in \mathsf{T}_\Sigma\}\cup \{\tau\}$。
 
-% \subsection{延伸性质与定义}
-
-% 对类似$S\stackrel{p_1\tau}{\rightarrow}_{\varphi_1}\stackrel{p_2\tau}{\rightarrow}_{\varphi_2}\cdots\stackrel{p_n\tau}{\rightarrow}_{\varphi_n} T$
-% 考虑将他们写成这种形式: $S\stackrel{p}{\Rightarrow}_{\varphi} T$。
-
-% \begin{definition}\label{def:continous_vpc}
-%    根据VPC[此处应有引用]，若$S,T\in \mathcal{T}_{\mathbb{VPC}}$，$S\stackrel{\tau}{\rightarrow}_{\varphi_1}\stackrel{\tau}{\rightarrow}_{\varphi_2}\dots \stackrel{\tau}{\rightarrow}_{\varphi_n} T$，则可以记成$S\stackrel{}{\Rightarrow}_{\varphi_1\varphi_2\dots\varphi_n} T$。
-% \end{definition} 
-
-% 而Uniform Approach中没有对连续的概率转移作类似的缩写定义，
-% 我们根据定义2.1作出相应的定义。
-% \begin{definition}
-%    若$S,T\in \mathcal{P}_{RCCS}$，$S\stackrel{p_1\tau}{\rightarrow}\stackrel{p_2\tau}{\rightarrow}\dots\stackrel{p_n\tau}{\rightarrow}T$，则记为$S\stackrel{p_1p_2\dots p_n}{\Longrightarrow}T$。
-% \end{definition}
-
-% \begin{definition}
-%    若$S,T\in \mathcal{T}_{RVPC}$，
-% $S\stackrel{p_1\tau}{\rightarrow}_{\varphi_1}\stackrel{p_2\tau}{\rightarrow}_{\varphi_2}\dots \stackrel{p_n\tau}{\rightarrow}_{\varphi_n} T$，则可以记成$S\stackrel{p_1p_2\dots p_n}{\Longrightarrow}_{\varphi_1\varphi_2\dots\varphi_n} T$。
-% 若$\varphi = \varphi_1\varphi_2\dots \varphi_n, p=p_1p_2\dots p_n$，
-% 则可以记为$S\stackrel{p}{\Rightarrow}_{\varphi} T$。
-% \end{definition} 
-
-% \begin{definition}
-%    条件选择下的符号语义：
-%    若$S=\varphi (p\tau.T+(1-p)\tau.T')$，
-%    可以记$S\stackrel{p\tau}{\rightarrow}_{\varphi} T$。
-% \end{definition} 
-
-\subsection{条件等价集}
- \begin{definition}
-   $A,A'\in \mathcal{T}_{RVPC}$，若$\varphi A \mathcal{E} \varphi A'$，则$A'\in [A]_{\varphi \mathcal{E}}$。
-   $[A]_{\varphi \mathcal{E}}$称为等价关系$\mathcal{E}$在条件$\varphi$下包含$A$的等价集。  
- \end{definition} 
- 定义5的产生是由于：在$\mathbb{VPC}$的符号互模拟（Symbolic Bisimulation）中，
- 我们考虑用必要条件下的动作去模拟充分条件下的动作[此处应有引用]。
- 举个简单的例子：
- 对于$A(x)=(x\geq 5)\tau.B(s(x))$
- 和$A'(x)=(x\geq 3)\tau.B(s(x))$，
- $A(x)$和$A'(x)$是不符号互模拟的，
- 因为不存在$x\geq 3$的划分，
- 使得划分中的每一项推出$x\geq 5$的一个划分中的每一项。
- 但是$(x\geq 5) A(x)$和$(x\geq 5) A'(x)$却是互模拟的，
- 此时$A(x)=(x\geq 5)\tau.B(s(x)) = ((x\geq 5)\wedge (x\geq 3))\tau.B(s(x)) = (x\geq 5)A'(x)$，
- 它们甚至是绝对等价的。
- 在$[A]_{\varphi \mathcal{E}}$内部，
- 我们可以使$\varphi$对等价性的影响透明。
-
 \section{随机传值进程模型中的互模拟关系}
 
 \subsection{互模拟关系与观察等价性}
 
    程序理论的基本问题是进程的等价性。对通信并发系统程序等价的定义和验证，现在已有很多研究。
    在提出CCS时Milner提出了\textit{观察等价(observation equivalence)}，即\textit{弱互模拟(weak bisimulation)}\cite{2}。
-   Glabbeek和Weijland提出的\textit{branching互模拟(branching bisimulation)}\cite{6}也是十分著名的研究。
+   Glabbeek和Weijland提出的\textit{分支互模拟(branching bisimulation)}\cite{6}也是十分著名的研究。
 
    对于概率模型的等价性，目前有对同步概率进程模型互模拟关系的研究\cite{13}，
-   仅适用于有限状态的概率进程模型的研究\cite{14,15}，
-   这些模型都有一定的局限性。
-   2019年，\cite{7}提出了一个模型无关的方法，在CCS的基础上对非概率模型进行概率化扩展，
-   并在branching bisimulation\cite{6}的基础上给出了概率进程模型branching互模拟关系的语义，以及等价关系同余性的证明。
+   仅适用于有限状态的概率进程模型的研究\cite{14,15}。
+   Uniform Approach在分支互模拟\cite{6}的基础上给出了
+   RCCS分支互模拟关系的定义，以及等价关系同余性的证明。
+   \subsubsection{Uniform Approach中的分支互模拟}
+   分支互模拟涉及等价集的概念，我们首先看CCS等价集的定义：
+   \begin{definition}
+      若二元关系$\mathcal{E}$是$\mathcal{P}_{CCS}$上的等价关系。
+      $A$关于等价关系$\mathcal{E}$的等价集写作$[A]_{\mathcal{E}}$，
+      $A\in [A]_{\mathcal{E}}$且$\forall B,(A,B)\in \mathcal{E}$，
+      有$B\in [A]_{\mathcal{E}}$。
+      我们用$\mathcal{P}_{CCS}/\mathcal{E}$表示所有$\mathcal{P}_{CCS}$关于$\mathcal{E}$的等价集的集合。
+   \end{definition}
+   $\mathcal{P}_{RCCS}$，$\mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$，$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价集的定义都是相似的，因此不做赘述。
 
-   \subsubsection{分支互模拟}
+   RCCS的分支互模拟是CCS分支互模拟的扩展，我们首先来看CCS的分支互模拟。
+   $\mathcal{P}_{CCS}$上的分支互模拟的定义如下，其中
+   当$A\stackrel{\tau}{\rightarrow}A'\mathcal{E}A$时，我们可以写为$A\stackrel{\tau}{\rightarrow}_{\mathcal{E}}A'$，在Uniform Approach中，这种动作称为\textit{状态保持的静态转移（state-preserving silent transition）}，
+   $\Rightarrow_{\mathcal{E}}$为$\stackrel{\tau}{\rightarrow}_{\mathcal{E}}$的闭包。
+   \begin{definition}
+      $\mathcal{E}$是$\mathcal{P}_{CCS}$上的等价关系，
+      若对于任意动作$l,l\neq \tau$和任意等价集$\mathcal{C}\in \mathcal{P}_{CCS}/\mathcal{E}, \mathcal{C}\neq [A]_{\mathcal{E}}$，
+      满足若$B\mathcal{E}A\Rightarrow_{\mathcal{E}}\stackrel{l}{\rightarrow}\mathcal{C}$，则$B\Rightarrow_{\mathcal{E}}\stackrel{l}{\rightarrow}\mathcal{C}$，
+      称$\mathcal{E}$是$\mathcal{P}_{CCS}$上的分支互模拟关系。
+   \end{definition}
 
-   \subsubsection{符号互模拟}
-% \begin{definition}
-%    对任意$S,T\in \mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$，且$V=fv(S|T)$，
-%    当$S\mathcal{R}T$且满足下列条件时，对称二元关系$\mathcal{R}$是一个符号互模拟(Symbolic Bisimulation)[此处应有引用]。
-%    \begin{itemize}
-%       \item [1.] 
-%    \end{itemize}
-% \end{definition}
-\subsection{条件Epsilon树}
+   考虑到RCCS在CCS的基础上增加了概率选择，
+   状态保持的静态转移在$A\stackrel{\tau}{\rightarrow}A'\mathcal{E}A$的基础上新增了
+   $A\stackrel{p\tau}{\rightarrow} A'\mathcal{E}A,0<p<1$的可能，
+   为了用类似$\Rightarrow_{\mathcal{E}}$的方式表示这种静态转移，
+   Uniform Approach提出了\textit{等价树（Epsilon Tree）}的概念[cite]，
+   将概率选择作为树的分支，节点$A$的关于等价关系$\mathcal{E}$的等价树上的任意节点$N\in [A]_{\mathcal{E}}$。
+   同时，Uniform Approach定义了两种转移：$l$-transition和$q$-transition，
+   分别表示等价树上的节点迁移到其他等价集动作和概率。
+
+   \begin{definition}[$l$-转移($l$-transition)]
+      $A\in \mathcal{P}_{RCCS}$，
+      从$A$到$\mathcal{B}\in \mathcal{P}_{RCCS}/\mathcal{E}，\mathcal{B}\neq [A]_{\mathcal{E}}$的
+      $l$-转移表示$A$关于等价关系$\mathcal{E}$的等价树上的每一个叶子结点$L$，
+      存在$L\stackrel{l}{\rightarrow}L'\in\mathcal{B},l\neq \tau$，写作$A\rightsquigarrow_{\mathcal{E}}\stackrel{l}{\rightarrow}\mathcal{B}$。
+   \end{definition}
+
+   \begin{definition}[$q$-转移($q$-transition)]
+      $A\in \mathcal{P}_{RCCS}$，$\mathcal{E}$为$\mathcal{P}_{RCCS}$上的等价关系，
+      $L$为$A$关于等价关系$\mathcal{E}$的等价树上的每一个叶子结点，
+      $\mathcal{B}\in \mathcal{P}_{RCCS}/\mathcal{E}, \mathcal{B}\neq [A]_{\mathcal{E}}$。
+
+      定义$\mathsf{P}(L\stackrel{\coprod_{i\in[k]}p_i\tau}{\longrightarrow}\mathcal{B})=\sum \{p_i|L\stackrel{p_i\tau}{\longrightarrow}L_i\in \mathcal{B}\wedge i\in I\}$。
+      
+      定义$\mathsf{P}_{\mathcal{E}}(L\stackrel{\coprod_{i\in[k]}p_i\tau}{\longrightarrow}\mathcal{B})=\mathsf{P}(L\stackrel{\coprod_{i\in[k]}p_i\tau}{\longrightarrow}\mathcal{B})/(1-\mathsf{P}(L\stackrel{\coprod_{i\in[k]}p_i\tau}{\longrightarrow}[A]_{\mathcal{E}}))$。
+
+      当$\mathsf{P}_{\mathcal{E}}(L\stackrel{\coprod_{i\in[k]}p_i\tau}{\longrightarrow}\mathcal{B})=q$时，
+      记为$A\rightsquigarrow_{\mathcal{E}}\stackrel{q}{\rightarrow}\mathcal{B}$，即$q$-转移。
+   \end{definition}
+
+   现在我们终于可以引入Uniform Approach中定义的RCCS的分支互模拟关系了！
+
+   \begin{definition}
+      当$\mathcal{P}_{RCCS}$上的等价关系$\mathcal{E}$满足：
+      \begin{itemize}
+         \item {
+            若$B\mathcal{E}A\rightsquigarrow_{\mathcal{E}}\stackrel{l}{\rightarrow}\mathcal{C}\in \mathcal{P}_{RCCS}/\mathcal{E}, l\neq \tau \wedge \mathcal{C}\neq [A]_{\mathcal{E}}$，则$B\rightsquigarrow_{\mathcal{E}}\stackrel{l}{\rightarrow}\mathcal{C}$。
+         }
+         \item {
+            若$B\mathcal{E}A\rightsquigarrow_{\mathcal{E}}\stackrel{q}{\rightarrow}\mathcal{C}\in \mathcal{P}_{RCCS}/\mathcal{E}, l\neq \tau \wedge \mathcal{C}\neq [A]_{\mathcal{E}}$，则$B\rightsquigarrow_{\mathcal{E}}\stackrel{q}{\rightarrow}\mathcal{C}$。
+         }
+      \end{itemize}
+      则等价关系$\mathcal{E}$是分支互模拟关系。
+   \end{definition}
+   \subsubsection{$\mathbb{VPC}_\mathsf{Th}$的符号互模拟}
+   
+   \subsection{条件等价集}
+
+   \begin{definition}
+     $A,A'\in \mathcal{T}_{RVPC}$，若$\varphi A \mathcal{E} \varphi A'$，则$A'\in [A]_{\varphi \mathcal{E}}$。
+     $[A]_{\varphi \mathcal{E}}$称为等价关系$\mathcal{E}$在条件$\varphi$下包含$A$的等价集。  
+   \end{definition} 
+   定义5的产生是由于：在$\mathbb{VPC}$的符号互模拟（Symbolic Bisimulation）中，
+   我们考虑用必要条件下的动作去模拟充分条件下的动作[此处应有引用]。
+   举个简单的例子：
+   对于$A(x)=(x\geq 5)\tau.B(s(x))$
+   和$A'(x)=(x\geq 3)\tau.B(s(x))$，
+   $A(x)$和$A'(x)$是不符号互模拟的，
+   因为不存在$x\geq 3$的划分，
+   使得划分中的每一项推出$x\geq 5$的一个划分中的每一项。
+   但是$(x\geq 5) A(x)$和$(x\geq 5) A'(x)$却是互模拟的，
+   此时$A(x)=(x\geq 5)\tau.B(s(x)) = ((x\geq 5)\wedge (x\geq 3))\tau.B(s(x)) = (x\geq 5)A'(x)$，
+   它们甚至是绝对等价的。
+   在$[A]_{\varphi \mathcal{E}}$内部，
+   我们可以使$\varphi$对等价性的影响透明。
+
+\subsection{条件等价树}
 \begin{definition}
    \label{def:silent_tree}
    若$A\in \mathcal{T}_{RVPC}$,
@@ -258,7 +285,7 @@ $\varphi_i\lambda_i.T_i$，
    \end{itemize}
 \end{definition}
 
-\begin{definition}[条件Epsilon树:$\varphi \mathcal{E}$-tree]
+\begin{definition}[条件等价树:$\varphi \mathcal{E}$-tree]
    $A$的静态转移树是一个条件Epsilon树（$\varphi \mathcal{E}$-tree） $t^A_{\varphi \mathcal{E}}$ 
 当且仅当下列条件成立
 \begin{itemize}
