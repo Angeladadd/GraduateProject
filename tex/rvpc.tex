@@ -250,7 +250,32 @@ $\varphi_i\lambda_i.T_i$，
       则等价关系$\mathcal{E}$是分支互模拟关系。
    \end{definition}
    \subsubsection{$\mathbb{VPC}_\mathsf{Th}$的符号互模拟}
-   
+   $\mathbb{VPC}_{\mathsf{Th}}$与CCS的区别主要体现在前缀操作子和条件操作子。
+   对于前缀操作子，相似的定义互模拟关系是比较容易的，只需要保证通道一致，值一致即可。
+   而条件操作子给互模拟的定义带来了麻烦，比如：
+   $A=\overline{a}(0).S$和$B=((x=0) \overline{a}(0).S|\urcorner (x=0) \overline{a}(0).S)$在观察上应该是一致的，
+   这就要求$B$的两个操作：$B\stackrel{\overline{a}(0)}{\longrightarrow}_{x=0} S$和$B\stackrel{\overline{a}(0)}{\longrightarrow}_{\urcorner (x=0)} S$共同模拟$A\stackrel{\overline{a}(0)}{\longrightarrow}_{\top} S$。
+   为解决这一问题，The Value-Passing Calculus提出了符号互模拟：
+   \begin{definition}
+      $\mathcal{E}$是一个$\mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$上的二元对称关系，
+      当$A\mathcal{E}B$满足下列条件时，称$\mathcal{E}$是一个符号互模拟关系：
+      \begin{itemize}
+         \item {
+            若$A\stackrel{\tau}{\rightarrow}_{\varphi} A'$，则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\Rightarrow_{\psi_i} B_i\}_{i\in I}$，
+            对于$\forall i\in I$，$\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\wedge \varphi_i A\mathcal{E} \varphi_i B_i$，
+            且满足$\varphi_i A'\mathcal{E} \varphi_i B_i$或$B_i\stackrel{\tau}{\rightarrow}_{\psi_i'}B_i'\wedge \mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i'\wedge \varphi_i A'\mathcal{E} B_i'$。
+         }
+         \item {
+            若$A\stackrel{\overline{a}(t)}{\rightarrow}_{\varphi} A'$，则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\Rightarrow_{\psi_i}B_i\stackrel{\overline{a}(t_i)}{\rightarrow}_{\psi_i'}B_i'\}$，
+            满足$\mathsf{Th}\vdash (\varphi_i\Rightarrow \psi_i\psi_i')\wedge (\varphi_i \Rightarrow t=t_i)$且$(\varphi_i A\mathcal{E}\varphi_i B_i)\wedge(\varphi_i A'\mathcal{E}\varphi_i B_i')$。
+         }
+         \item {
+            若$A\stackrel{a(x)}{\rightarrow}_{\varphi} A'$，则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\Rightarrow_{\psi_i}B_i\stackrel{a(x)}{\rightarrow}_{\psi_i'}B_i'\}$，
+            满足$\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\psi_i'$且$(\varphi_i A\mathcal{E}\varphi_i B_i)\wedge(\varphi_i A'\mathcal{E}\varphi_i B_i')$。
+         }
+      \end{itemize}
+   \end{definition}
+
    \subsection{条件等价集}
 
    \begin{definition}
