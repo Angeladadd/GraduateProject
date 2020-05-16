@@ -172,9 +172,21 @@ $\varphi_i\lambda_i.T_i$，
 则我们可以经过$\lambda_i$操作到达$\mathbb{RVPC}_{\mathsf{Th}}$状态$T_i$， 
 其中$\lambda_i \in \{a(x),\bar{a}(x)\mid a\in \mathcal{N}, x\in \mathsf{V}_\Sigma, t\in \mathsf{T}_\Sigma\}\cup \{\tau\}$。
 
+$\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展了前缀操作：$p\tau.$，
+其中$p\in (0,1)$。
+类似$A=\tau.B$的$\mathbb{RVPC}_{\mathsf{Th}}$项，
+我们可以认为$A\stackrel{1\tau}{\rightarrow}_{\top} B$，
+这时也满足$A=\bigoplus_{i\in I} p_i\tau.A_i$的定义，
+此时$I=[1],p_1=1,A_1=B$。
+若将$\mathbb{VPC}_{\mathsf{Th}}$中的此类内部操作同样看待，
+我们可以得出推论~\ref{co:vpc}。
+\begin{corollary}\label{co:vpc}
+   $\mathbb{VPC}_{\mathsf{Th}}$是一种特殊的$\mathbb{RVPC}_{\mathsf{Th}}$。
+\end{corollary}
+
 \section{随机传值进程模型中的互模拟关系}
 
-\subsection{互模拟关系与观察等价性}
+\subsection{互模拟关系与观察等价性}\label{ch:bisimulation}
 
    程序理论的基本问题是进程的等价性。对通信并发系统程序等价的定义和验证，现在已有很多研究。
    在提出CCS时Milner提出了\textit{观察等价(observation equivalence)}，即\textit{弱互模拟(weak bisimulation)}\cite{2}。
@@ -256,7 +268,7 @@ $\varphi_i\lambda_i.T_i$，
    $A=\overline{a}(0).S$和$B=((x=0) \overline{a}(0).S|\urcorner (x=0) \overline{a}(0).S)$在观察上应该是一致的，
    这就要求$B$的两个操作：$B\stackrel{\overline{a}(0)}{\longrightarrow}_{x=0} S$和$B\stackrel{\overline{a}(0)}{\longrightarrow}_{\urcorner (x=0)} S$共同模拟$A\stackrel{\overline{a}(0)}{\longrightarrow}_{\top} S$。
    为解决这一问题，The Value-Passing Calculus提出了符号互模拟：
-   \begin{definition}
+   \begin{definition}[符号互模拟]\label{def:symbolic_bisimulation}
       $\mathcal{E}$是一个$\mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$上的二元对称关系，
       当$A\mathcal{E}B$满足下列条件时，称$\mathcal{E}$是一个符号互模拟关系：
       \begin{itemize}
@@ -274,29 +286,105 @@ $\varphi_i\lambda_i.T_i$，
             满足$\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\psi_i'$且$(\varphi_i A\mathcal{E}\varphi_i B_i)\wedge(\varphi_i A'\mathcal{E}\varphi_i B_i')$。
          }
       \end{itemize}
+      最大的互模拟关系记为$\approxeq_{\mathsf{Th}}^s$。
    \end{definition}
+
+   根据符号互模拟的定义，我们可以解决前述条件操作子带来的麻烦，
+   我们可以通过下面的例子证明这一点。
+   \begin{example}
+      证明$A=\overline{a}(0).S$和$B=((x=0) \overline{a}(0).S|\urcorner (x=0) \overline{a}(0).S)$是符号互模拟的。
+   \end{example}
+   \begin{proof}
+      定义等价关系$\mathcal{E}=\{(A,B)\}\cup \equiv$，
+      其中$\equiv$为绝对等价关系，
+      题目等价于证明$\mathcal{E}$是一个符号互模拟关系。
+
+      对于$A\stackrel{\overline{a}(0)}{\rightarrow}_{\top} S$，
+      存在$\top$的划分$\{(x=0),\urcorner(x=0)\}$和集合
+      $\{B\stackrel{\overline{a}(0)}{\longrightarrow}_{x=0}S, B\stackrel{\overline{a}(0)}{\longrightarrow}_{\urcorner(x=0)}S\}$，
+      且$(x=0)S\mathcal{E}(x=0)S$。
+
+      对于$B\stackrel{\overline{a}(0)}{\longrightarrow}_{x=0}S$，存在$A\stackrel{\overline{a}(0)}{\longrightarrow}_{x=0}S$与之符号互模拟。
+      $B\stackrel{\overline{a}(0)}{\longrightarrow}_{\urcorner(x=0)}S$同理。
+   \end{proof}
 
    \subsection{条件等价集}
 
-   \begin{definition}
-     $A,A'\in \mathcal{T}_{RVPC}$，若$\varphi A \mathcal{E} \varphi A'$，则$A'\in [A]_{\varphi \mathcal{E}}$。
+   根据~\ref{ch:bisimulation}中定义~\ref{def:symbolic_bisimulation}中定义的$\mathbb{VPC}_{\mathsf{Th}}$的符号互模拟关系，
+   我们观察$A(x)=(x\geq 5)\overline{a}(\mathsf{s}(x)).0)$和$A'(x)=(x\geq 3)\overline{a}(\mathsf{s}(x)).0$，
+   根据$\mathbb{VPC}_\mathsf{Th}$的符号互模拟的定义，我们容易得到$A$和$A'$是不符号互模拟的，
+   对于$A'(t)\stackrel{\overline{a}(\mathsf{s}(t))}{\longrightarrow}_{x\geq 3} 0$，
+   因为$3<x<5$的这一部分动作是$A(x)$无法完成的，所以不存在$x\geq 3$的划分，
+   使得$A(x)$可以给出一个转移的集合来模拟整个$x\geq 3$。
+   但反观$B(x)=(x>5)A(x),B'(x)=(x>5)A'(x)$，
+   我们可以得到$B'(x)=((x>5)\wedge(x\geq 3))\overline{a}(\mathsf{s}(x)).0=(x>5)\overline{a}(\mathsf{s}(x)).0$，
+   同理$B(x)=(x>5)\overline{a}(\mathsf{s}(x)).0$，
+   $B(x),B'(x)$不仅是符号互模拟，甚至是绝对等价的。
+   对于$(x>5)A(x)$和$(x>5)A'(x)$的这种关系，
+   我们给出\textit{条件等价集}的定义，可以使等价集内部对某个条件透明：
+
+   \begin{definition}[条件等价集]
+     $A,A'\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，$\mathcal{E}$是$\mathbb{RVPC}_{\mathsf{Th}}$上的等价关系，
+     若$\varphi A \mathcal{E} \varphi A'$，则$A'\in [A]_{\varphi \mathcal{E}}$。
      $[A]_{\varphi \mathcal{E}}$称为等价关系$\mathcal{E}$在条件$\varphi$下包含$A$的等价集。  
    \end{definition} 
-   定义5的产生是由于：在$\mathbb{VPC}$的符号互模拟（Symbolic Bisimulation）中，
-   我们考虑用必要条件下的动作去模拟充分条件下的动作[此处应有引用]。
-   举个简单的例子：
-   对于$A(x)=(x\geq 5)\tau.B(s(x))$
-   和$A'(x)=(x\geq 3)\tau.B(s(x))$，
-   $A(x)$和$A'(x)$是不符号互模拟的，
-   因为不存在$x\geq 3$的划分，
-   使得划分中的每一项推出$x\geq 5$的一个划分中的每一项。
-   但是$(x\geq 5) A(x)$和$(x\geq 5) A'(x)$却是互模拟的，
-   此时$A(x)=(x\geq 5)\tau.B(s(x)) = ((x\geq 5)\wedge (x\geq 3))\tau.B(s(x)) = (x\geq 5)A'(x)$，
-   它们甚至是绝对等价的。
-   在$[A]_{\varphi \mathcal{E}}$内部，
-   我们可以使$\varphi$对等价性的影响透明。
+
+   由于$\mathbb{VPC}_{\mathsf{Th}}$是特殊的$\mathbb{RVPC}_{\mathsf{Th}}$，
+   条件等价集的定义同样适用$\mathbb{VPC}_{\mathsf{Th}}$。
+   显然，$A'(x)\in [A(x)]_{(x>5)\mathcal{E}}$，其中$\mathcal{E}=\approxeq_{\mathsf{Th}}^s$。
+   
+   条件$\top$具有一定的特殊性：
+   对于无条件的操作我们认为操作是在$\top$条件下执行的，
+   因此$\top$可以看作是最强的条件。
+
+   \begin{corollary}
+      $A,B\in \mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$，
+      $A\approxeq_{\mathsf{Th}}^sB$，则对于任意布尔表达式$\varphi'$，$\varphi' A\approxeq_{\mathsf{Th}}^s\varphi' B$。
+   \end{corollary}
+   \begin{proof}
+      对于$A$可以执行的操作，$\varphi' A$也会有对应的版本：
+      \begin{itemize}
+         \item 若$A\stackrel{\tau}{\rightarrow}_{\varphi} A'$，则$\varphi' A\stackrel{\tau}{\rightarrow}_{\varphi' \varphi}A'$。
+         \item 若$A\stackrel{a(x)}{\rightarrow}_{\varphi} A'$，则$\varphi' A\stackrel{a(x)}{\rightarrow}_{\varphi' \varphi} A'$。
+         \item 若$A\stackrel{\overline{a}(t)}{\rightarrow}_{\varphi} A'$，则$\varphi' A\stackrel{\overline{a}(t)}{\rightarrow}_{\varphi' \varphi} A'$。
+      \end{itemize}
+      对$\varphi' A\stackrel{a(x)}{\rightarrow}_{\varphi'\varphi} A'$，
+      根据$A\approxeq_{\mathsf{Th}}^sB$，我们知道存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\Rightarrow_{\psi_i}B_i\stackrel{a(x)}{\rightarrow}_{\psi_i'}B_i'\}_{i\in I}$，
+      满足$\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i \psi_i' \wedge \varphi_i A\approxeq_{\mathsf{Th}}^s \varphi_i B_i \wedge \varphi_i A'\approxeq_{\mathsf{Th}}^s \varphi_i B_i'$。
+      
+      若要证明$\varphi' A\approxeq_{\mathsf{Th}}^s\varphi' B$，
+      我们可以构造等价关系$\mathcal{S} = \{(\varphi'A,\varphi'B)|A,B\in \approxeq_{\mathsf{Th}}^s\}$，
+      证明$\mathcal{S}$是符号互模拟的（这样假设的原因是题目中的$A,B$原本也是任意的）。
+
+      通过$A\approxeq_{\mathsf{Th}}^sB$我们可以得到集合$\{\varphi'\varphi_i\}_{i\in I}$，
+      对于任意$i,j$，由于$\varphi_i \wedge \varphi_j = \bot$，
+      我们可以得到$(\varphi'\varphi_i) \wedge (\varphi'\varphi_j) = \bot$；
+      又$\bigvee_{i\in I}\varphi_i = \varphi$，$\bigvee_{i\in I}\varphi'\varphi_i = \varphi'\varphi$，
+      因此$\{\varphi'\varphi_i\}_{i\in I}$为$\varphi'\varphi$的划分。
+      我们还可以得到集合$\{\varphi'B\Rightarrow_{\varphi'\psi_i}B_i\stackrel{a(x)}{\rightarrow}_{\psi_i'} B_i'\}$，
+      满足$\mathsf{Th}\vdash \varphi'\varphi_i\Rightarrow \varphi'\psi_i\psi_i'$，
+      而$(\varphi'\varphi_i A, \varphi'\varphi_i B_i),(\varphi'\varphi_i A', \varphi'\varphi_i B_i')\in \mathcal{S}$，
+      因此我们可以用$\{\varphi'B\Rightarrow_{\varphi'\psi_i}B_i\stackrel{a(x)}{\rightarrow}_{\psi_i'} B_i'\}$模拟$\varphi' A\stackrel{a(x)}{\rightarrow}_{\varphi'\varphi} A'$。
+
+      对称的一边和其他两种情况的证明是相似的。
+   \end{proof}
+
+   \begin{corollary}\label{co:all}
+      $A,B\in \mathbb{RVPC}_{\mathsf{Th}}$，$\mathcal{E}$是$\mathbb{RVPC}_{\mathsf{Th}}$上的等价关系，
+      $\varphi$是任意布尔表达式，
+      若$B\in [A]_{\mathcal{E}}$，则$B\in [A]_{\varphi \mathcal{E}}$。
+   \end{corollary}
+   
+   推论~\ref{co:all}可以简单理解为：一个$\mathbb{RVPC}_{\mathsf{Th}}$项在任意条件下成立的等价集是所有条件等价集的交集。
 
 \subsection{条件等价树}
+   定义~\ref{def:symbolic_bisimulation}给出了$\mathbb{VPC}_{\mathsf{Th}}$的互模拟的定义，
+   观察定义~\ref{def:symbolic_bisimulation}中的$A\stackrel{a(x)}{\longrightarrow}_{\varphi} A'$，
+   我们用$\{B\Rightarrow_{\psi_i}B'_i\stackrel{a(x)}{\longrightarrow}_{\psi'_i}\}$模拟，
+   其中$(\varphi_i A\mathcal{E}\varphi_i B_i)\wedge(\varphi_i A'\mathcal{E}\varphi_i B_i')$，
+   根据条件等价集的定义，我们可以得到$B_i\in [A]_{\varphi\mathcal{E}}$，$B_i'\in [A']_{\varphi \mathcal{E}}$。
+
+   对于我们概率扩展后的$\mathbb{RVPC}_{\mathsf{Th}}$
 \begin{definition}
    \label{def:silent_tree}
    若$A\in \mathcal{T}_{RVPC}$,
