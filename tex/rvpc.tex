@@ -380,17 +380,24 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 \subsection{条件等价树}
    定义~\ref{def:symbolic_bisimulation}给出了$\mathbb{VPC}_{\mathsf{Th}}$的互模拟的定义，
    观察定义~\ref{def:symbolic_bisimulation}中的$A\stackrel{a(x)}{\longrightarrow}_{\varphi} A'$，
-   我们用$\{B\Rightarrow_{\psi_i}B'_i\stackrel{a(x)}{\longrightarrow}_{\psi'_i}\}$模拟，
+   我们用$\{B\Rightarrow_{\psi_i}B'_i\stackrel{a(x)}{\longrightarrow}_{\psi'_i}B_i'\}$模拟，
    其中$(\varphi_i A\mathcal{E}\varphi_i B_i)\wedge(\varphi_i A'\mathcal{E}\varphi_i B_i')$，
-   根据条件等价集的定义，我们可以得到$B_i\in [A]_{\varphi\mathcal{E}}$，$B_i'\in [A']_{\varphi \mathcal{E}}$。
+   根据条件等价集的定义，我们可以得到$B_i\in [A]_{\varphi\mathcal{E}}$，$B_i'\in [A']_{\varphi \mathcal{E}}$，
+   由于$B_i \approxeq_{\mathsf{Th}}^s A$，$B_i\approxeq_{\mathsf{Th}}^s B$，那么$B\Rightarrow_{\psi_i}B_i$实际上也是\textit{状态保持的静态转移}。
 
-   对于我们概率扩展后的$\mathbb{RVPC}_{\mathsf{Th}}$
-\begin{definition}
+   对于我们概率扩展后的$\mathbb{RVPC}_{\mathsf{Th}}$，
+   对上述例子状态保持静态转移多了$B\stackrel{q\tau}{\rightarrow}_{\psi_i} B_i$
+   的情况，其中$q\in(0,1)$，表示\textit{概率的状态保持的静态转移}。
+   我们希望可以找到$\mathbb{RVPC}_{\mathsf{Th}}$中类似$\Rightarrow$的方式来表达这种状态保持的静态转移。
+   我们可以使用Uniform Approach中等价树的方法来刻画这种状态保持的静态转移，
+   在$\mathbb{RVPC}_{\mathsf{Th}}$中称为\textit{条件等价树}。
+
+\begin{definition}[静态转移树]
    \label{def:silent_tree}
-   若$A\in \mathcal{T}_{RVPC}$,
+   若$A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$,
    $A$的静态转移树$t$满足如下定义：
    \begin{itemize}
-   \item 每一个节点都被标记成$\mathcal{T}_{RVPC}$的一个元素，$A$是根节点。
+   \item 每一个节点都被标记成$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$的一个项，$A$是根节点。
    \item {
       节点间的边被标记成$(\varphi,p)$，其中$p\in(0,1]$，$\varphi$是一个布尔表达式。
       如果一条从$A'$到$A''$的有向边被标记成$(\varphi,p)$，表示$A'\stackrel{p\tau}{\rightarrow}_{\varphi} A''$。
@@ -398,21 +405,26 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \end{itemize}
 \end{definition}
 
-\begin{definition}[条件等价树:$\varphi \mathcal{E}$-tree]
-   $A$的静态转移树是一个条件Epsilon树（$\varphi \mathcal{E}$-tree） $t^A_{\varphi \mathcal{E}}$ 
-当且仅当下列条件成立
+\begin{definition}[条件等价树]
+   $\varphi$是一个布尔表达式，$\mathcal{E}$是$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系，
+   $A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
+   当下列条件成立时，$A$的静态转移树$t$称为是一个关于$\varphi\mathcal{E}$的条件等价树（$\varphi \mathcal{E}$-tree) ，记作$t^A_{\varphi \mathcal{E}}$。
 \begin{itemize}
-   \item 树中的所有结点属于$[A]_{\varphi \mathcal{E}}$。
-   \item 树中标记为$(\psi, q),q\in(0,1],V=fv_{\psi\wedge\varphi}$的边满足存在$V$的一组赋值$v'$使得$\mathsf{Th}\vdash \psi_{v'}\wedge\varphi_{v'}$，在$\varphi\mathcal{E}$-tree中，该边被重新标记为$(\varphi\psi,q)$。
+   \item $t$上的所有节点$N$，$N\in [A]_{\varphi \mathcal{E}}$。
+   \item {
+   若$t$的边被标记为$(\psi, q)$，其中$q\in(0,1],V=fv_{\psi\wedge\varphi}$，
+   则存在$V$的一组赋值$v'$
+   使得$\mathsf{Th}\vdash \psi_{v'}\wedge\varphi_{v'}$。
+   }
 \end{itemize}
 \end{definition}
-
+第二条性质实际上起到了剪枝的作用。
 \begin{corollary}
    $A$的静态转移树是一个$\varphi \mathcal{E}$-tree $t^A_{\varphi \mathcal{E}}$ 则对于树上的节点$B,B',B_i,i\in [k]$：
    \begin{itemize}
-      \item {
-         $B\stackrel{(\psi,q)}{\rightarrow}B',q\in(0,1]$，则$\mathsf{Th}\vdash\psi\Rightarrow\varphi$。
-      }
+      % \item {
+      %    $B\stackrel{(\psi,q)}{\rightarrow}B',q\in(0,1]$，则$\mathsf{Th}\vdash\psi\Rightarrow\varphi$。
+      % }
       \item {
          若$B\stackrel{(\psi,q)}{\rightarrow}B',q\in (0,1)$，则存在$B\stackrel{\coprod_{i\in [k]}}{\longrightarrow}_{\psi} \coprod_{i\in [k]} B_i$，
          且$B$有且仅有$B_1,\dots, B_k$这$k$个儿子节点。
