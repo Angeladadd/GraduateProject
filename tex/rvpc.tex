@@ -208,8 +208,9 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    $\mathcal{P}_{RCCS}$，$\mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$，$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价集的定义都是相似的，因此不做赘述。
 
    RCCS的分支互模拟是CCS分支互模拟的扩展，我们首先来看CCS的分支互模拟。
-   $\mathcal{P}_{CCS}$上的分支互模拟的定义如下，其中
+   $\mathcal{P}_{CCS}$上的分支互模拟的定义如下，其中内部操作$\tau$带来的状态迁移可以称为\textit{静态转移}，
    当$A\stackrel{\tau}{\rightarrow}A'\mathcal{E}A$时，我们可以写为$A\stackrel{\tau}{\rightarrow}_{\mathcal{E}}A'$，在Uniform Approach中，这种动作称为\textit{状态保持的静态转移（state-preserving silent transition）}，
+   对应的若$A\stackrel{\tau}{\rightarrow}A'\notin [A]_{\mathcal{E}}$，称为\textit{状态改变的静态转移}。
    $\Rightarrow_{\mathcal{E}}$为$\stackrel{\tau}{\rightarrow}_{\mathcal{E}}$的闭包。
    \begin{definition}
       $\mathcal{E}$是$\mathcal{P}_{CCS}$上的等价关系，
@@ -326,7 +327,8 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \begin{definition}[条件等价集]
      $A,A'\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，$\mathcal{E}$是$\mathbb{RVPC}_{\mathsf{Th}}$上的等价关系，
      若$\varphi A \mathcal{E} \varphi A'$，则$A'\in [A]_{\varphi \mathcal{E}}$。
-     $[A]_{\varphi \mathcal{E}}$称为等价关系$\mathcal{E}$在条件$\varphi$下包含$A$的等价集。  
+     $[A]_{\varphi \mathcal{E}}$称为等价关系$\mathcal{E}$在条件$\varphi$下包含$A$的等价集。 
+     我们用$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}/\varphi \mathcal{E}$表示所有$\mathbb{RVPC}_{\mathsf{Th}}$关于布尔表达式$\varphi$和等价关系$\mathcal{E}$的条件等价集的集合。 
    \end{definition} 
 
    由于$\mathbb{VPC}_{\mathsf{Th}}$是特殊的$\mathbb{RVPC}_{\mathsf{Th}}$，
@@ -377,6 +379,22 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    
    推论~\ref{co:all}可以简单理解为：一个$\mathbb{RVPC}_{\mathsf{Th}}$项在任意条件下成立的等价集是所有条件等价集的交集。
 
+   将$\top$推广到其他布尔表达式，我们可以得到更为广泛的结论：
+
+   \begin{corollary}
+      $A,B\in \mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$，
+      若$\varphi A\approxeq_{\mathsf{Th}}^s \varphi B$，
+      则对布尔表达式$\varphi',\mathsf{Th}\vdash \varphi\Rightarrow \varphi'$，
+      $\varphi' A\approxeq_{\mathsf{Th}}^s\varphi' B$。
+   \end{corollary}
+
+   \begin{corollary}\label{co:all_1}
+      $A,B\in \mathbb{RVPC}_{\mathsf{Th}}$，$\mathcal{E}$是$\mathbb{RVPC}_{\mathsf{Th}}$上的等价关系，
+      $\varphi$是任意布尔表达式，
+      若$B\in [A]_{\varphi\mathcal{E}}$，
+      则对于布尔表达式$\varphi\Rightarrow \varphi'$，
+      $B\in [A]_{\varphi' \mathcal{E}}$。
+   \end{corollary}
 \subsection{条件等价树}
    定义~\ref{def:symbolic_bisimulation}给出了$\mathbb{VPC}_{\mathsf{Th}}$的互模拟的定义，
    观察定义~\ref{def:symbolic_bisimulation}中的$A\stackrel{a(x)}{\longrightarrow}_{\varphi} A'$，
@@ -392,6 +410,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    我们可以使用Uniform Approach中等价树的方法来刻画这种状态保持的静态转移，
    在$\mathbb{RVPC}_{\mathsf{Th}}$中称为\textit{条件等价树}。
 
+   在定义条件等价树之前，我们首先关注一种条件无关的静态转移树：
 \begin{definition}[静态转移树]
    \label{def:silent_tree}
    若$A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$,
@@ -405,6 +424,9 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \end{itemize}
 \end{definition}
 
+静态转移树包含了\textit{状态改变的静态转移}和\textit{状态保持的静态转移}，
+条件等价树需要对特定条件下的状态改变的静态转移进行剪枝：
+
 \begin{definition}[条件等价树]
    $\varphi$是一个布尔表达式，$\mathcal{E}$是$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系，
    $A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
@@ -412,130 +434,152 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 \begin{itemize}
    \item $t$上的所有节点$N$，$N\in [A]_{\varphi \mathcal{E}}$。
    \item {
-   若$t$的边被标记为$(\psi, q)$，其中$q\in(0,1],V=fv_{\psi\wedge\varphi}$，
-   则存在$V$的一组赋值$v'$
-   使得$\mathsf{Th}\vdash \psi_{v'}\wedge\varphi_{v'}$。
+   若$t$的边被标记为$(\psi, q)$，则$\mathsf{Th}\vdash \varphi\Rightarrow \psi$。
+   }
+   \item {
+         若$B.B'$是$t$上的节点，
+         $B\stackrel{(\psi,q)}{\rightarrow}B',q\in (0,1)$，
+         则存在$B\stackrel{\coprod_{i\in [k]}}{\longrightarrow}_{\psi} \coprod_{i\in [k]} B_i$，
+         $B_i,i\in [k]$是$t$上的节点，
+         且$B$有且仅有$B_1,\dots, B_k$这$k$个儿子节点。
+   }
+   \item {
+      若$B,B'$是$t$上的节点，
+      $B\stackrel{(\psi,1)}{\rightarrow}B'$，
+      则$B\stackrel{\tau}{\rightarrow}_{\psi}B'$且$B$有且仅有$B'$一个儿子节点。
    }
 \end{itemize}
 \end{definition}
-第二条性质实际上起到了剪枝的作用。
-\begin{corollary}
-   $A$的静态转移树是一个$\varphi \mathcal{E}$-tree $t^A_{\varphi \mathcal{E}}$ 则对于树上的节点$B,B',B_i,i\in [k]$：
-   \begin{itemize}
-      % \item {
-      %    $B\stackrel{(\psi,q)}{\rightarrow}B',q\in(0,1]$，则$\mathsf{Th}\vdash\psi\Rightarrow\varphi$。
-      % }
-      \item {
-         若$B\stackrel{(\psi,q)}{\rightarrow}B',q\in (0,1)$，则存在$B\stackrel{\coprod_{i\in [k]}}{\longrightarrow}_{\psi} \coprod_{i\in [k]} B_i$，
-         且$B$有且仅有$B_1,\dots, B_k$这$k$个儿子节点。
-      }
-      \item {
-         若存在$B\stackrel{(\psi,1)}{\rightarrow}B'$，则$B\stackrel{\tau}{\rightarrow}_{\psi}B'$且$B$有且仅有$B'$一个儿子节点。
-      }
-   \end{itemize}
-\end{corollary}
 
-条件Epsilon树的定义比较抽象，我们可以看几个简单有趣的例子：
+条件等价树实质上是\textit{概率的状态保持的静态转移}。
+
+从定义上看条件等价树的定义比较抽象，我们可以看几个简单有趣的例子：
 \begin{example}
-   $H(x)\stackrel{def}{=}(x\leq 3)(\frac{1}{3}\tau.(x\geq 1)G(x)\oplus\frac{1}{3}\tau.(x\geq 2)G(x)\oplus\frac{1}{3}\tau.(x\geq 3)G(x))$
+   $H(x)\stackrel{def}{=}(x\leq 3)(\frac{1}{3}\tau.(x\leq 1)G(x)\oplus\frac{1}{3}\tau.(x\leq 2)G(x)\oplus\frac{1}{3}\tau.(x\leq 3)G(x))$
 
-   $[H(x)]_{\mathcal{E}_1} = [G(x)]_{\mathcal{E}_1}$。
+   $[H(x)]_{\mathcal{E}_1} = [G(x)]_{\mathcal{E}_1}$，$H(x),G(x)\in \mathbb{RVPC}_{\mathsf{Th}}$，其中$\mathsf{Th}=\mathsf{PA}$[cite]。
 
-   $H(x)$的静态转移树如图~\ref{fig_eg0_1}：
+   $H(x)$的静态转移树如图~\ref{fig_eg0_1}，它包含了$H(x)$的静态转移。
    \begin{figure}[!htbp]
-      \caption[]{}
       \small
       \centering
       \includegraphics[width=8cm]{../figure/example0_1.png}
-       \label{fig_eg0_1}
+      \caption[]{}
+      \label{fig_eg0_1}
    \end{figure}
 
+   因为$\mathsf{Th}\vdash \top \not\Rightarrow (x\leq 3)$，
    $H(x)$的$\top\mathcal{E}_1$-tree只有一个根节点$H(x)$。
 
-   $H(x)$的$(x>3)\mathcal{E}_1$-tree只有一个根节点$H(x)$。
+   同理，$H(x)$的$(x>3)\mathcal{E}_1$-tree只有一个根节点$H(x)$。
 
-   $H(x)$的$(x>2)\mathcal{E}_1$-tree如图~\ref{fig_eg0_2}：
+   $H(x)$的$(x<2)\mathcal{E}_1$-tree如图~\ref{fig_eg0_2}，
+   其中$\mathsf{Th}\vdash (x<2)\Rightarrow (x\leq 3)$，
+   由于$(x<2)\wedge(x\leq 2)G(x) = (x<2)G(x)$，$G(x)\in[H(x)]_{\mathcal{E}_1}$，
+   根据推论~\ref{co:all}，$(x\leq 2)G(x)\in [H(x)]_{(x<2)\mathcal{E}_1}$。
+   另一个分支同理。
    \begin{figure}[!htbp]
-      \caption[]{}
       \small
       \centering
       \includegraphics[width=5cm]{../figure/example0_2.png}
+      \caption[]{}
        \label{fig_eg0_2}
    \end{figure}
 \end{example}
 \begin{example}\label{eg:1}
-      假设我们有一个不太行的下课铃系统，每一时刻它坏掉的可能性是$\frac{1}{2}$，可以通过内部自动校准系统($\tau$操作)修复，它的内部有一个计时器，每隔定长时间（$\tau$操作）就会从$a$通道广播录好的一段下课铃。
-      这个下课铃系统可以被抽象为一个Random VPC，
+      假设我们有一个不太行的下课铃系统，每一时刻它坏掉的可能性是$\frac{1}{2}$，可以通过内部自动校准系统(静态转移：$\tau$操作)修复，
+      它的内部有一个计时器，每隔定长时间（$\tau$操作）就会从$a$通道广播录好的一段下课铃，
+      录好的下课铃可以用变量$x$表示。
+      这个下课铃系统可以被抽象为一个$\mathbb{RVPC}_{\mathsf{Th}}$，其中$\mathsf{Th}$可以认为是$\mathsf{PA}$，
       我们可以用$G(x)$来表示这个系统：
       $$G(x)\stackrel{def}{=}\mu X.(\frac{1}{2}\tau.X\oplus \frac{1}{2}\tau.\overline{a}(x).X)$$
       $G(x)$在$\mathcal{E}_2$的等价集$[G(x)]_{\top\mathcal{E}_2} = [\overline{a}(x).G(x)]_{\top\mathcal{E}_2}$。
-      $G(x)$的$\top \mathcal{E}_2$-tree如图~\ref{fig_eg1}：
+      $G(x)$的$\top \mathcal{E}_2$-tree如图~\ref{fig_eg1}。
       \begin{figure}[!htbp]
-         \caption[]{}
          \small
          \centering
          \includegraphics[width=5cm]{../figure/example1.png}
-          \label{fig_eg1}
+         \caption[]{} 
+         \label{fig_eg1}
       \end{figure}
 \end{example}
 \begin{example}\label{eg:2}
    假设之前的不太行的下课铃系统经过岁月的磨练，年久失修，
-   每自动校准一次音量就会减弱，音量必须满足$y>1$才可以播放，
+   每自动校准一次音量就会减弱，我们用变量$y$来表示音量，
+   音量必须满足$y>1$才可以播放，
    当$y\leq 0$时下课铃系统音量就无法减弱了。
    为了方便建模，我们用$\mathsf{p}(x)=x-1$来表示这种音量减弱。
    校长出于节约经费的考虑，只要下课铃还能在他办公室听见($y>3$)就可以继续使用，
-   现在的下课铃系统依然是一个Random VPC，
+   现在的下课铃系统依然是一个$\mathbb{RVPC}_{\mathsf{Th}}$，
    我们可以用修改的$G'(x,y)$来表示这个系统：
    $$G'(x,y)\stackrel{def}{=}(y>3)(\frac{1}{2}\tau.((y>0)\tau.G'(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G'(x,y))\oplus \frac{1}{2}\tau.((y>1)\overline{a}(x).G'(x,y)))$$
-   $G'(x,y)$在$(y>3)\mathcal{E}_3$的等价集$[G'(x,y)]_{(y>3)\mathcal{E_3}}=[G'(x,y')]_{(y'>3)\mathcal{E_3}}=[a(x).G'(x,y'')]_{(y''>3)\mathcal{E_3}}$，其中$y,y',y''$不一定相等。
+   $G'(x,y)$在$(y>3)\mathcal{E}_3$的等价集$[G'(x,y)]_{(y>3)\mathcal{E_3}}=[G'(x,y')]_{(y'>3)\mathcal{E_3}}=[\overline{a}(x).G'(x,y'')]_{(y''>3)\mathcal{E_3}}$，其中$y,y',y''$不一定相等。
 
-   $G'(x,y)$的$(y>3)\mathcal{E}_3$-tree如图~\ref{fig_eg2}
+   $G'(x,y)$的$(y>3)\mathcal{E}_3$-tree如图~\ref{fig_eg2}。
    \begin{figure}[!htbp]
-      \caption[]{}
       \small
       \centering
       \includegraphics[width=11cm]{../figure/example2.png}
-       \label{fig_eg2}
+      \caption[]{} 
+      \label{fig_eg2}
    \end{figure}
 
 \end{example}
 
 \subsection{随机传值进程模型的符号互模拟}
-\begin{definition}[条件概率转移:$\varphi q$-transition]
-   $A\in \mathcal{T}_{RVPC},\mathcal{B}\in (\mathcal{T}_{RVPC}/\varphi \mathcal{E})\backslash \{[A]_{\varphi\mathcal{E}}\}$，
-对$t^A_{\varphi \mathcal{E}}$的每一个叶子结点$L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i} \coprod_{i\in [k]}L_i$,
-$i\in I, L_i\in \mathcal{B}$且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$。
+定义了\textit{概率的状态保持的静态转移}，
+我们现在可以用Uniform Approach的方法得到$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟。
+类似的，我们首先需要定义概率版的$l$-转移和$q$-转移。
+
+\begin{definition}[条件$l$-转移($\varphi l$-transition)]
+   $A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}, \mathcal{B}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}/\varphi'\mathcal{E}\backslash \{[A]_{\varphi'\mathcal{E}}\}$，
+   其中$\varphi'$是一个布尔表达式，$\mathcal{E}$是$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系，
+   若$A$的条件等价树$t_{\varphi' \mathcal{E}}^A$的所有叶子结点$L$，
+   存在$L\stackrel{l}{\rightarrow}_{\varphi} L'\in \mathcal{B},l\neq \tau$，
+   称为$A$到$\mathcal{B}$的$\varphi l$-转移，记作$A\rightsquigarrow_{\varphi'\mathcal{E}}\stackrel{l}{\rightarrow}_{\varphi}\mathcal{B}$。
+\end{definition}
+
+\begin{definition}[条件$q$-转移($\varphi q$-transition)]
+   $A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{B}\in (\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}/\varphi' \mathcal{E})\backslash \{[A]_{\varphi'\mathcal{E}}\}$，
+   其中$\varphi'$是一个布尔表达式，$\mathcal{E}$是$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系，
+   对$t^A_{\varphi' \mathcal{E}}$的每一个叶子结点$L$和布尔表达式$\varphi$，
+   若$L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i} \coprod_{i\in [k]}L_i$,
+$i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$：
 
 定义$\mathsf{P}_\varphi(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B}) = \sum\{p_i\mid L\stackrel{p_i\tau}{\rightarrow}_{\psi_i} L_i\in\mathcal{B} \wedge i\in I \wedge \mathsf{Th}\vdash \varphi \Rightarrow \psi_i\}$。
 
-定义$\mathsf{P}_{\varphi \mathcal{E}}(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B}) = \mathsf{P}_\varphi(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B})/(1-\mathsf{P}_\varphi(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}[A]_{\varphi\mathcal{E}}))$。
+定义$\mathsf{P}_{\varphi, \varphi' \mathcal{E}}(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B}) = \mathsf{P}_\varphi(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B})/(1-\mathsf{P}_\varphi(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}[A]_{\varphi\mathcal{E}}))$。
 
-当$\mathsf{P}_{\varphi \mathcal{E}}(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B})=q$时，
-$A$到$\mathcal{B}$存在$\varphi q$-transition。写作$A\rightsquigarrow_{\varphi\mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{B}$。
+当$\mathsf{P}_{\varphi,\varphi' \mathcal{E}}(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B})=q$时，
+称$A$到$\mathcal{B}$存在$\varphi q$-转移。写作$A\rightsquigarrow_{\varphi'\mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{B}$。
 \end{definition}
 
-
+符号互模拟实质上是保证$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系满足条件$l$-转移和条件$q$-转移。
 \begin{definition}[符号互模拟]
    $\mathcal{E}$是一个$\mathcal{T}_{RVPC}$上的二元对称关系，
 当$A\mathcal{E}B$且满足下列条件时，称$\mathcal{E}$是一个符号互模拟(Symbolic Bisimulation)：
 \begin{itemize}
    \item {
-      若$ A \rightsquigarrow_{\varphi \mathcal{E}}\stackrel{a(x)}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\varphi\mathcal{E}, \mathcal{C}\neq [A]_{\mathcal{E}}$，
-      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\varphi_i \mathcal{E}}\stackrel{a(x)}{\rightarrow}_{\psi_i} \mathcal{C}\}$，
-      使得对$i\in I$，$\mathsf{Th}\vdash \varphi_i \Rightarrow \psi_i$。
+      若$ A \rightsquigarrow_{\varphi \mathcal{E}}\stackrel{a(x)}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\varphi\mathcal{E}, \mathcal{C}\neq [A]_{\varphi \mathcal{E}}$，
+      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\psi_i \mathcal{E}}\stackrel{a(x)}{\rightarrow}_{\psi_i'} \mathcal{C}\}$，
+      使得对$i\in I$，$\mathsf{Th}\vdash \varphi_i \Rightarrow \psi_i\psi_i'$。
    }
    \item {
-      若$A \rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\bar{a}(t)}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\varphi\mathcal{E}$，
-      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\bar{a}(t_i)}{\rightarrow}_{\psi_i} \mathcal{C}\}$，
-      使得对$i\in I$，$\mathsf{Th}\vdash (\varphi_i \Rightarrow \psi_i)\wedge (t=t_i)$。
+      若$A \rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\bar{a}(t)}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\varphi\mathcal{E},\mathcal{C}\neq [A]_{\varphi\mathcal{E}}$，
+      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\psi_i\mathcal{E}}\stackrel{\bar{a}(t_i)}{\rightarrow}_{\psi_i'} \mathcal{C}\}$，
+      使得对$i\in I$，$\mathsf{Th}\vdash (\varphi_i \Rightarrow \psi_i\psi_i')\wedge \varphi_i \Rightarrow (t=t_i)$。
    }
    \item {
-      若$ A\rightsquigarrow_{\varphi\mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\mathcal{E}$，
+      若$ A\rightsquigarrow_{\varphi\mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\mathcal{E}, \mathcal{C}\neq [A]_{\varphi \mathcal{E}}$，
       则$B\rightsquigarrow_{\varphi \mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{C}$
    }
 \end{itemize}
-
 \end{definition}
+
+在证明$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$的两项符号互模拟时，
+我们通常可以构造一个含有该项的等价集，并证明该等价集是一个符号互模拟关系。
+构建一个$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$项的条件$l$-转移和条件$q$-转移时，
+我们可以首先构建该项的\textit{静态转移树}。
 
 \begin{example}
    假设学校负责看管设备的老师发现例~\ref{eg:2}中的下课铃系统其实只有在$y\geq 5$时才能被所有教室的同学们听到，
