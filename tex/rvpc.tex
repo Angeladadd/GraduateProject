@@ -392,7 +392,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
       $A,B\in \mathbb{RVPC}_{\mathsf{Th}}$，$\mathcal{E}$是$\mathbb{RVPC}_{\mathsf{Th}}$上的等价关系，
       $\varphi$是任意布尔表达式，
       若$B\in [A]_{\varphi\mathcal{E}}$，
-      则对于布尔表达式$\varphi\Rightarrow \varphi'$，
+      则对于布尔表达式$\varphi',\mathsf{Th}\vdash\varphi'\Rightarrow \varphi$，
       $B\in [A]_{\varphi' \mathcal{E}}$。
    \end{corollary}
 \subsection{条件等价树}
@@ -526,7 +526,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 
 \end{example}
 
-\subsection{随机传值进程模型的符号互模拟}
+\subsection{随机传值进程模型的符号互模拟}\label{ch:symbolic_bisimulation}
 定义了\textit{概率的状态保持的静态转移}，
 我们现在可以用Uniform Approach的方法得到$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟。
 类似的，我们首先需要定义概率版的$l$-转移和$q$-转移。
@@ -555,24 +555,24 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
 \end{definition}
 
 符号互模拟实质上是保证$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系满足条件$l$-转移和条件$q$-转移。
-\begin{definition}[符号互模拟]
+\begin{definition}[符号互模拟]\label{def:rvpc_symbolic_bisimulation}
    $\mathcal{E}$是一个$\mathcal{T}_{RVPC}$上的二元对称关系，
 当$A\mathcal{E}B$且满足下列条件时，称$\mathcal{E}$是一个符号互模拟(Symbolic Bisimulation)：
 \begin{itemize}
    \item {
       若$ A \rightsquigarrow_{\varphi \mathcal{E}}\stackrel{a(x)}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\varphi\mathcal{E}, \mathcal{C}\neq [A]_{\varphi \mathcal{E}}$，
-      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\psi_i \mathcal{E}}\stackrel{a(x)}{\rightarrow}_{\psi_i'} \mathcal{C}\}$，
-      使得对$i\in I$，$\mathsf{Th}\vdash \varphi_i \Rightarrow \psi_i\psi_i'$。
+      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\varphi_i \mathcal{E}}\stackrel{a(x)}{\rightarrow}_{\psi_i} \mathcal{C}\}$，
+      使得对$i\in I$，$\mathsf{Th}\vdash \varphi_i \Rightarrow \psi_i$。
    }
    \item {
       若$A \rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\bar{a}(t)}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\varphi\mathcal{E},\mathcal{C}\neq [A]_{\varphi\mathcal{E}}$，
-      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\psi_i\mathcal{E}}\stackrel{\bar{a}(t_i)}{\rightarrow}_{\psi_i'} \mathcal{C}\}$，
-      使得对$i\in I$，$\mathsf{Th}\vdash (\varphi_i \Rightarrow \psi_i\psi_i')\wedge (\varphi_i \Rightarrow (t=t_i))$。
+      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\bar{a}(t_i)}{\rightarrow}_{\psi_i} \mathcal{C}\}$，
+      使得对$i\in I$，$\mathsf{Th}\vdash (\varphi_i \Rightarrow \psi_i)\wedge (\varphi_i \Rightarrow (t=t_i))$。
    }
    \item {
       若$ A\rightsquigarrow_{\varphi\mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\mathcal{E}, \mathcal{C}\neq [A]_{\varphi \mathcal{E}}$，
-      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\psi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\psi_i'} \mathcal{C}\}$，
-      使得$i\in I$，$\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\psi_i'$且$\sum_{i\in I}q_i\geq q$。
+      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\psi_i} \mathcal{C}\}$，
+      使得$i\in I$，$\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i$且$\sum_{i\in I}q_i\geq q$。
    }
 \end{itemize}
 \end{definition}
@@ -620,7 +620,7 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
                $$\{(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y>1)\mathcal{S}}\stackrel{\overline{a}(t')}{\rightarrow}_{(y>1)}G''(t',y),$$
                $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y\leq 1)\mathcal{S}}\stackrel{\overline{a}(t')}{\rightarrow}_{(y<5)}G''(t',y)\}$$
                可以模拟上述操作，
-               其中$\mathsf{Th}\vdash(x=1)\wedge(y\leq 1)\Rightarrow (x=t)\wedge(y\leq 1)\wedge(y<5)$
+               其中$\mathsf{Th}\vdash(x=1)\wedge(y\leq 1)\Rightarrow \wedge(y<5)$
                且$\mathsf{Th}\vdash (x=t)\wedge (y\leq 1)\Rightarrow (t=t')$，
                $(G(t),G''(t,y))\in\mathcal{S}$。$(x=t)\wedge(y>1)$相同。
             }
@@ -628,14 +628,14 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
                对$x$的每一个赋值$t\in V$，
                $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y>1)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(x=t)\wedge(y>1)}G''(t,y)$$，
                
-               存在集合$\{\overline{a}(x).G(x)\rightsquigarrow_{(x=t)\mathcal{S}}\stackrel{\overline{a}(t')}{\longrightarrow}_{(x=t)}G(t')\}$
-               可以模拟上述操作，其中$\mathsf{Th}\vdash ((x=t)\wedge (y>1))\Rightarrow (x=t) \wedge ((x=t)\wedge (y>1))\Rightarrow t=t'$，$(G(t),G''(t,y))\in\mathcal{S}$。
+               存在集合$\{\overline{a}(x).G(x)\rightsquigarrow_{(x=t)(y>1)\mathcal{S}}\stackrel{\overline{a}(t')}{\longrightarrow}_{(x=t)}G(t')\}$
+               可以模拟上述操作，其中$\mathsf{Th}\vdash ((x=t)\wedge (y>1))\Rightarrow (x=t) \wedge \mathsf{Th}\vdash ((x=t)\wedge (y>1))\Rightarrow t=t'$，$(G(t),G''(t,y))\in\mathcal{S}$。
                
                对$x$的每一个赋值$t\in V$，
                $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y<5)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(x=t)\wedge(y<5)}G''(t,y)$$，
                
-               存在集合$\{\overline{a}(x).G(x)\rightsquigarrow_{(x=t)\mathcal{S}}\stackrel{\overline{a}(t')}{\longrightarrow}_{(x=t)}G(t')\}$
-               可以模拟上述操作，其中$\mathsf{Th}\vdash ((x=t)\wedge (y<5))\Rightarrow (x=t) \wedge ((x=t)\wedge (y<5))\Rightarrow t=t'$，$(G(t),G''(t,y))\in\mathcal{S}$。
+               存在集合$\{\overline{a}(x).G(x)\rightsquigarrow_{(x=t)(y<5)\mathcal{S}}\stackrel{\overline{a}(t')}{\longrightarrow}_{(x=t)}G(t')\}$
+               可以模拟上述操作，其中$\mathsf{Th}\vdash ((x=t)\wedge (y<5))\Rightarrow (x=t) \wedge\mathsf{Th}\vdash ((x=t)\wedge (y<5))\Rightarrow t=t'$，$(G(t),G''(t,y))\in\mathcal{S}$。
             }
          \end{itemize}
       }
@@ -679,37 +679,56 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
 
 \section{随机传值进程模型的等价性}
 
+如~\ref{ch:symbolic_bisimulation}节中所述，
+符号互模拟描述了$\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，
+因此我们可以通过符号互模拟定义随机传值进程模型的等价性。
+
+我们首先证明符号互模拟关系是一个等价关系，
+众所周知一个等价关系应具有自反性、对称性、传递性。
+根据定义~\ref{def:rvpc_symbolic_bisimulation}，
+容易得到符号互模拟具有自反性和对称性，
+我们接下来证明符号互模拟的传递性。
 \begin{lemma}
    符号互模拟具有传递性。
 \end{lemma} 
 \begin{proof}
-   即证明若$\mathcal{E}$是一个symbolic bisimulation，$A\mathcal{E}B, B \mathcal{E} C$，则$A \mathcal{E} C$。
+   证明符号互模拟的传递性等价于证明若$\mathcal{E}$是一个符号互模拟，且$A\mathcal{E}B, B \mathcal{E} C$，则$A \mathcal{E} C$。
    \begin{itemize}
       \item {
-         若$A\rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\lambda}{\rightarrow} \mathcal{C}\in \mathcal{T}_{RVPC}/\varphi\mathcal{E}$，
-         由于$A\mathcal{E}B$根据定义存在$\varphi$的划分$\{\varphi_i\}$和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi}\mathcal{C}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}$。
-         对于每一个$B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$，
-         $t^B_{\varphi_i\mathcal{E}}$上的每一个结点一定属于$[B]_{\psi_i\mathcal{E}}$，
-         所以$t^b_{\varphi_i\mathcal{E}}$实际上是$t^b_{\psi_i\mathcal{E}}$的子树，
-         $B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$中的起点终点对$\{(M,N)|(M\in t^B_{\varphi_i\mathcal{E}})\vee(N\in \mathcal{C}) \vee (M\stackrel{\lambda}{\rightarrow}_{\psi_i}N))\}$是
-         $B\rightsquigarrow_{\psi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$中的起点终点对$\{(M',N')|(M'\in t^B_{\psi_i\mathcal{E}})\vee(N'\in \mathcal{C}) \vee (M'\stackrel{\lambda}{\rightarrow}_{\psi_i}N'))\}$的子集。
-         由于$B\mathcal{E}C$，对于每一个$B\rightsquigarrow_{\psi_i}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$，
-         根据定义存在$\psi_i$的划分$\{\psi_{i,j}\}$和集合$S=\{C\rightsquigarrow_{\psi_{i,j}\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\phi_{i,j}}\mathcal{C}|\mathsf{Th}\vdash \psi_{i,j}\Rightarrow \phi_{i,j}\}$，
-         那么存在$S$的子集$S'$的可以模拟$B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}$。
-   
-         我们只需要再构建$\varphi$的划分$\{\varphi_i'\}_{i\in I}$使其一一对应$S'$中涉及的条件$\{\phi_{i,k}\}_{k\in K}\subset\{\phi_{i,j}\}_{j\in J}$即可。
-         由于存在$\psi_i$的划分$\{\psi_{i,j}\}_{j\in J}$满足$\psi_{i,j}\Rightarrow \phi_{i,j}\}_{j\in J}$，
-         那么我们可以构造$Con=\{\psi_{i,k}\}_{k\in [K-1]}\cup\{\bigvee_{j\in J/[K-1]}\psi_{i,j}\}$，
-         对$c_k\in Con, \bigvee_{k\in K}c_k \Leftrightarrow \psi_i$， 且$Con$中元素两两互斥。
-         我们用$(\bigvee Con_i)\wedge \varphi_i$代替$\varphi_i$，即可得到最终的划分。
+         若$A\rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{RVPC}/\varphi\mathcal{E},\mathcal{C}\neq [A]_{\varphi\mathcal{E}}$，
+         由于$A\mathcal{E}B$，
+         根据定义存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$
+         和集合$S=\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}_{i\in I}$。
+         对于$B$关于$\varphi_i\mathcal{E}$的条件等价树$t^B_{\varphi_i\mathcal{E}}$上的节点$L$，
+         因为$\mathsf{Th}\vdash\varphi_i\Rightarrow \psi_i$，
+         若$L\stackrel{\lambda}{\rightarrow}_{\psi_i}L'\in \mathcal{C}$，
+         则$L\stackrel{\lambda}{\rightarrow}_{\varphi_i}L'\in \mathcal{C}$，
+         因此存在集合$S'=\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi_i}\mathcal{C}\}_{i\in I}$，
+         根据定义~\ref{def:rvpc_symbolic_bisimulation}，
+         $S'$也可以作为$A\rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{RVPC}/\varphi\mathcal{E},\mathcal{C}\neq [A]_{\varphi\mathcal{E}}$的模拟。
+      
+         由于$B\mathcal{E}C$，对于每一个$B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi_i}\mathcal{C}$，
+         根据定义存在$\varphi_i$的划分$\{\varphi_{i,j}\}_{j\in J}$
+         和集合$S_i=\{C\rightsquigarrow_{\varphi_{i,j}\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_{i,j}}\mathcal{C}|\mathsf{Th}\vdash \varphi_{i,j}\Rightarrow \psi_{i,j}\}_{j\in J}$，
+
+         进而，存在$\varphi$的划分$Con=\bigcup_{i\in I}\{\varphi_{i,j}\}_{j\in J}$
+         和集合$S'=\bigcup_{i\in I}S_i'$，使得$C$可以符号模拟$A$。
+         对称的证明是完全一致的。
       }
       \item {
-         $\varphi q$-transition的传递性与以上过程相似。
+         若$A\rightsquigarrow_{\varphi \mathcal{E}}\stackrel{q}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{RVPC}/\varphi\mathcal{E},\mathcal{C}\neq [A]_{\varphi\mathcal{E}},q\in(0,1]$，
+         由于$A\mathcal{E}B$，存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\rightsquigarrow_{\psi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\psi_i'} \mathcal{C}|\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\psi_i'\}$，
+         其中$\sum_{i\in I} q_i\geq q$。
+        
       }
    \end{itemize}
 \end{proof}
+\begin{theorem}
+   符号互模拟关系是等价关系。
+\end{theorem}
 \begin{lemma}
-   如果每一个$\mathcal{T}_{RVPC}$上的关系$\mathcal{E}_i$都是符号互模拟，那么$(\bigcup_{i\in I}\mathcal{E}_i)^*$是符号互模拟。
+   如果每一个$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的关系$\mathcal{E}_i$都是符号互模拟关系，
+   那么$(\bigcup_{i\in I}\mathcal{E}_i)^*$是符号互模拟关系。
 \end{lemma}
 \begin{proof}
    令$\mathcal{E}=(\bigcup_{i\in I}\mathcal{E}_i)^*$。若因为$\varphi A_0\mathcal{E}_1 \varphi A_1 \mathcal{E}_2 \dots \mathcal{E}_k \varphi A_k$ ,
@@ -760,18 +779,18 @@ $(\varphi A_0, \varphi A_k)\in \mathcal{E}$，由于互模拟具有传递性，�
 \end{proof}
 
 \begin{definition}
-   $\mathcal{T}_{RVPC}$上的观察等价性$\approxeq^s_{\mathsf{Th}}$定义为$\mathsf{Th}$上的符号互模拟的全集。
+   $\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的观察等价性$=_{\mathbb{RVPC}_{\mathsf{Th}}}$定义为$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的符号互模拟关系的全集。
 \end{definition}
 
 \begin{theorem}
-   $\approxeq^s_{\mathsf{Th}}$是一个等价关系。
+   $=_{\mathbb{RVPC}_{\mathsf{Th}}}$是一个等价关系。
 \end{theorem}
 
 \begin{theorem}
-   $\approxeq^s_{\mathsf{Th}}$具有同余性。
+   $=_{\mathbb{RVPC}_{\mathsf{Th}}}$具有同余性。
 \end{theorem}
 \begin{proof}
-   $\approxeq^s_{\mathsf{Th}}$对于随机选择和非确定性选择的封闭性比较容易证明。
+   $=_{\mathbb{RVPC}_{\mathsf{Th}}}$对于随机选择和非确定性选择的封闭性比较容易证明。
 
 对条件操作运算的封闭性在于，$S\approxeq^s_{\mathsf{Th}} T$可以推出$\varphi S \approxeq^s_{\mathsf{Th}} \varphi T$
 对$\varphi S\rightsquigarrow_{\psi \approxeq^s_{\mathsf{Th}}}\stackrel{\lambda}{\rightarrow}_{\psi} \mathcal{C}\in \mathcal{T}/\psi \approxeq^s_{\mathsf{Th}}$，
