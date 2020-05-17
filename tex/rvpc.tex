@@ -128,7 +128,7 @@ If Then Else语法实现的分支控制在编程中也是非常重要的组成�
    \end{tabular}
  \end{table}
 
-\section{随机传值进程模型（Random VPC）}
+\section{随机传值进程模型}
 随机传值进程模型定义在$\mathbb{VPC}_{\mathsf{Th}}$的基础上，
 我们可以用Uniform Approach中的随机选择$\bigoplus_{i\in I}p_i\tau.T_i$
 扩展公式~\ref{eq:vpc}中$\mathbb{VPC}_{\mathsf{Th}}$项的定义。
@@ -567,11 +567,12 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
    \item {
       若$A \rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\bar{a}(t)}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\varphi\mathcal{E},\mathcal{C}\neq [A]_{\varphi\mathcal{E}}$，
       则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\psi_i\mathcal{E}}\stackrel{\bar{a}(t_i)}{\rightarrow}_{\psi_i'} \mathcal{C}\}$，
-      使得对$i\in I$，$\mathsf{Th}\vdash (\varphi_i \Rightarrow \psi_i\psi_i')\wedge \varphi_i \Rightarrow (t=t_i)$。
+      使得对$i\in I$，$\mathsf{Th}\vdash (\varphi_i \Rightarrow \psi_i\psi_i')\wedge (\varphi_i \Rightarrow (t=t_i))$。
    }
    \item {
       若$ A\rightsquigarrow_{\varphi\mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\mathcal{E}, \mathcal{C}\neq [A]_{\varphi \mathcal{E}}$，
-      则$B\rightsquigarrow_{\varphi \mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{C}$
+      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\psi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\psi_i'} \mathcal{C}\}$，
+      使得$i\in I$，$\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\psi_i'$且$\sum_{i\in I}q_i\geq q$。
    }
 \end{itemize}
 \end{definition}
@@ -581,44 +582,65 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
 构建一个$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$项的条件$l$-转移和条件$q$-转移时，
 我们可以首先构建该项的\textit{静态转移树}。
 
-\begin{example}
+\begin{example}\label{eg:5}
    假设学校负责看管设备的老师发现例~\ref{eg:2}中的下课铃系统其实只有在$y\geq 5$时才能被所有教室的同学们听到，
    为了不违抗校长的决定又同时让同学们都听到下课铃，他决定当$(y<5)$时用自己的电脑通过$a$通道播放下课铃，
-   这时校长以为下课铃系统被工人修好成~\ref{eg:1}中的样子了，决定一直使用这个下课铃。校长的感觉是错觉吗？
+   这时校长以为下课铃系统被工人修好成例~\ref{eg:1}中的下课铃系统，决定一直使用这个下课铃。校长的感觉是错觉吗？
 
-   此时，看管设备的老师和之前不太行的下课铃系统依旧是一个Random VPC，我们可以用$G''(x,y)$来表示:
+   此时，看管设备的老师和例~\ref{eg:2}中的下课铃系统依旧是一个$\mathbb{RVPC}_{\mathsf{Th}}$，
+   我们可以用$G''(x,y)$来表示这个系统。
 
    $G''(x,y) = (\frac{1}{2}\tau.((y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y))\oplus \frac{1}{2}\tau.((y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y))$。
 
    我们只需要证明$G(x)$与$G''(x,y)$符号互模拟即可。
 \end{example}
 \begin{proof}
-   设等价集$\mathcal{S} = \{(G(t),G''(t,s)),(G(t),(y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y)),(\overline{a}.G(t),(s>1)\overline{a}(t).G''(t,s)|(s<5)\overline{a}(t).G''(t,s))\mid t\in V,s\in U\}$，$V$是$x$的所有赋值的集合，$U$是$y$的所有赋值的集合，
+   构造等价集
+   \begin{align*}
+      \mathcal{S} &= \{(G(x),G''(x,y)),\\
+      &(G(x),(y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y)),\\
+      &(\overline{a}(x).G(x),(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)),\\
+      &(G(t),G''(t,y))|t\in V\}
+   \end{align*}
+   其中$V$是$x$的取值范围。
    我们只需证明$\mathcal{S}$是一个符号互模拟关系即可。
    \begin{itemize}
       \item {
-         $\overline{a}(x).G(x)$和$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)$的$\top\mathcal{S}$-tree只有一个根节点(这里的证明实际可以是$\mathbb{VPC}$的符号互模拟的证明，但可以使用Random VPC的证明方式，下面用Random VPC的证明)，
+         $\overline{a}(x).G(x)$和$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)$关于$(x=t)\mathcal{S}$的等价树只有一个根节点，
+         由于不涉及概率，这里实际可以使用$\mathbb{VPC}_{\mathsf{Th}}$的符号互模拟证明，
+         但由于$\mathbb{VPC}_{\mathsf{Th}}$是$\mathbb{RVPC}_{\mathsf{Th}}$的特例，
+         此处依然可以使用$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟证明。
          \begin{itemize}
             \item {
-               对于$x$的每一个赋值$t$，
-               $\overline{a}(x).G(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{a}(t)}{\longrightarrow}_{\top}G(t)$。
-               我们可以得到$\top$的一个划分：$\top=(y>1)\vee (y\leq 1)$。
+               对于$x$的每一个赋值$t\in V$，
+               $\overline{a}(x).G(x)\rightsquigarrow_{(x=t)\mathcal{S}}\stackrel{\overline{a}(t)}{\longrightarrow}_{(x=t)}G(t)$。
+               我们可以得到$(x=t)$的一个划分：$(x=t)=((y>1)\wedge (x=t))\vee ((y\leq 1)\wedge (x=t))$。
       
                这时存在集合
-               $$\{(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(y>1)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(y>1)}G''(t,s),$$
-               $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(y\leq 1)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(y<5)}G''(t,s)\}$$
-               可以模拟上述操作。
+               $$\{(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y>1)\mathcal{S}}\stackrel{\overline{a}(t')}{\rightarrow}_{(y>1)}G''(t',y),$$
+               $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y\leq 1)\mathcal{S}}\stackrel{\overline{a}(t')}{\rightarrow}_{(y<5)}G''(t',y)\}$$
+               可以模拟上述操作，
+               其中$\mathsf{Th}\vdash(x=1)\wedge(y\leq 1)\Rightarrow (x=t)\wedge(y\leq 1)\wedge(y<5)$
+               且$\mathsf{Th}\vdash (x=t)\wedge (y\leq 1)\Rightarrow (t=t')$，
+               $(G(t),G''(t,y))\in\mathcal{S}$。$(x=t)\wedge(y>1)$相同。
             }
             \item {
-               对$x$的每一个赋值$t$，
-               $(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(y>1)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(y>1)}G''(t,s)$，
-               存在集合$\{\overline{a}(x).G(x)\rightsquigarrow_{(y>1)\mathcal{S}}\stackrel{\overline{a}(t)}{\longrightarrow}_{(y>1)}G(t)\}$可以模拟上述操作。
-               另一个操作的证明是相似的。
+               对$x$的每一个赋值$t\in V$，
+               $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y>1)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(x=t)\wedge(y>1)}G''(t,y)$$，
+               
+               存在集合$\{\overline{a}(x).G(x)\rightsquigarrow_{(x=t)\mathcal{S}}\stackrel{\overline{a}(t')}{\longrightarrow}_{(x=t)}G(t')\}$
+               可以模拟上述操作，其中$\mathsf{Th}\vdash ((x=t)\wedge (y>1))\Rightarrow (x=t) \wedge ((x=t)\wedge (y>1))\Rightarrow t=t'$，$(G(t),G''(t,y))\in\mathcal{S}$。
+               
+               对$x$的每一个赋值$t\in V$，
+               $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y<5)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(x=t)\wedge(y<5)}G''(t,y)$$，
+               
+               存在集合$\{\overline{a}(x).G(x)\rightsquigarrow_{(x=t)\mathcal{S}}\stackrel{\overline{a}(t')}{\longrightarrow}_{(x=t)}G(t')\}$
+               可以模拟上述操作，其中$\mathsf{Th}\vdash ((x=t)\wedge (y<5))\Rightarrow (x=t) \wedge ((x=t)\wedge (y<5))\Rightarrow t=t'$，$(G(t),G''(t,y))\in\mathcal{S}$。
             }
          \end{itemize}
       }
       \item {
-         $(G(t),(y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y))$的这一对等价关系也是常规的$\mathcal{VPC}$证明[此处应有引用]。
+         $(G(t),(y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y))$的这一对等价关系也是常规的$\mathbb{VPC}_{\mathsf{Th}}$证明，此处不做赘述。
       }
       \item {
          $G(x)$的静态转移树如图~\ref{fig_eg4_1}，$G''(x,y)$的静态转移树如图~\ref{fig_eg4_2}。
@@ -638,18 +660,22 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
          \end{figure}
 
          对于$G(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\frac{1}{2}}{\rightarrow}_{\top} [\overline{a}(x).G(x)]_{\top\mathcal{S}}$，
-         我们可以用$G''(x,y)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\frac{1}{2}}{\rightarrow}_{\top}[(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)]_{\top\mathcal{S}}$模拟。
-         对称的，因为$\mathcal{S}$是一个等价关系，具有传递性，$(G(x),G''(x,y))\in\mathcal{S}\wedge (G(x),(y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y))\Rightarrow (y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y)\in [G(x)]_{\top\mathcal{S}}$，
-         我们也只需要证明右侧的转移，右侧的转移是相似的。
+         存在集合$$\{G''(x,y)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\frac{1}{2}}{\rightarrow}_{\top}[(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)]_{\top\mathcal{S}}\}$$
+         其中$\mathsf{Th}\vdash (\top\Rightarrow\top)$且$\frac{1}{2}\geq \frac{1}{2}$，$(\overline{a}(x).G(x),(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y))\in\mathcal{S}$。
+
+         对于$G''(x,y)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\frac{1}{2}}{\rightarrow}_{\top}[(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)]_{\top\mathcal{S}}$，
+         我们可以对称地用集合$\{G(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\frac{1}{2}}{\rightarrow}_{\top} [\overline{a}(x).G(x)]_{\top\mathcal{S}}\}$模拟。
+
+         对于$G''(x,y)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\frac{1}{2}}{\rightarrow}_{\top}[(y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner(y>0)\tau.G''(x,y)]_{\top\mathcal{S}}$，
+         由于等价关系具有传递性，$G''(x,y) \in [(y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner(y>0)\tau.G''(x,y)]_{\top\mathcal{S}} = [G''(x,y)]_{\top\mathcal{S}}$。
       }
    \end{itemize}
    因此我们可以得出校长的判断是正确的。
 \end{proof}
-
-\begin{theorem}
-   若$S,T\in \mathcal{T}_{RVPC},S\approxeq^s_{\mathsf{Th}} T$，则$\varphi S \approxeq^s_{\mathsf{Th}} \varphi T$，$\varphi$是一个判定条件。
-\end{theorem}
-该定理的证明在下一节。
+例~\ref{eg:5}是一个简单的例子，给出了同一系统的两种不同实现，
+这两种实现在外界观察者的视角中是效果相同的，
+即具有\textit{观察等价性}。
+符号互模拟给观察等价性提供了严格的刻画，为观察者的\textit{主观感觉}提供了\textit{客观依据}。
 
 \section{随机传值进程模型的等价性}
 
