@@ -262,7 +262,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
       \end{itemize}
       则等价关系$\mathcal{E}$是分支互模拟关系。
    \end{definition}
-   \subsubsection{$\mathbb{VPC}_\mathsf{Th}$的符号互模拟}
+   \subsubsection{$\mathbb{VPC}_\mathsf{Th}$的符号互模拟}\label{ch:vpc_symbolic_bisimulation}
    $\mathbb{VPC}_{\mathsf{Th}}$与CCS的区别主要体现在前缀操作子和条件操作子。
    对于前缀操作子，相似的定义互模拟关系是比较容易的，只需要保证通道一致，值一致即可。
    而条件操作子给互模拟的定义带来了麻烦，比如：
@@ -339,10 +339,6 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    对于无条件的操作我们认为操作是在$\top$条件下执行的，
    因此$\top$可以看作是最强的条件。
 
-   \begin{corollary}
-      $A,B\in \mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$，
-      $A\approxeq_{\mathsf{Th}}^sB$，则对于任意布尔表达式$\varphi'$，$\varphi' A\approxeq_{\mathsf{Th}}^s\varphi' B$。
-   \end{corollary}
    \begin{proof}
       对于$A$可以执行的操作，$\varphi' A$也会有对应的版本：
       \begin{itemize}
@@ -378,6 +374,22 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \end{corollary}
    
    推论~\ref{co:all}可以简单理解为：一个$\mathbb{RVPC}_{\mathsf{Th}}$项在任意条件下成立的等价集是所有条件等价集的交集。
+   我们也可以给出一个简单的证明。
+   \begin{proof}
+      $A,B\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
+      $fv(\varphi)$为$\varphi$中的自由变量的集合，
+      $V$为$fv(\varphi)$的全部取值的集合，
+      对于$fv(\varphi)$的每一个赋值$v\in V$，
+      我们可以得到一个无自由变量的布尔表达式$\varphi_v$：
+      \begin{itemize}
+         \item {
+            若$\mathsf{Th}\vdash \varphi_v$，$\varphi_vA=A\mathcal{E}B=\varphi_v B$。
+         }
+         \item {
+            若$\mathsf{Th}\not\vdash \varphi_v$，$\varphi_v A=0=\varphi_v B$。
+         }
+      \end{itemize}
+   \end{proof}
 
    将$\top$推广到其他布尔表达式，我们可以得到更为广泛的结论：
 
@@ -395,6 +407,16 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
       则对于布尔表达式$\varphi',\mathsf{Th}\vdash\varphi'\Rightarrow \varphi$，
       $B\in [A]_{\varphi' \mathcal{E}}$。
    \end{corollary}
+
+   \begin{corollary}\label{co:superset}
+      $L\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
+      $L$关于布尔表达式$\varphi$和等价关系$\mathcal{E}$的等价集为$\mathcal{C}=[L]_{\varphi\mathcal{E}}$，
+      对任意$\mathsf{Th}\vdash \varphi'\Rightarrow\varphi$，
+      $L$关于$\varphi'\mathcal{E}$的等价集$[L]_{\varphi'\mathcal{E}}$是$\mathcal{C}$的超集，
+      可以将$[L]_{\varphi'\mathcal{E}}$记为$[\mathcal{C}]_{\varphi'\mathcal{E}}$。
+   \end{corollary}
+   推论~\ref{co:superset}可以由推论~\ref{co:all_1}得出。
+
 \subsection{条件等价树}
    定义~\ref{def:symbolic_bisimulation}给出了$\mathbb{VPC}_{\mathsf{Th}}$的互模拟的定义，
    观察定义~\ref{def:symbolic_bisimulation}中的$A\stackrel{a(x)}{\longrightarrow}_{\varphi} A'$，
@@ -432,18 +454,18 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    $A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
    当下列条件成立时，$A$的静态转移树$t$称为是一个关于$\varphi\mathcal{E}$的条件等价树（$\varphi \mathcal{E}$-tree) ，记作$t^A_{\varphi \mathcal{E}}$。
 \begin{itemize}
-   \item $t$上的所有节点$N$，$N\in [A]_{\varphi \mathcal{E}}$。
-   \item {
+   \item[(1)] $t$上的所有节点$N$，$N\in [A]_{\varphi \mathcal{E}}$。
+   \item[(2)] {
    若$t$的边被标记为$(\psi, q)$，则$\mathsf{Th}\vdash \varphi\Rightarrow \psi$。
    }
-   \item {
+   \item[(3)] {
          若$B.B'$是$t$上的节点，
          $B\stackrel{(\psi,q)}{\rightarrow}B',q\in (0,1)$，
          则存在$B\stackrel{\coprod_{i\in [k]}}{\longrightarrow}_{\psi} \coprod_{i\in [k]} B_i$，
          $B_i,i\in [k]$是$t$上的节点，
          且$B$有且仅有$B_1,\dots, B_k$这$k$个儿子节点。
    }
-   \item {
+   \item[(4)] {
       若$B,B'$是$t$上的节点，
       $B\stackrel{(\psi,1)}{\rightarrow}B'$，
       则$B\stackrel{\tau}{\rightarrow}_{\psi}B'$且$B$有且仅有$B'$一个儿子节点。
@@ -454,6 +476,27 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 条件等价树实质上是\textit{概率的状态保持的静态转移}。
 
 从定义上看条件等价树的定义比较抽象，我们可以看几个简单有趣的例子：
+
+\begin{example}\label{eg:conditional}
+   $A(x)=(x>5)(\frac{1}{2}\tau.B(x)\oplus\frac{1}{2}\tau.C(x))|(x\leq 5)(\frac{1}{3}\tau.B(x)\oplus\frac{2}{3}\tau.C(x))$。
+   若$[A(x)]_{\mathcal{E}}=[B(x)]_{\mathcal{E}}=[C(x)]_{\mathcal{E}}$，
+   我们可以得到$A(x)$的静态转移树如图\label{fig:eg_condition}，$A(x)$关于$(x>7)\mathcal{E}$的条件等价树如图\label{fig:eg_condition2}。
+   \begin{figure}[!htbp]
+      \small
+      \centering
+      \includegraphics[width=8cm]{../figure/example_condition.png}
+      \caption[]{}
+      \label{fig:eg_condition}
+   \end{figure}
+   \begin{figure}[!htbp]
+      \small
+      \centering
+      \includegraphics[width=4cm]{../figure/example_condition2.png}
+      \caption[]{}
+      \label{fig:eg_condition2}
+   \end{figure}
+\end{example}
+
 \begin{example}
    $H(x)\stackrel{def}{=}(x\leq 3)(\frac{1}{3}\tau.(x\leq 1)G(x)\oplus\frac{1}{3}\tau.(x\leq 2)G(x)\oplus\frac{1}{3}\tau.(x\leq 3)G(x))$
 
@@ -560,21 +603,32 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
 当$A\mathcal{E}B$且满足下列条件时，称$\mathcal{E}$是一个符号互模拟(Symbolic Bisimulation)：
 \begin{itemize}
    \item {
-      若$ A \rightsquigarrow_{\varphi \mathcal{E}}\stackrel{a(x)}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\varphi\mathcal{E}, \mathcal{C}\neq [A]_{\varphi \mathcal{E}}$，
-      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\varphi_i \mathcal{E}}\stackrel{a(x)}{\rightarrow}_{\psi_i} \mathcal{C}\}$，
+      若$ A \rightsquigarrow_{\varphi \mathcal{E}}\stackrel{a(x)}{\rightarrow}_{\varphi} L\notin [A]_{\varphi \mathcal{E}}$，
+      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\varphi_i \mathcal{E}}\stackrel{a(x)}{\rightarrow}_{\psi_i} L'\in[L]_{\varphi_i\mathcal{E}}\}$，
       使得对$i\in I$，$\mathsf{Th}\vdash \varphi_i \Rightarrow \psi_i$。
    }
    \item {
-      若$A \rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\bar{a}(t)}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\varphi\mathcal{E},\mathcal{C}\neq [A]_{\varphi\mathcal{E}}$，
-      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\bar{a}(t_i)}{\rightarrow}_{\psi_i} \mathcal{C}\}$，
+      若$A \rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\bar{a}(t)}{\rightarrow}_{\varphi} L\notin [A]_{\varphi\mathcal{E}}$，
+      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\bar{a}(t_i)}{\rightarrow}_{\psi_i} L'\in [L]_{\varphi_i\mathcal{E}}\}$，
       使得对$i\in I$，$\mathsf{Th}\vdash (\varphi_i \Rightarrow \psi_i)\wedge (\varphi_i \Rightarrow (t=t_i))$。
    }
    \item {
       若$ A\rightsquigarrow_{\varphi\mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\mathcal{E}, \mathcal{C}\neq [A]_{\varphi \mathcal{E}}$，
-      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\psi_i} \mathcal{C}\}$，
-      使得$i\in I$，$\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i$且$\sum_{i\in I}q_i\geq q$。
+      则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\varphi_i} [\mathcal{C}]_{\varphi_i\mathcal{E}}\}$，
+      使得$i\in I$，$q_i= q$。
    }
 \end{itemize}
+\end{definition}
+
+如果RCCS的分支互模拟可以看作是用等价树模拟等价树，
+$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟等价树。
+我们可以给出等价森林的具体定义。
+
+\begin{definition}[条件等价森林]
+   $A\in\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，$\mathcal{E}$是$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系，
+   $\varphi$是一个布尔表达式，
+   对于$\varphi$的一个划分$\{\varphi_i\}_{i\in I}$，
+   $A$关于$\varphi\mathcal{E}$的条件等价森林有且仅有$\varphi_i\mathcal{E}$的等价树或等价森林,$i\in I$。
 \end{definition}
 
 在证明$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$的两项符号互模拟时，
@@ -620,22 +674,22 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
                $$\{(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y>1)\mathcal{S}}\stackrel{\overline{a}(t')}{\rightarrow}_{(y>1)}G''(t',y),$$
                $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y\leq 1)\mathcal{S}}\stackrel{\overline{a}(t')}{\rightarrow}_{(y<5)}G''(t',y)\}$$
                可以模拟上述操作，
-               其中$\mathsf{Th}\vdash(x=1)\wedge(y\leq 1)\Rightarrow \wedge(y<5)$
+               其中$\mathsf{Th}\vdash(x=1)\wedge(y\leq 1)\Rightarrow (y<5)$
                且$\mathsf{Th}\vdash (x=t)\wedge (y\leq 1)\Rightarrow (t=t')$，
-               $(G(t),G''(t,y))\in\mathcal{S}$。$(x=t)\wedge(y>1)$相同。
+               $G''(t,y)\in[G(t)]_{(x=t)\wedge(y\leq 1)\mathcal{S}}$。$(x=t)\wedge(y>1)$相同。
             }
             \item {
                对$x$的每一个赋值$t\in V$，
                $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y>1)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(x=t)\wedge(y>1)}G''(t,y)$$，
                
                存在集合$\{\overline{a}(x).G(x)\rightsquigarrow_{(x=t)(y>1)\mathcal{S}}\stackrel{\overline{a}(t')}{\longrightarrow}_{(x=t)}G(t')\}$
-               可以模拟上述操作，其中$\mathsf{Th}\vdash ((x=t)\wedge (y>1))\Rightarrow (x=t) \wedge \mathsf{Th}\vdash ((x=t)\wedge (y>1))\Rightarrow t=t'$，$(G(t),G''(t,y))\in\mathcal{S}$。
+               可以模拟上述操作，其中$\mathsf{Th}\vdash ((x=t)\wedge (y>1))\Rightarrow (x=t) \wedge \mathsf{Th}\vdash ((x=t)\wedge (y>1))\Rightarrow t=t'$，$G(t)\in [G''(t,y)]_{(x=t)\wedge (y>1)\mathcal{S}}$。
                
                对$x$的每一个赋值$t\in V$，
                $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y<5)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(x=t)\wedge(y<5)}G''(t,y)$$，
                
                存在集合$\{\overline{a}(x).G(x)\rightsquigarrow_{(x=t)(y<5)\mathcal{S}}\stackrel{\overline{a}(t')}{\longrightarrow}_{(x=t)}G(t')\}$
-               可以模拟上述操作，其中$\mathsf{Th}\vdash ((x=t)\wedge (y<5))\Rightarrow (x=t) \wedge\mathsf{Th}\vdash ((x=t)\wedge (y<5))\Rightarrow t=t'$，$(G(t),G''(t,y))\in\mathcal{S}$。
+               可以模拟上述操作，其中$\mathsf{Th}\vdash ((x=t)\wedge (y<5))\Rightarrow (x=t) \wedge\mathsf{Th}\vdash ((x=t)\wedge (y<5))\Rightarrow t=t'$，$G(t)\in [G''(t,y)]_{(x=t)\wedge (y<5)\mathcal{S}}$。
             }
          \end{itemize}
       }
@@ -661,7 +715,7 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
 
          对于$G(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\frac{1}{2}}{\rightarrow}_{\top} [\overline{a}(x).G(x)]_{\top\mathcal{S}}$，
          存在集合$$\{G''(x,y)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\frac{1}{2}}{\rightarrow}_{\top}[(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)]_{\top\mathcal{S}}\}$$
-         其中$\mathsf{Th}\vdash (\top\Rightarrow\top)$且$\frac{1}{2}\geq \frac{1}{2}$，$(\overline{a}(x).G(x),(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y))\in\mathcal{S}$。
+         其中$\mathsf{Th}\vdash (\top\Rightarrow\top)$且$\frac{1}{2}=\frac{1}{2}$，$(\overline{a}(x).G(x),(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y))\in\mathcal{S}$。
 
          对于$G''(x,y)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\frac{1}{2}}{\rightarrow}_{\top}[(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)]_{\top\mathcal{S}}$，
          我们可以对称地用集合$\{G(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\frac{1}{2}}{\rightarrow}_{\top} [\overline{a}(x).G(x)]_{\top\mathcal{S}}\}$模拟。
@@ -688,7 +742,7 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
 根据定义~\ref{def:rvpc_symbolic_bisimulation}，
 容易得到符号互模拟具有自反性和对称性，
 我们接下来证明符号互模拟的传递性。
-\begin{lemma}
+\begin{lemma}\label{lemma:transitivity}
    符号互模拟具有传递性。
 \end{lemma} 
 \begin{proof}
@@ -698,18 +752,19 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
          若$A\rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{RVPC}/\varphi\mathcal{E},\mathcal{C}\neq [A]_{\varphi\mathcal{E}}$，
          由于$A\mathcal{E}B$，
          根据定义存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$
-         和集合$S=\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}_{i\in I}$。
+         和集合$S=\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}_{i\in I}$。
          对于$B$关于$\varphi_i\mathcal{E}$的条件等价树$t^B_{\varphi_i\mathcal{E}}$上的节点$L$，
          因为$\mathsf{Th}\vdash\varphi_i\Rightarrow \psi_i$，
-         若$L\stackrel{\lambda}{\rightarrow}_{\psi_i}L'\in \mathcal{C}$，
-         则$L\stackrel{\lambda}{\rightarrow}_{\varphi_i}L'\in \mathcal{C}$，
-         因此存在集合$S'=\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi_i}\mathcal{C}\}_{i\in I}$，
+         若$L\stackrel{\lambda}{\rightarrow}_{\psi_i}L'\in [\mathcal{C}]_{\varphi_i\mathcal{E}}$，
+         则$L\stackrel{\lambda}{\rightarrow}_{\varphi_i}L'\in [\mathcal{C}]_{\varphi_i\mathcal{E}}$，
+         因此存在集合$S'=\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}}\}_{i\in I}$，
          根据定义~\ref{def:rvpc_symbolic_bisimulation}，
          $S'$也可以作为$A\rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{RVPC}/\varphi\mathcal{E},\mathcal{C}\neq [A]_{\varphi\mathcal{E}}$的模拟。
       
-         由于$B\mathcal{E}C$，对于每一个$B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi_i}\mathcal{C}$，
+         由于$B\mathcal{E}C$，对于每一个$B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}}$，
          根据定义存在$\varphi_i$的划分$\{\varphi_{i,j}\}_{j\in J}$
-         和集合$S_i=\{C\rightsquigarrow_{\varphi_{i,j}\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_{i,j}}\mathcal{C}|\mathsf{Th}\vdash \varphi_{i,j}\Rightarrow \psi_{i,j}\}_{j\in J}$，
+         和集合$S_i=\{C\rightsquigarrow_{\varphi_{i,j}\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_{i,j}}[\mathcal{C}]_{\varphi_{i,j}\mathcal{E}}|\mathsf{Th}\vdash \varphi_{i,j}\Rightarrow \psi_{i,j}\}_{j\in J}$，
+         和集合$S_i=\{C\rightsquigarrow_{\varphi_{i,j}\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi_{i,j}}[\mathcal{C}]_{\varphi_{i,j}\mathcal{E}}\}_{j\in J}$。
 
          进而，存在$\varphi$的划分$Con=\bigcup_{i\in I}\{\varphi_{i,j}\}_{j\in J}$
          和集合$S'=\bigcup_{i\in I}S_i'$，使得$C$可以符号模拟$A$。
@@ -717,72 +772,103 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
       }
       \item {
          若$A\rightsquigarrow_{\varphi \mathcal{E}}\stackrel{q}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{RVPC}/\varphi\mathcal{E},\mathcal{C}\neq [A]_{\varphi\mathcal{E}},q\in(0,1]$，
-         由于$A\mathcal{E}B$，存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\rightsquigarrow_{\psi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\psi_i'} \mathcal{C}|\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\psi_i'\}$，
-         其中$\sum_{i\in I} q_i\geq q$。
-        
+         由于$A\mathcal{E}B$，存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\psi_i} [\mathcal{C}]_{\varphi_i\mathcal{E}}|\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\wedge q=q_i\}$，
+         因此存在$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\varphi_i} [\mathcal{C}]_{\varphi_i\mathcal{E}}\}$可以模拟$A$的条件$q$-转移，
+         余下部分与$l$-转移的证明相同。
       }
    \end{itemize}
 \end{proof}
-\begin{theorem}
+证明了符号互模拟的传递性后我们可以得到定理~\ref{th:equality}。
+\begin{theorem}\label{th:equality}
    符号互模拟关系是等价关系。
 \end{theorem}
+
+接下来我们希望通过符号互模拟定义$\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，
+一种比较直接的想法是将$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟的全集定义为
+$\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号互模拟关系的全集仍然是符号互模拟关系。
+
 \begin{lemma}
    如果每一个$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的关系$\mathcal{E}_i$都是符号互模拟关系，
    那么$(\bigcup_{i\in I}\mathcal{E}_i)^*$是符号互模拟关系。
 \end{lemma}
 \begin{proof}
-   令$\mathcal{E}=(\bigcup_{i\in I}\mathcal{E}_i)^*$。若因为$\varphi A_0\mathcal{E}_1 \varphi A_1 \mathcal{E}_2 \dots \mathcal{E}_k \varphi A_k$ ,
-$(\varphi A_0, \varphi A_k)\in \mathcal{E}$，由于互模拟具有传递性，通过依次证明$A_0\mathcal{E}A_1, A_1\mathcal{E}A_2 \dots$，我们可以证明$A_0$和$A_k$互模拟。
+   令$\mathcal{E}=(\bigcup_{i\in I}\mathcal{E}_i)^*$。
+   给定$A_0\mathcal{E}_1A_1\mathcal{E}_2A_2\dots A_{k-1}\mathcal{E}_k A_k$，
+   由于$\mathcal{E}=(\bigcup_{i\in I}\mathcal{E}_i)^*$，
+   我们可以得到$A_1\mathcal{E}A_k$，
+   若$\mathcal{E}$是一个符号互模拟关系，
+   则对于$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$，
+   存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
+   $\{A_k\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}$可模拟该操作
+   (对于条件$q$-转移的证明方式和条件$l$-转移本质上是相同的，在后续的证明中仅证明条件$l$-转移)。
+   我们可以通过归纳的证明$A_0\mathcal{E}A_1$，$A_1$可以模拟$A_0$;
+   $A_1\mathcal{E}A_2$，$A_2$可以模拟$A_1$；\dots；最终证明$A_k$可以模拟$A_0$。
 
-我们可以通过$A_0$的$\varphi\mathcal{E}$-tree，$t_{A_0}$递归的构建$A_1$的$\varphi\mathcal{E}$-tree，$t_{A_1}$，
-进而对$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi}\mathcal{C}$构造出$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i} \mathcal{C}|\mathsf{Th}\vdash (\varphi_i\Rightarrow\psi_i)\vee (\textrm{$\{\varphi_i\}$是$\varphi$的一个划分})\}$。
-对于每次递归的$t_{A_0}$的根结点，分以下情况讨论：
+   对于$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$，
+   我们需要给出$\varphi$的划分$\{\varphi_i\}_{i\in I}$
+   和集合$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}\}$
+   来模拟$A_0$的动作。
 
-\begin{itemize}
-   \item {
-      \textbf{Case 1 $t_{A_0}$的根结点只有一个儿子$A_0'$。}
-      \begin{itemize}
-         \item {
-            \textbf{Case 1.1 $A_0'\in [A_0]_{\varphi\mathcal{E}_1}$。} 则根据$A_0'$构建$A_1$的$\varphi\mathcal{E}$-tree。
-         }
-         \item {
-            \textbf{Case 1.2 $A_0'\notin [A_0]_{\varphi\mathcal{E}_1}$。} 
-            根据定义存在划分$\{\varphi_i\}$
-            和集合$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i} \in [A_0']_{\varphi\mathcal{E}}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}$。
-            这里我们构建了一个$A_1$的$\varphi\mathcal{E}_1$-tree, $t_{A_1}'$。对$t_{A_1}'$的叶子结点$B\stackrel{\lambda}{\rightarrow}_{\psi_i} B'$中的$B'\in[A_0']_{\varphi\mathcal{E}_1}$，
-            根据$A_0'$的$\varphi\mathcal{E}$-tree构建$B'$的$\varphi\mathcal{E}$-tree。
-         }
-      \end{itemize}
-   }
-   \item {
-      \textbf{Case 2 $A_0$有$h$个儿子$A_0^1,\dots, A_0^h$。}
-      \begin{itemize}
-         \item {
-            \textbf{Case 2.1 $\forall j\in [h], A^j_0\mathcal{E}_1 A_0$。}我们根据$A^1_0$构建$t_{A_1}$。
-         }
-         \item {
-            \textbf{Case 2.2 存在$A^1_0\notin[A_0]_{\varphi\mathcal{E}_1}$。}
-            令$q = \mathsf{P}_{\varphi\mathcal{E}_1}(A_0\stackrel{\coprod_{i\in [h]p_i\tau}}{\rightarrow}_{\coprod_{i\in I}\psi_i}[A^1_0]_{\varphi\mathcal{E}_1})$，
-            有$A_1\rightsquigarrow_{\varphi \mathcal{E}_1}\stackrel{q}{\rightarrow}_{\varphi} [A^1_0]_{\varphi\mathcal{E}_1}$。
-            对于$A_1$的$\varphi\mathcal{E}_1$-tree，$t_{A_1}'$的叶子结点$N$，$N\stackrel{\coprod_{i\in [h]}p_i\tau}{\rightarrow}_{\coprod_{i\in I}\psi_i} \coprod_{i\in I}N_i'\in [A^1_0]_{\varphi\mathcal{E}_1}$中的$N_i'$，
-            根据$A^1_0$来构造$N'_i$的$\varphi\mathcal{E}$-tree。
-         }
-      \end{itemize}
-   }
-   \item {
-      \textbf{Case 3 $t_{A_0}$的根结点$A_0\stackrel{\lambda}{\rightarrow}_{\varphi} L'\in \mathcal{C}$。}
-      根据定义存在划分$\{\varphi_i\}, \mathsf{Th}\vdash\bigvee_{i\in I}\varphi_i \Leftrightarrow \varphi$
-      和集合$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_1}\stackrel{\lambda}{\rightarrow}_{\psi_i} \in \mathcal{C}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}$，
-      由于$\mathcal{E}_1\in (\bigcup_{i\in I}\mathcal{E}_i)^*$， 我们可以得到存在集合$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i} \in \mathcal{C}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}$。
-   }
-\end{itemize}
+   考虑$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$，
+   由等价集的定义，我们可以得出$\varphi\mathcal{E}$上的等价集$\mathcal{C}$可以被划分成不相交的$\varphi\mathcal{E}_{i_1}$上的等价集
+   $\{\mathcal{C}_j^{i_1}\}$。
+   假设$t_{A_0}$是$A_0$关于$\varphi\mathcal{E}$的条件等价树，
+   我们可以递归的构建出$A_1$的条件等价森林。
+
+   \begin{itemize}
+      \item {
+         \textbf{$t_{A_0}$的根节点$A_0$只有一个儿子节点$A_0'$。}
+         若$A_0'\in[A_0]_{\varphi\mathcal{E}_{i_1}}$，
+         我们将根据$A_0'$的$\varphi\mathcal{E}_{i_1}$树构建$A_1$的条件等价森林。
+         若$A_0'\notin[A_0]_{\varphi\mathcal{E}_{i_1}}$，
+         根据$A_0\mathcal{E}_{i_1}A_1$，
+         我们可以得到$\varphi$的划分$\{\varphi_i\}_{i\in I}$
+         和集合$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{\tau}{\rightarrow}_{\psi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}_{i_1}}|\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\}_{i\in I}$。
+         
+         根据推论~\ref{lemma:transitivity}的证明经验，我们其实可以用$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{\tau}{\rightarrow}_{\varphi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}_{i_1}}\}_{i\in I}$
+         模拟$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\tau}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}\}_{i\in I}$，
+         为了方便证明，后续的证明中我们将直接使用$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{\lambda}{\rightarrow}_{\varphi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}_{i_1}}\}_{i\in I}$的形式。
+         
+         $\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{\tau}{\rightarrow}_{\varphi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}_{i_1}}\}_{i\in I}$
+         实际构建出了一个条件等价树的集合$\{t_{A_1}^{i}\}_{i\in I}$，
+         对于每个条件等价树$t_{A_1}^i$的叶子节点$B$，$B\stackrel{\tau}{\rightarrow}_{\varphi_i}B'\in [A_0']_{\varphi_i\mathcal{E}_{i_1}}$，
+         我们根据$A_0'$构建每一个$B'$的等价森林。
+      }
+      \item {
+         \textbf{$t_{A_0}$的根节点$A_0$有$h$个儿子节点$A_0^1,\dots,A_0^h$。}
+         根据定义$A_0\stackrel{\coprod_{i\in [h]p_j\tau}}{\rightarrow}_{\psi} \coprod_{j\in [h]}A_0^j$，
+         $A_0$到$A_0^j$的边被标记为$(\psi, p_j)$。
+
+         若所有$A_0^j\in [A_0]_{\varphi\mathcal{E}_{i_1}}$，
+         我们将根据$A_0^1$构建$A_1$的条件等价森林。
+
+         若存在$A_0^j\notin [A_0]_{\varphi\mathcal{E}_{i_1}}$，
+         不妨设为$A_0^1$，则$A_0\rightsquigarrow_{\varphi\mathcal{E}_{i_1}}\stackrel{q}{\rightarrow}_{\varphi} [A_0^1]_{\varphi\mathcal{E}_{i_1}}$，
+         根据$A_0\mathcal{E}_{i_1}A_1$，
+         我们可以得到$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
+         $\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{q}{\rightarrow}_{\varphi_i} [A_0^1]_{\varphi_i\mathcal{E}_{i_1}}\}_{i\in I}$，
+         这其中关系到$A_1$关于$\varphi_i\mathcal{E}_{i_1}$的条件等价树$t_1^i$，
+         根据条件$q$-转移的定义，
+         存在$\mathsf{P}_{\varphi_i,\varphi_i\mathcal{E}_{i_1}}(N\stackrel{\coprod_{i'\in [h']}p_{i'}\tau}{\longrightarrow}_{\varphi_i} N'\in [A_0^1]_{\varphi_i\mathcal{E}_{i_1}}) = q$，
+         我们根据$A_0^1$构建每个$N'$的等价森林。
+      }
+      \item {
+         \textbf{$t_{A_0}$的根节点$A_0$可以作$A_0\stackrel{l}{\rightarrow}_{\varphi} L'$。}
+         根据定义存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
+         $\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{l}{\rightarrow}_{\varphi_i} [L']_{\varphi_i\mathcal{E}_{i_1}}\}$。
+      }
+   \end{itemize}
+
+   通过上述递归的构建，我们可以得出图中的森林:
+
 \end{proof}
 
+现在我们可以定义$\mathbb{RVPC}_{\mathsf{Th}}$上的观察等价性了。
 \begin{definition}
    $\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的观察等价性$=_{\mathbb{RVPC}_{\mathsf{Th}}}$定义为$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的符号互模拟关系的全集。
 \end{definition}
-
-\begin{theorem}
+由于$=_{\mathbb{RVPC}_{\mathsf{Th}}}$仍然是一个符号互模拟关系，因此我们可以得到定理~\ref{th:equality2}。
+\begin{theorem}\label{th:equality2}
    $=_{\mathbb{RVPC}_{\mathsf{Th}}}$是一个等价关系。
 \end{theorem}
 
@@ -792,14 +878,15 @@ $(\varphi A_0, \varphi A_k)\in \mathcal{E}$，由于互模拟具有传递性，�
 \begin{proof}
    $=_{\mathbb{RVPC}_{\mathsf{Th}}}$对于随机选择和非确定性选择的封闭性比较容易证明。
 
-对条件操作运算的封闭性在于，$S\approxeq^s_{\mathsf{Th}} T$可以推出$\varphi S \approxeq^s_{\mathsf{Th}} \varphi T$
-对$\varphi S\rightsquigarrow_{\psi \approxeq^s_{\mathsf{Th}}}\stackrel{\lambda}{\rightarrow}_{\psi} \mathcal{C}\in \mathcal{T}/\psi \approxeq^s_{\mathsf{Th}}$，
-有$\mathsf{Th}\vdash \varphi\psi$，且$S\rightsquigarrow_{\psi \approxeq^s_{\mathsf{Th}}}\stackrel{\lambda}{\rightarrow}_{\psi} \mathcal{C}\in \mathcal{T}/\psi \approxeq^s_{\mathsf{Th}}$，
-根据定义，存在$\psi$的划分$\{\psi_i\}_{i\in I}$和集合$\{T\rightsquigarrow_{\psi_i \approxeq^s_{\mathsf{Th}}}\stackrel{\lambda}{\rightarrow}_{\phi_i}\mathcal{C}|\mathsf{Th}\vdash \psi_i\Rightarrow\phi_i\}$，
-又因为$\mathsf{Th}\vdash \varphi\psi$，所以存在$j\in J\subset I, \mathsf{Th}\vdash \varphi\psi_j$，$\{\varphi T\rightsquigarrow_{\psi_j \approxeq^s_{\mathsf{Th}}}\stackrel{\lambda}{\rightarrow}_{\phi_j}\mathcal{C}|\mathsf{Th}\vdash \psi_j\Rightarrow\phi_j\}$，
-重新构造$\psi$的划分为$\{\psi_j\}_{j\in [J-1]}\cup \{\bigvee_{i\in [I]/[J-1]}\psi_i\}$。q-transition的证明是类似的。
+证明条件操作运算的封闭性等同于证明对于任意$S,T\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
+$S=_{\mathbb{RVPC}_{\mathsf{Th}}} T$可以推出
+$\varphi S =_{\mathbb{RVPC}_{\mathsf{Th}}} \varphi T$。
+为方便证明，后文中$=_{\mathbb{RVPC}_{\mathsf{Th}}}$简记作$=$，绝对等价用$\equiv$表示。
 
-Composition,Localization,Recursion的运算与$\mathbb{VPC}$的运算[此处应有引用]相同。
+令二元关系$\mathcal{R}\equiv\{(\varphi S,\varphi T)|S=T\}$，
+二元关系$\mathcal{R}'\equiv(R\cup =)^*$。
+我们证明$\mathcal{R}'$是一个符号互模拟关系。
+
 \end{proof}
 
 \section{本章小结}
