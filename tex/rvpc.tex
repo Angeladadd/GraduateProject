@@ -628,7 +628,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟
    $A\in\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，$\mathcal{E}$是$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系，
    $\varphi$是一个布尔表达式，
    对于$\varphi$的一个划分$\{\varphi_i\}_{i\in I}$，
-   $A$关于$\varphi\mathcal{E}$的条件等价森林有且仅有$\varphi_i\mathcal{E}$的等价树或等价森林,$i\in I$。
+   $A$关于$\varphi\mathcal{E}$的条件等价森林有且仅有$A$关于$\varphi_i\mathcal{E}$的条件等价树或条件等价森林，$i\in I$。
 \end{definition}
 
 在证明$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$的两项符号互模拟时，
@@ -793,33 +793,33 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
 \end{lemma}
 \begin{proof}
    令$\mathcal{E}=(\bigcup_{i\in I}\mathcal{E}_i)^*$。
-   给定$A_0\mathcal{E}_1A_1\mathcal{E}_2A_2\dots A_{k-1}\mathcal{E}_k A_k$，
-   由于$\mathcal{E}=(\bigcup_{i\in I}\mathcal{E}_i)^*$，
+   给定$A_0\mathcal{E}_{i_1}A_1\mathcal{E}_{i_2}A_2\dots A_{k-1}\mathcal{E}_{i_k} A_k$，
+   由于$\mathcal{E}=(\bigcup_{i\in I}\mathcal{E}_{i})^*$，
    我们可以得到$A_1\mathcal{E}A_k$，
    若$\mathcal{E}$是一个符号互模拟关系，
    则对于$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$，
    存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
-   $\{A_k\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}$可模拟该操作
+   $\{A_k\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}$可模拟该操作
    (对于条件$q$-转移的证明方式和条件$l$-转移本质上是相同的，在后续的证明中仅证明条件$l$-转移)。
    我们可以通过归纳的证明$A_0\mathcal{E}A_1$，$A_1$可以模拟$A_0$;
    $A_1\mathcal{E}A_2$，$A_2$可以模拟$A_1$；\dots；最终证明$A_k$可以模拟$A_0$。
 
    对于$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$，
    我们需要给出$\varphi$的划分$\{\varphi_i\}_{i\in I}$
-   和集合$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}\mathcal{C}\}$
+   和集合$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}}\}$
    来模拟$A_0$的动作。
 
    考虑$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$，
    由等价集的定义，我们可以得出$\varphi\mathcal{E}$上的等价集$\mathcal{C}$可以被划分成不相交的$\varphi\mathcal{E}_{i_1}$上的等价集
    $\{\mathcal{C}_j^{i_1}\}$。
    假设$t_{A_0}$是$A_0$关于$\varphi\mathcal{E}$的条件等价树，
-   我们可以递归的构建出$A_1$的条件等价森林。
+   我们可以递归的构建出$A_1$关于$\varphi\mathcal{E}$的条件等价森林。
 
    \begin{itemize}
       \item {
          \textbf{$t_{A_0}$的根节点$A_0$只有一个儿子节点$A_0'$。}
          若$A_0'\in[A_0]_{\varphi\mathcal{E}_{i_1}}$，
-         我们将根据$A_0'$的$\varphi\mathcal{E}_{i_1}$树构建$A_1$的条件等价森林。
+         我们将根据$A_0'$的$\varphi\mathcal{E}_{i_1}$树构建$A_1$关于$\varphi\mathcal{E}$的条件等价森林。
          若$A_0'\notin[A_0]_{\varphi\mathcal{E}_{i_1}}$，
          根据$A_0\mathcal{E}_{i_1}A_1$，
          我们可以得到$\varphi$的划分$\{\varphi_i\}_{i\in I}$
@@ -832,12 +832,15 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          $\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{\tau}{\rightarrow}_{\varphi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}_{i_1}}\}_{i\in I}$
          实际构建出了一个条件等价树的集合$\{t_{A_1}^{i}\}_{i\in I}$，
          对于每个条件等价树$t_{A_1}^i$的叶子节点$B$，$B\stackrel{\tau}{\rightarrow}_{\varphi_i}B'\in [A_0']_{\varphi_i\mathcal{E}_{i_1}}$，
-         我们根据$A_0'$构建每一个$B'$的等价森林。
+         我们根据$A_0'$构建每一个$B'$关于$\varphi_i\mathcal{E}$的等价森林。
+         此时将$B$所在的$\varphi_i\mathcal{E}$等价树$t_{A_1}^{i}$复制并
+         与每个$B'$的$\varphi_i\mathcal{E}$的等价森林中的等价树相连，
+         我们可以得到$A_1$关于$\varphi_i\mathcal{E}$的条件等价森林。
       }
       \item {
          \textbf{$t_{A_0}$的根节点$A_0$有$h$个儿子节点$A_0^1,\dots,A_0^h$。}
          根据定义$A_0\stackrel{\coprod_{i\in [h]p_j\tau}}{\rightarrow}_{\psi} \coprod_{j\in [h]}A_0^j$，
-         $A_0$到$A_0^j$的边被标记为$(\psi, p_j)$。
+         $A_0$到$A_0^j$的边被标记为$(\psi, p_j)$，其中$\varphi\Rightarrow\psi$。
 
          若所有$A_0^j\in [A_0]_{\varphi\mathcal{E}_{i_1}}$，
          我们将根据$A_0^1$构建$A_1$的条件等价森林。
@@ -850,7 +853,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          这其中关系到$A_1$关于$\varphi_i\mathcal{E}_{i_1}$的条件等价树$t_1^i$，
          根据条件$q$-转移的定义，
          存在$\mathsf{P}_{\varphi_i,\varphi_i\mathcal{E}_{i_1}}(N\stackrel{\coprod_{i'\in [h']}p_{i'}\tau}{\longrightarrow}_{\varphi_i} N'\in [A_0^1]_{\varphi_i\mathcal{E}_{i_1}}) = q$，
-         我们根据$A_0^1$构建每个$N'$的等价森林。
+         我们根据$A_0^1$构建每个$N'$关于$\varphi_i\mathcal{E}$的条件等价森林。
       }
       \item {
          \textbf{$t_{A_0}$的根节点$A_0$可以作$A_0\stackrel{l}{\rightarrow}_{\varphi} L'$。}
@@ -859,8 +862,33 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
       }
    \end{itemize}
 
-   通过上述递归的构建，我们可以得出图中的森林:
+   上述递归的构建可以通过图~\ref{fig:equal_forest}更加形象的表述。
+   \begin{figure}[!htbp]
+      \small
+      \centering
+      \includegraphics[width=13cm]{../figure/equality_1.png}
+      \caption[]{递归构建图解} 
+      \label{fig:equal_forest}
+   \end{figure}
+   图~\ref{fig:equal_forest}中，
+   第一层描述了根节点只有一个儿子节点情况的构建方法，
+   对于每一个$i\in I$，
+   右侧的条件等价树都会复制一份，
+   全部的条件等价树构成$\varphi\mathcal{E}$条件等价森林，
+   作$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}\stackrel{\tau}{\rightarrow}_{\varphi_i}}[A_0']_{\varphi_i\mathcal{E}_{i_1}}\}$
+   对$A_0\stackrel{\tau}{\rightarrow}_{\varphi\mathcal{E}_{i_1}}A_0'$的模拟。
 
+   第二层描述了根节点有多个儿子节点情况的构建方法，
+   对于每一个$A_0\rightsquigarrow_{\varphi\mathcal{E}_{i_1}}\stackrel{q}{\rightarrow}_{\varphi}$，
+   右侧的条件等价树会复制一份，
+   在对每一个$A_0\rightsquigarrow_{\varphi\mathcal{E}_{i_1}}\stackrel{q}{\rightarrow}_{\varphi} [A_0^1]_{\varphi\mathcal{E}_{i_1}}$
+   模拟时，对模拟该动作的集合$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{q}{\rightarrow}_{\varphi_i} [A_0^1]_{\varphi_i\mathcal{E}_{i_1}}\}_{i\in I}$
+   中的每一个元素都复制一份条件等价树，再进行对应的模拟。
+
+   通过上述构建方式，我们最终会构建出$A_1$关于$\varphi\mathcal{E}$的条件等价树或条件等价森林，
+   来模拟$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$。
+   归纳地，我们可以构建出$A_2$对$A_1$关于$\varphi\mathcal{E}$的条件等价树或条件等价森林中的每一个条件等价树的转移
+   的条件等价森林……最终构建出$A_k$模拟$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$的条件等价森林。
 \end{proof}
 
 现在我们可以定义$\mathbb{RVPC}_{\mathsf{Th}}$上的观察等价性了。
