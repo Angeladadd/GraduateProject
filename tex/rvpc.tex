@@ -188,7 +188,11 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 
 \subsection{互模拟关系与观察等价性}\label{ch:bisimulation}
 
-   程序理论的基本问题是进程的等价性。对通信并发系统程序等价的定义和验证，现在已有很多研究。
+   程序理论的基本问题是进程的等价性。
+   等价关系定义为：设$R$是非空集合$A$上的二元关系，
+   若$R$是自反的、对称的、传递的，则称$R$是$A$上的等价关系。
+   研究等价关系的目的在于将集合中的元素进行分类，选取每类的代表元素来降低问题的复杂度，如软件测试时，可利用等价类来选择测试用例。
+   对通信并发系统程序等价的定义和验证，现在已有很多研究。
    在提出CCS时Milner提出了\textit{观察等价(observation equivalence)}，即\textit{弱互模拟(weak bisimulation)}\cite{2}。
    Glabbeek和Weijland提出的\textit{分支互模拟(branching bisimulation)}\cite{6}也是十分著名的研究。
 
@@ -393,7 +397,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 
    将$\top$推广到其他布尔表达式，我们可以得到更为广泛的结论：
 
-   \begin{corollary}
+   \begin{corollary}\label{co:condition}
       $A,B\in \mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$，
       若$\varphi A\approxeq_{\mathsf{Th}}^s \varphi B$，
       则对布尔表达式$\varphi',\mathsf{Th}\vdash \varphi\Rightarrow \varphi'$，
@@ -454,7 +458,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    $A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
    当下列条件成立时，$A$的静态转移树$t$称为是一个关于$\varphi\mathcal{E}$的条件等价树（$\varphi \mathcal{E}$-tree) ，记作$t^A_{\varphi \mathcal{E}}$。
 \begin{itemize}
-   \item[(1)] $t$上的所有节点$N$，$N\in [A]_{\varphi \mathcal{E}}$。
+   \item[(1)] $t$上的所有节点$N$，$N\in [A]_{\varphi \mathcal{E}}$，并被重新标记为$\varphi N$。
    \item[(2)] {
    若$t$的边被标记为$(\psi, q)$，则$\mathsf{Th}\vdash \varphi\Rightarrow \psi$。
    }
@@ -787,7 +791,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟
 一种比较直接的想法是将$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟的全集定义为
 $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号互模拟关系的全集仍然是符号互模拟关系。
 
-\begin{lemma}
+\begin{lemma}\label{lemma:closure}
    如果每一个$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的关系$\mathcal{E}_i$都是符号互模拟关系，
    那么$(\bigcup_{i\in I}\mathcal{E}_i)^*$是符号互模拟关系。
 \end{lemma}
@@ -797,10 +801,9 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
    由于$\mathcal{E}=(\bigcup_{i\in I}\mathcal{E}_{i})^*$，
    我们可以得到$A_1\mathcal{E}A_k$，
    若$\mathcal{E}$是一个符号互模拟关系，
-   则对于$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$，
+   则对于条件$l$-转移：$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$，
    存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
-   $\{A_k\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}$可模拟该操作
-   (对于条件$q$-转移的证明方式和条件$l$-转移本质上是相同的，在后续的证明中仅证明条件$l$-转移)。
+   $\{A_k\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}$可模拟该操作。
    我们可以通过归纳的证明$A_0\mathcal{E}A_1$，$A_1$可以模拟$A_0$;
    $A_1\mathcal{E}A_2$，$A_2$可以模拟$A_1$；\dots；最终证明$A_k$可以模拟$A_0$。
 
@@ -819,7 +822,10 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
       \item {
          \textbf{$t_{A_0}$的根节点$A_0$只有一个儿子节点$A_0'$。}
          若$A_0'\in[A_0]_{\varphi\mathcal{E}_{i_1}}$，
-         我们将根据$A_0'$的$\varphi\mathcal{E}_{i_1}$树构建$A_1$关于$\varphi\mathcal{E}$的条件等价森林。
+         我们将以$\varphi A_0'$作为下次递归的根节点，
+         构建$\varphi A_1$条件等价森林
+         （这样递归是因为在$A_1$的$\varphi\mathcal{E}$条件等价森林中的所有节点的动作都满足条件$\varphi$，
+         $A_1$和$\varphi A_1$是等价的）。
          若$A_0'\notin[A_0]_{\varphi\mathcal{E}_{i_1}}$，
          根据$A_0\mathcal{E}_{i_1}A_1$，
          我们可以得到$\varphi$的划分$\{\varphi_i\}_{i\in I}$
@@ -832,10 +838,10 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          $\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{\tau}{\rightarrow}_{\varphi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}_{i_1}}\}_{i\in I}$
          实际构建出了一个条件等价树的集合$\{t_{A_1}^{i}\}_{i\in I}$，
          对于每个条件等价树$t_{A_1}^i$的叶子节点$B$，$B\stackrel{\tau}{\rightarrow}_{\varphi_i}B'\in [A_0']_{\varphi_i\mathcal{E}_{i_1}}$，
-         我们根据$A_0'$构建每一个$B'$关于$\varphi_i\mathcal{E}$的等价森林。
+         我们根据$\varphi_i A_0'$构建每一个$\varphi_i B'$关于$\varphi_i\mathcal{E}$的等价森林。
          此时将$B$所在的$\varphi_i\mathcal{E}$等价树$t_{A_1}^{i}$复制并
          与每个$B'$的$\varphi_i\mathcal{E}$的等价森林中的等价树相连，
-         我们可以得到$A_1$关于$\varphi_i\mathcal{E}$的条件等价森林。
+         我们可以得到$A_1$关于$\varphi\mathcal{E}$的条件等价森林。
       }
       \item {
          \textbf{$t_{A_0}$的根节点$A_0$有$h$个儿子节点$A_0^1,\dots,A_0^h$。}
@@ -843,7 +849,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          $A_0$到$A_0^j$的边被标记为$(\psi, p_j)$，其中$\varphi\Rightarrow\psi$。
 
          若所有$A_0^j\in [A_0]_{\varphi\mathcal{E}_{i_1}}$，
-         我们将根据$A_0^1$构建$A_1$的条件等价森林。
+         我们将根据$\varphi A_0^1$构建$\varphi A_1$的条件等价森林。
 
          若存在$A_0^j\notin [A_0]_{\varphi\mathcal{E}_{i_1}}$，
          不妨设为$A_0^1$，则$A_0\rightsquigarrow_{\varphi\mathcal{E}_{i_1}}\stackrel{q}{\rightarrow}_{\varphi} [A_0^1]_{\varphi\mathcal{E}_{i_1}}$，
@@ -853,12 +859,12 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          这其中关系到$A_1$关于$\varphi_i\mathcal{E}_{i_1}$的条件等价树$t_1^i$，
          根据条件$q$-转移的定义，
          存在$\mathsf{P}_{\varphi_i,\varphi_i\mathcal{E}_{i_1}}(N\stackrel{\coprod_{i'\in [h']}p_{i'}\tau}{\longrightarrow}_{\varphi_i} N'\in [A_0^1]_{\varphi_i\mathcal{E}_{i_1}}) = q$，
-         我们根据$A_0^1$构建每个$N'$关于$\varphi_i\mathcal{E}$的条件等价森林。
+         我们根据$\varphi_i A_0^1$构建每个$\varphi_i N'$关于$\varphi_i\mathcal{E}$的条件等价森林。
       }
       \item {
-         \textbf{$t_{A_0}$的根节点$A_0$可以作$A_0\stackrel{l}{\rightarrow}_{\varphi} L'$。}
+         \textbf{$t_{A_0}$的根节点$A_0$可以作$A_0\stackrel{\lambda}{\rightarrow}_{\varphi} L'$。}
          根据定义存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
-         $\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{l}{\rightarrow}_{\varphi_i} [L']_{\varphi_i\mathcal{E}_{i_1}}\}$。
+         $\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{\lambda}{\rightarrow}_{\varphi_i} [L']_{\varphi_i\mathcal{E}_{i_1}}\}$。
       }
    \end{itemize}
 
@@ -889,6 +895,10 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
    来模拟$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$。
    归纳地，我们可以构建出$A_2$对$A_1$关于$\varphi\mathcal{E}$的条件等价树或条件等价森林中的每一个条件等价树的转移
    的条件等价森林……最终构建出$A_k$模拟$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$的条件等价森林。
+
+   对于条件$q$-转移：$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{q}{\rightarrow}_{\varphi}\mathcal{C}$的证明方法是相同的。
+
+   附录中附有递归构建的伪代码。
 \end{proof}
 
 现在我们可以定义$\mathbb{RVPC}_{\mathsf{Th}}$上的观察等价性了。
@@ -900,20 +910,93 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
    $=_{\mathbb{RVPC}_{\mathsf{Th}}}$是一个等价关系。
 \end{theorem}
 
+在数学特别是抽象代数中，同余关系或简称同余是相容于某个代数运算的等价关系。
+设$A=<S,*,\delta>$是一个代数系统，$~$是载体$S$上的等价关系，若$~$在$A$上的所有运算下都是可保持的，则称$~$为代数系统$A$上的同余关系。 
+同余关系使得元素所在的等价类在运算上可以作为一个整体来看待。
+我们希望证明我们定义的$=_{\mathbb{RVPC}_{\mathsf{Th}}}$是一个同余关系。
+
 \begin{theorem}
    $=_{\mathbb{RVPC}_{\mathsf{Th}}}$具有同余性。
 \end{theorem}
 \begin{proof}
-   $=_{\mathbb{RVPC}_{\mathsf{Th}}}$对于随机选择和非确定性选择的封闭性比较容易证明。
+   $=_{\mathbb{RVPC}_{\mathsf{Th}}}$对于随机选择和非确定性选择的可保持性比较容易证明。
+   由推论~\ref{co:condition}易知$A=_{\mathbb{RVPC}_{\mathsf{Th}}}B$则$\varphi A=_{\mathbb{RVPC}_{\mathsf{Th}}}\varphi B$。
+   为方便证明，以下$=_{\mathbb{RVPC}_{\mathsf{Th}}}$简记为$=$，绝对等价性记为$\equiv$，定义记为$\stackrel{def}{=}$。
 
-证明条件操作运算的封闭性等同于证明对于任意$S,T\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
-$S=_{\mathbb{RVPC}_{\mathsf{Th}}} T$可以推出
-$\varphi S =_{\mathbb{RVPC}_{\mathsf{Th}}} \varphi T$。
-为方便证明，后文中$=_{\mathbb{RVPC}_{\mathsf{Th}}}$简记作$=$，绝对等价用$\equiv$表示。
+   对于并发操作子（Composition），考虑等价关系$\mathcal{R}\stackrel{def}{=}\{(A|C,B|D)|(A,B)\in =,(C,D)\in =\}$，
+   令$\mathcal{R}' = (\mathcal{R}\cup =)^*$，我们证明$\mathcal{R}'$是一个符号互模拟关系。
+   对于条件$l$-转移：$(A|C)\rightsquigarrow_{\varphi\mathcal{R'}}\stackrel{\lambda}{\rightarrow}_{\varphi}\mathcal{C}\in\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}/\varphi \mathcal{R}',\mathcal{C}\neq [(A|C)]_{\varphi\mathcal{R}'}$，
+   我们可以用引理~\ref{lemma:closure}中的方法递归的构造$(B|C)$的$\varphi\mathcal{E}$条件等价森林来模拟$(A|C)$的动作，
+   令$t_{(A|C)}$为$(A|C)$关于$\varphi\mathcal{R'}$的条件等价树。
+   \begin{itemize}
+      \item {
+         $t_{(A|C)}$上的边：
+         $A|C\stackrel{(\psi, 1)}{\rightarrow} A'|C, \mathsf{Th}\vdash \varphi\Rightarrow\psi$
+         是由于$A\stackrel{\tau}{\rightarrow}_{\varphi} A'$。
 
-令二元关系$\mathcal{R}\equiv\{(\varphi S,\varphi T)|S=T\}$，
-二元关系$\mathcal{R}'\equiv(R\cup =)^*$。
-我们证明$\mathcal{R}'$是一个符号互模拟关系。
+         若$A'\in [A]_{\varphi =}$，
+         那么$(A'|C)\in[(A|C)]_{\varphi\mathcal{R}'}\equiv[(B|D)]_{\varphi\mathcal{R}'}$。
+         实际上，对于$A\stackrel{\coprod_{i\in I}p_i\tau}{\rightarrow}_{\varphi} \coprod_{i\in I} A_i=A$，
+         $A_i|C\in [B|D]_{\varphi\mathcal{R}'}$。
+         我们可以根据$\varphi (A_0|C)$的$\varphi\mathcal{R}'$条件等价树构建$(B|D)$的$\varphi\mathcal{R}'$条件等价森林。
+
+         若$A'\notin [A]_{\varphi =}$，
+         那么根据定义存在$\{B\rightsquigarrow_{\varphi_i\mathcal{=}}\stackrel{\tau}{\rightarrow}_{\varphi_i}B_i\in [A']_{\varphi_i =}\}_{i\in I}$，
+         模拟$A\rightsquigarrow_{\varphi =}\stackrel{\tau}{\rightarrow}_{\varphi} A'$，
+         其中$\{\varphi_i\}_{i\in I}$是$\varphi$的划分。
+         我们根据$\varphi_i A'$构建$\varphi_i B_i$的$\varphi_i \mathcal{R}'$条件等价森林。
+      }
+      \item {
+         $t_{(A|C)}$上的边：
+         $A|C\stackrel{(\psi, 1)}{\rightarrow} A'|C', \mathsf{Th}\vdash \varphi\Rightarrow\psi$
+         是由于$A\stackrel{\overline{a}(t)}{\longrightarrow}_{\psi'} A', C\stackrel{a(x)}{\longrightarrow}_{\psi''} C', \psi=\psi'\psi''$。
+
+         根据$A=B,C=D$，
+         $A\rightsquigarrow_{\varphi = }\stackrel{\overline{a}(t)}{\longrightarrow}_{\varphi}A'$
+         可以由$\{B\rightsquigarrow_{\varphi_i =}\stackrel{\overline{a}(t)}{\longrightarrow}_{\varphi_i}B_i\in [A']_{\varphi_i=}\}_{i\in I}$模拟，
+         其中$\{\varphi_i\}_{i\in I}$是$\varphi$的划分。
+         $C\rightsquigarrow_{\varphi = }\stackrel{a(x)}{\longrightarrow}_{\varphi}C'$
+         可以由$\{D\rightsquigarrow_{\varphi_j =}\stackrel{a(x)}{\longrightarrow}_{\varphi_j}D_j\in [C']_{\varphi_j=}\}_{j\in J}$模拟，
+         其中$\{\varphi_j\}_{j\in J}$是$\varphi$的划分。
+
+         对于所有的$i\in I, j\in J, \mathsf{Th}\vdash \varphi_i\varphi_j\not\Rightarrow \bot$，
+         $(B_i\mid D_j)\in[A'\mid C']_{\varphi_i\varphi_j \mathcal{R'}}$，
+         我们根据$\varphi_i\varphi_j(A'|C')$的$\varphi_i\varphi_j \mathcal{R}' $条件等价树构建$\varphi_i\varphi_j(B_i|D_j)$的$\varphi_i\varphi_j \mathcal{R}' $条件等价森林。
+      }
+      \item {
+         $t_{(A|C)}$上的边：
+         $A|C\stackrel{(\psi, q)}{\rightarrow} A'|C, \mathsf{Th}\vdash \varphi\Rightarrow\psi, q\in(0,1)$，
+         则存在$A\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\varphi} \coprod_{i\in I} A_i$，
+         对所有的$i\in I$，$A|C\stackrel{(\psi, p_i)}{\rightarrow} A_i|C, \mathsf{Th}\vdash \varphi\Rightarrow\psi$。
+
+         若对所有的$i\in I, A_i\in[A]_{\varphi =}$，我们可以根据$(A_i|C)$关于$\varphi\mathcal{R}'$的条件等价树构建$(B|D)$的$\varphi\mathcal{R}'$条件等价森林。
+
+         若存在$A_i\notin [A]_{\varphi =}$，不妨设为$A_0$，
+         若有$A_1\notin[A]_{\varphi =}\wedge A_1\in [A_0]_{\varphi =}$，
+         此时有$A\rightsquigarrow_{\varphi = }\stackrel{q_0}{\rightarrow}_{\varphi}[A_0]_{\varphi=}$，
+         $A\rightsquigarrow_{\varphi = }\stackrel{q_1}{\rightarrow}_{\varphi}[A_0]_{\varphi=}$，
+         $A|C\rightsquigarrow_{\varphi = }\stackrel{q_0+q_1}{\longrightarrow}_{\varphi}[A_1|C]_{\varphi=}$。
+
+         根据$A=B$，存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
+         $\{B\rightsquigarrow_{\varphi_i=}\stackrel{q_0}{\rightarrow}_{\varphi_i}B_i\in [A_0]_{\varphi_i =}\}$
+         模拟$A\rightsquigarrow_{\varphi = }\stackrel{q_0}{\rightarrow}_{\varphi}[A_0]_{\varphi=}$。
+         存在$\varphi$的划分$\{\varphi_j\}_{j\in J}$和集合
+         $\{B\rightsquigarrow_{\varphi_j=}\stackrel{q_1}{\rightarrow}_{\varphi_j}B_j\in [A_1]_{\varphi_j =}\}$
+         模拟$A\rightsquigarrow_{\varphi = }\stackrel{q_1}{\rightarrow}_{\varphi}[A_1]_{\varphi=}$。
+         对所有的$i\in I, j\in J, \mathsf{Th}\vdash \varphi_i\varphi_j\not\Rightarrow \bot$，
+         我们有$(B|D)\rightsquigarrow_{\varphi_i\varphi_j=}\stackrel{q_0+q_1}{\longrightarrow}_{\varphi_i\varphi_j}(B'|D)\in[A_0|C]_{\varphi_i\varphi_j=}$，
+         我们根据$\varphi_i\varphi_j (A_0|C)$的$\varphi_i\varphi_j \mathcal{R}' $条件等价树构建$\varphi_i\varphi_j(B'|D)$的$\varphi_i\varphi_j \mathcal{R}' $条件等价森林。
+      }
+      \item {
+         若$(A|C)\stackrel{\lambda}{\rightarrow}_{\varphi} (A'|C), \lambda\neq \tau$，
+         则$A\stackrel{\lambda}{\rightarrow}_{\varphi} A'$，
+         根据定义存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
+         $\{B|D\rightsquigarrow_{\varphi_i=}\stackrel{\lambda}{\rightarrow}_{\varphi_i} [(A'|C)]_{\varphi_i=}\}$。
+      }
+   \end{itemize}
+   对于条件$q$-转移：$(A|C)\rightsquigarrow_{\varphi=}\stackrel{q}{\rightarrow}_{\varphi}\mathcal{C}$的证明方法是相同的。
+
+   对于本地化操作子（Localization），
 
 \end{proof}
 
