@@ -60,7 +60,7 @@ $!a(x).T$和$!\overline{a}(t).T$对应递归操作，$\mu X.E$可以表示为
 $(c)(E\{c(z).0/X\}|!\overline{c}(r).E\{c(z).0/X\})$。
 其余的表达与第一章CCS语法定义的解释相同。
 
-The Value-Passing Calculus提出了两种转移语义的描述：具体语义（Concrete Semantics）和符号语义（Symbolic Semantics）。
+The Value-Passing Calculus提出了两种迁移语义的描述：具体语义（Concrete Semantics）和符号语义（Symbolic Semantics）。
 后文我们只用到了符号语义，因此我们忽略具体语义的相关内容。
 
 $\mathbb{VPC}_{\mathsf{Th}}$的符号语义如图~\ref{fig_vpc}所示。
@@ -143,7 +143,7 @@ $S=\bigoplus_{i\in I}p_i\tau.T_i$意味着$S$在$p_i$的概率下经过内部动
 $\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$为所有$\mathbb{RVPC}_\mathsf{Th}$的项$T$的集合。
 
 在~\ref{ch:vpc}中$\mathbb{VPC}_{\mathsf{Th}}$的符号语义的基础上，
-增加\label{fig_rccs}定义的随机选择操作子的转移规则，
+增加\label{fig_rccs}定义的随机选择操作子的迁移规则，
 我们可以得到随机传值进程模型的符号语义，
 其中随机选择的条件为$\top$，
 表明该操作在任意条件下可执行；
@@ -159,7 +159,7 @@ $\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$为所有$\mathbb{RVPC}_\mathsf{Th}$�
     \label{fig_sematic}
 \end{figure}
 
-对于$\mathbb{VPC}_{\mathsf{Th}}$的前缀操作子的转移规则：
+对于$\mathbb{VPC}_{\mathsf{Th}}$的前缀操作子的迁移规则：
 $\sum_{i\in I} \varphi_i \lambda_i. T_i\stackrel{\lambda_i}{\rightarrow}_{\varphi_i} T_i$，
 它本质上代表了非确定选择，
 即作出$\varphi_i$条件下的$\lambda_i$动作到达$T_i$状态是非确定的，
@@ -212,9 +212,9 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    $\mathcal{P}_{RCCS}$，$\mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$，$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价集的定义都是相似的，因此不做赘述。
 
    RCCS的分支互模拟是CCS分支互模拟的扩展，我们首先来看CCS的分支互模拟。
-   $\mathcal{P}_{CCS}$上的分支互模拟的定义如下，其中内部操作$\tau$带来的状态迁移可以称为\textit{静态转移}，
-   当$A\stackrel{\tau}{\rightarrow}A'\mathcal{E}A$时，我们可以写为$A\stackrel{\tau}{\rightarrow}_{\mathcal{E}}A'$，在Uniform Approach中，这种动作称为\textit{状态保持的静态转移（state-preserving silent transition）}，
-   对应的若$A\stackrel{\tau}{\rightarrow}A'\notin [A]_{\mathcal{E}}$，称为\textit{状态改变的静态转移}。
+   $\mathcal{P}_{CCS}$上的分支互模拟的定义如下，其中内部操作$\tau$带来的状态迁移可以称为\textit{静态迁移}，
+   当$A\stackrel{\tau}{\rightarrow}A'\mathcal{E}A$时，我们可以写为$A\stackrel{\tau}{\rightarrow}_{\mathcal{E}}A'$，在Uniform Approach中，这种动作称为\textit{状态保持的静态迁移（state-preserving silent transition）}，
+   对应的若$A\stackrel{\tau}{\rightarrow}A'\notin [A]_{\mathcal{E}}$，称为\textit{状态改变的静态迁移}。
    $\Rightarrow_{\mathcal{E}}$为$\stackrel{\tau}{\rightarrow}_{\mathcal{E}}$的闭包。
    \begin{definition}
       $\mathcal{E}$是$\mathcal{P}_{CCS}$上的等价关系，
@@ -224,22 +224,22 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \end{definition}
 
    考虑到RCCS在CCS的基础上增加了概率选择，
-   状态保持的静态转移在$A\stackrel{\tau}{\rightarrow}A'\mathcal{E}A$的基础上新增了
+   状态保持的静态迁移在$A\stackrel{\tau}{\rightarrow}A'\mathcal{E}A$的基础上新增了
    $A\stackrel{p\tau}{\rightarrow} A'\mathcal{E}A,0<p<1$的可能，
-   为了用类似$\Rightarrow_{\mathcal{E}}$的方式表示这种静态转移，
+   为了用类似$\Rightarrow_{\mathcal{E}}$的方式表示这种静态迁移，
    Uniform Approach提出了\textit{等价树（Epsilon Tree）}的概念[cite]，
    将概率选择作为树的分支，节点$A$的关于等价关系$\mathcal{E}$的等价树上的任意节点$N\in [A]_{\mathcal{E}}$。
-   同时，Uniform Approach定义了两种转移：$l$-transition和$q$-transition，
+   同时，Uniform Approach定义了两种迁移：$l$-transition和$q$-transition，
    分别表示等价树上的节点迁移到其他等价集动作和概率。
 
-   \begin{definition}[$l$-转移($l$-transition)]
+   \begin{definition}[$l$-迁移($l$-transition)]
       $A\in \mathcal{P}_{RCCS}$，
       从$A$到$\mathcal{B}\in \mathcal{P}_{RCCS}/\mathcal{E}，\mathcal{B}\neq [A]_{\mathcal{E}}$的
-      $l$-转移表示$A$关于等价关系$\mathcal{E}$的等价树上的每一个叶子结点$L$，
+      $l$-迁移表示$A$关于等价关系$\mathcal{E}$的等价树上的每一个叶子结点$L$，
       存在$L\stackrel{l}{\rightarrow}L'\in\mathcal{B},l\neq \tau$，写作$A\rightsquigarrow_{\mathcal{E}}\stackrel{l}{\rightarrow}\mathcal{B}$。
    \end{definition}
 
-   \begin{definition}[$q$-转移($q$-transition)]
+   \begin{definition}[$q$-迁移($q$-transition)]
       $A\in \mathcal{P}_{RCCS}$，$\mathcal{E}$为$\mathcal{P}_{RCCS}$上的等价关系，
       $L$为$A$关于等价关系$\mathcal{E}$的等价树上的每一个叶子结点，
       $\mathcal{B}\in \mathcal{P}_{RCCS}/\mathcal{E}, \mathcal{B}\neq [A]_{\mathcal{E}}$。
@@ -249,7 +249,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
       定义$\mathsf{P}_{\mathcal{E}}(L\stackrel{\coprod_{i\in[k]}p_i\tau}{\longrightarrow}\mathcal{B})=\mathsf{P}(L\stackrel{\coprod_{i\in[k]}p_i\tau}{\longrightarrow}\mathcal{B})/(1-\mathsf{P}(L\stackrel{\coprod_{i\in[k]}p_i\tau}{\longrightarrow}[A]_{\mathcal{E}}))$。
 
       当$\mathsf{P}_{\mathcal{E}}(L\stackrel{\coprod_{i\in[k]}p_i\tau}{\longrightarrow}\mathcal{B})=q$时，
-      记为$A\rightsquigarrow_{\mathcal{E}}\stackrel{q}{\rightarrow}\mathcal{B}$，即$q$-转移。
+      记为$A\rightsquigarrow_{\mathcal{E}}\stackrel{q}{\rightarrow}\mathcal{B}$，即$q$-迁移。
    \end{definition}
 
    现在我们终于可以引入Uniform Approach中定义的RCCS的分支互模拟关系了！
@@ -320,7 +320,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    根据$\mathbb{VPC}_\mathsf{Th}$的符号互模拟的定义，我们容易得到$A$和$A'$是不符号互模拟的，
    对于$A'(t)\stackrel{\overline{a}(\mathsf{s}(t))}{\longrightarrow}_{x\geq 3} 0$，
    因为$3<x<5$的这一部分动作是$A(x)$无法完成的，所以不存在$x\geq 3$的划分，
-   使得$A(x)$可以给出一个转移的集合来模拟整个$x\geq 3$。
+   使得$A(x)$可以给出一个迁移的集合来模拟整个$x\geq 3$。
    但反观$B(x)=(x>5)A(x),B'(x)=(x>5)A'(x)$，
    我们可以得到$B'(x)=((x>5)\wedge(x\geq 3))\overline{a}(\mathsf{s}(x)).0=(x>5)\overline{a}(\mathsf{s}(x)).0$，
    同理$B(x)=(x>5)\overline{a}(\mathsf{s}(x)).0$，
@@ -427,20 +427,20 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    我们用$\{B\Rightarrow_{\psi_i}B'_i\stackrel{a(x)}{\longrightarrow}_{\psi'_i}B_i'\}$模拟，
    其中$(\varphi_i A\mathcal{E}\varphi_i B_i)\wedge(\varphi_i A'\mathcal{E}\varphi_i B_i')$，
    根据条件等价集的定义，我们可以得到$B_i\in [A]_{\varphi\mathcal{E}}$，$B_i'\in [A']_{\varphi \mathcal{E}}$，
-   由于$B_i \approxeq_{\mathsf{Th}}^s A$，$B_i\approxeq_{\mathsf{Th}}^s B$，那么$B\Rightarrow_{\psi_i}B_i$实际上也是\textit{状态保持的静态转移}。
+   由于$B_i \approxeq_{\mathsf{Th}}^s A$，$B_i\approxeq_{\mathsf{Th}}^s B$，那么$B\Rightarrow_{\psi_i}B_i$实际上也是\textit{状态保持的静态迁移}。
 
    对于我们概率扩展后的$\mathbb{RVPC}_{\mathsf{Th}}$，
-   对上述例子状态保持静态转移多了$B\stackrel{q\tau}{\rightarrow}_{\psi_i} B_i$
-   的情况，其中$q\in(0,1)$，表示\textit{概率的状态保持的静态转移}。
-   我们希望可以找到$\mathbb{RVPC}_{\mathsf{Th}}$中类似$\Rightarrow$的方式来表达这种状态保持的静态转移。
-   我们可以使用Uniform Approach中等价树的方法来刻画这种状态保持的静态转移，
+   对上述例子状态保持静态迁移多了$B\stackrel{q\tau}{\rightarrow}_{\psi_i} B_i$
+   的情况，其中$q\in(0,1)$，表示\textit{概率的状态保持的静态迁移}。
+   我们希望可以找到$\mathbb{RVPC}_{\mathsf{Th}}$中类似$\Rightarrow$的方式来表达这种状态保持的静态迁移。
+   我们可以使用Uniform Approach中等价树的方法来刻画这种状态保持的静态迁移，
    在$\mathbb{RVPC}_{\mathsf{Th}}$中称为\textit{条件等价树}。
 
-   在定义条件等价树之前，我们首先关注一种条件无关的静态转移树：
-\begin{definition}[静态转移树]
+   在定义条件等价树之前，我们首先关注一种条件无关的静态迁移树：
+\begin{definition}[静态迁移树]
    \label{def:silent_tree}
    若$A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$,
-   $A$的静态转移树$t$满足如下定义：
+   $A$的静态迁移树$t$满足如下定义：
    \begin{itemize}
    \item 每一个节点都被标记成$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$的一个项，$A$是根节点。
    \item {
@@ -450,13 +450,13 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \end{itemize}
 \end{definition}
 
-静态转移树包含了\textit{状态改变的静态转移}和\textit{状态保持的静态转移}，
-条件等价树需要对特定条件下的状态改变的静态转移进行剪枝：
+静态迁移树包含了\textit{状态改变的静态迁移}和\textit{状态保持的静态迁移}，
+条件等价树需要对特定条件下的状态改变的静态迁移进行剪枝：
 
 \begin{definition}[条件等价树]
    $\varphi$是一个布尔表达式，$\mathcal{E}$是$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系，
    $A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
-   当下列条件成立时，$A$的静态转移树$t$称为是一个关于$\varphi\mathcal{E}$的条件等价树（$\varphi \mathcal{E}$-tree) ，记作$t^A_{\varphi \mathcal{E}}$。
+   当下列条件成立时，$A$的静态迁移树$t$称为是一个关于$\varphi\mathcal{E}$的条件等价树（$\varphi \mathcal{E}$-tree) ，记作$t^A_{\varphi \mathcal{E}}$。
 \begin{itemize}
    \item[(1)] $t$上的所有节点$N$，$N\in [A]_{\varphi \mathcal{E}}$，并被重新标记为$\varphi N$。
    \item[(2)] {
@@ -477,14 +477,14 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 \end{itemize}
 \end{definition}
 
-条件等价树实质上是\textit{概率的状态保持的静态转移}。
+条件等价树实质上是\textit{概率的状态保持的静态迁移}。
 
 从定义上看条件等价树的定义比较抽象，我们可以看几个简单有趣的例子：
 
 \begin{example}\label{eg:conditional}
    $A(x)=(x>5)(\frac{1}{2}\tau.B(x)\oplus\frac{1}{2}\tau.C(x))|(x\leq 5)(\frac{1}{3}\tau.B(x)\oplus\frac{2}{3}\tau.C(x))$。
    若$[A(x)]_{\mathcal{E}}=[B(x)]_{\mathcal{E}}=[C(x)]_{\mathcal{E}}$，
-   我们可以得到$A(x)$的静态转移树如图\label{fig:eg_condition}，$A(x)$关于$(x>7)\mathcal{E}$的条件等价树如图\label{fig:eg_condition2}。
+   我们可以得到$A(x)$的静态迁移树如图\label{fig:eg_condition}，$A(x)$关于$(x>7)\mathcal{E}$的条件等价树如图\label{fig:eg_condition2}。
    \begin{figure}[!htbp]
       \small
       \centering
@@ -506,7 +506,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 
    $[H(x)]_{\mathcal{E}_1} = [G(x)]_{\mathcal{E}_1}$，$H(x),G(x)\in \mathbb{RVPC}_{\mathsf{Th}}$，其中$\mathsf{Th}=\mathsf{PA}$[cite]。
 
-   $H(x)$的静态转移树如图~\ref{fig_eg0_1}，它包含了$H(x)$的静态转移。
+   $H(x)$的静态迁移树如图~\ref{fig_eg0_1}，它包含了$H(x)$的静态迁移。
    \begin{figure}[!htbp]
       \small
       \centering
@@ -534,7 +534,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \end{figure}
 \end{example}
 \begin{example}\label{eg:1}
-      假设我们有一个不太行的下课铃系统，每一时刻它坏掉的可能性是$\frac{1}{2}$，可以通过内部自动校准系统(静态转移：$\tau$操作)修复，
+      假设我们有一个不太行的下课铃系统，每一时刻它坏掉的可能性是$\frac{1}{2}$，可以通过内部自动校准系统(静态迁移：$\tau$操作)修复，
       它的内部有一个计时器，每隔定长时间（$\tau$操作）就会从$a$通道广播录好的一段下课铃，
       录好的下课铃可以用变量$x$表示。
       这个下课铃系统可以被抽象为一个$\mathbb{RVPC}_{\mathsf{Th}}$，其中$\mathsf{Th}$可以认为是$\mathsf{PA}$，
@@ -574,19 +574,19 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 \end{example}
 
 \subsection{随机传值进程模型的符号互模拟}\label{ch:symbolic_bisimulation}
-定义了\textit{概率的状态保持的静态转移}，
+定义了\textit{概率的状态保持的静态迁移}，
 我们现在可以用Uniform Approach的方法得到$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟。
-类似的，我们首先需要定义概率版的$l$-转移和$q$-转移。
+类似的，我们首先需要定义概率版的$l$-迁移和$q$-迁移。
 
-\begin{definition}[条件$l$-转移($\varphi l$-transition)]
+\begin{definition}[条件$l$-迁移($\varphi l$-transition)]
    $A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}, \mathcal{B}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}/\varphi'\mathcal{E}\backslash \{[A]_{\varphi'\mathcal{E}}\}$，
    其中$\varphi'$是一个布尔表达式，$\mathcal{E}$是$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系，
    若$A$的条件等价树$t_{\varphi' \mathcal{E}}^A$的所有叶子结点$L$，
    存在$L\stackrel{l}{\rightarrow}_{\varphi} L'\in \mathcal{B},l\neq \tau$，
-   称为$A$到$\mathcal{B}$的$\varphi l$-转移，记作$A\rightsquigarrow_{\varphi'\mathcal{E}}\stackrel{l}{\rightarrow}_{\varphi}\mathcal{B}$。
+   称为$A$到$\mathcal{B}$的$\varphi l$-迁移，记作$A\rightsquigarrow_{\varphi'\mathcal{E}}\stackrel{l}{\rightarrow}_{\varphi}\mathcal{B}$。
 \end{definition}
 
-\begin{definition}[条件$q$-转移($\varphi q$-transition)]
+\begin{definition}[条件$q$-迁移($\varphi q$-transition)]
    $A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{B}\in (\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}/\varphi' \mathcal{E})\backslash \{[A]_{\varphi'\mathcal{E}}\}$，
    其中$\varphi'$是一个布尔表达式，$\mathcal{E}$是$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系，
    对$t^A_{\varphi' \mathcal{E}}$的每一个叶子结点$L$和布尔表达式$\varphi$，
@@ -598,10 +598,10 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
 定义$\mathsf{P}_{\varphi, \varphi' \mathcal{E}}(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B}) = \mathsf{P}_\varphi(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B})/(1-\mathsf{P}_\varphi(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}[A]_{\varphi\mathcal{E}}))$。
 
 当$\mathsf{P}_{\varphi,\varphi' \mathcal{E}}(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B})=q$时，
-称$A$到$\mathcal{B}$存在$\varphi q$-转移。写作$A\rightsquigarrow_{\varphi'\mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{B}$。
+称$A$到$\mathcal{B}$存在$\varphi q$-迁移。写作$A\rightsquigarrow_{\varphi'\mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{B}$。
 \end{definition}
 
-符号互模拟实质上是保证$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系满足条件$l$-转移和条件$q$-转移。
+符号互模拟实质上是保证$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系满足条件$l$-迁移和条件$q$-迁移。
 \begin{definition}[符号互模拟]\label{def:rvpc_symbolic_bisimulation}
    $\mathcal{E}$是一个$\mathcal{T}_{RVPC}$上的二元对称关系，
 当$A\mathcal{E}B$且满足下列条件时，称$\mathcal{E}$是一个符号互模拟(Symbolic Bisimulation)：
@@ -637,8 +637,8 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟
 
 在证明$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$的两项符号互模拟时，
 我们通常可以构造一个含有该项的等价集，并证明该等价集是一个符号互模拟关系。
-构建一个$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$项的条件$l$-转移和条件$q$-转移时，
-我们可以首先构建该项的\textit{静态转移树}。
+构建一个$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$项的条件$l$-迁移和条件$q$-迁移时，
+我们可以首先构建该项的\textit{静态迁移树}。
 
 \begin{example}\label{eg:5}
    假设学校负责看管设备的老师发现例~\ref{eg:2}中的下课铃系统其实只有在$y\geq 5$时才能被所有教室的同学们听到，
@@ -701,7 +701,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟
          $(G(t),(y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y))$的这一对等价关系也是常规的$\mathbb{VPC}_{\mathsf{Th}}$证明，此处不做赘述。
       }
       \item {
-         $G(x)$的静态转移树如图~\ref{fig_eg4_1}，$G''(x,y)$的静态转移树如图~\ref{fig_eg4_2}。
+         $G(x)$的静态迁移树如图~\ref{fig_eg4_1}，$G''(x,y)$的静态迁移树如图~\ref{fig_eg4_2}。
          \begin{figure}[!htbp]
             \caption[]{}
             \small
@@ -777,8 +777,8 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟
       \item {
          若$A\rightsquigarrow_{\varphi \mathcal{E}}\stackrel{q}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{RVPC}/\varphi\mathcal{E},\mathcal{C}\neq [A]_{\varphi\mathcal{E}},q\in(0,1]$，
          由于$A\mathcal{E}B$，存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\psi_i} [\mathcal{C}]_{\varphi_i\mathcal{E}}|\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\wedge q=q_i\}$，
-         因此存在$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\varphi_i} [\mathcal{C}]_{\varphi_i\mathcal{E}}\}$可以模拟$A$的条件$q$-转移，
-         余下部分与$l$-转移的证明相同。
+         因此存在$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\varphi_i} [\mathcal{C}]_{\varphi_i\mathcal{E}}\}$可以模拟$A$的条件$q$-迁移，
+         余下部分与$l$-迁移的证明相同。
       }
    \end{itemize}
 \end{proof}
@@ -801,7 +801,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
    由于$\mathcal{E}=(\bigcup_{i\in I}\mathcal{E}_{i})^*$，
    我们可以得到$A_1\mathcal{E}A_k$，
    若$\mathcal{E}$是一个符号互模拟关系，
-   则对于条件$l$-转移：$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$，
+   则对于条件$l$-迁移：$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$，
    存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
    $\{A_k\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\psi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}}|\mathsf{Th}\vdash \varphi_i\Rightarrow\psi_i\}$可模拟该操作。
    我们可以通过归纳的证明$A_0\mathcal{E}A_1$，$A_1$可以模拟$A_0$;
@@ -857,7 +857,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          我们可以得到$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
          $\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{q}{\rightarrow}_{\varphi_i} [A_0^1]_{\varphi_i\mathcal{E}_{i_1}}\}_{i\in I}$，
          这其中关系到$A_1$关于$\varphi_i\mathcal{E}_{i_1}$的条件等价树$t_1^i$，
-         根据条件$q$-转移的定义，
+         根据条件$q$-迁移的定义，
          存在$\mathsf{P}_{\varphi_i,\varphi_i\mathcal{E}_{i_1}}(N\stackrel{\coprod_{i'\in [h']}p_{i'}\tau}{\longrightarrow}_{\varphi_i} N'\in [A_0^1]_{\varphi_i\mathcal{E}_{i_1}}) = q$，
          我们根据$\varphi_i A_0^1$构建每个$\varphi_i N'$关于$\varphi_i\mathcal{E}$的条件等价森林。
       }
@@ -893,10 +893,10 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
 
    通过上述构建方式，我们最终会构建出$A_1$关于$\varphi\mathcal{E}$的条件等价树或条件等价森林，
    来模拟$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$。
-   归纳地，我们可以构建出$A_2$对$A_1$关于$\varphi\mathcal{E}$的条件等价树或条件等价森林中的每一个条件等价树的转移
+   归纳地，我们可以构建出$A_2$对$A_1$关于$\varphi\mathcal{E}$的条件等价树或条件等价森林中的每一个条件等价树的迁移
    的条件等价森林……最终构建出$A_k$模拟$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$的条件等价森林。
 
-   对于条件$q$-转移：$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{q}{\rightarrow}_{\varphi}\mathcal{C}$的证明方法是相同的。
+   对于条件$q$-迁移：$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{q}{\rightarrow}_{\varphi}\mathcal{C}$的证明方法是相同的。
 
    附录中附有递归构建的伪代码。
 \end{proof}
@@ -922,10 +922,13 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
    $=_{\mathbb{RVPC}_{\mathsf{Th}}}$对于随机选择和非确定性选择的可保持性比较容易证明。
    由推论~\ref{co:condition}易知$A=_{\mathbb{RVPC}_{\mathsf{Th}}}B$则$\varphi A=_{\mathbb{RVPC}_{\mathsf{Th}}}\varphi B$。
    为方便证明，以下$=_{\mathbb{RVPC}_{\mathsf{Th}}}$简记为$=$，绝对等价性记为$\equiv$，定义记为$\stackrel{def}{=}$。
+   
+   对于本地化操作子（Localization），对于$A=B,(a)A\rightsquigarrow_{\varphi=}\stackrel{\lambda}{\rightarrow}_{\varphi} (a)A'\notin [(a)A]_{\varphi =}, a\notin \lambda$，
+   易知有$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{(a)B\rightsquigarrow_{\varphi_i=}\stackrel{\lambda}{\rightarrow}_{\varphi_i}\}[(a)A]_{\varphi =}$。
 
    对于并发操作子（Composition），考虑等价关系$\mathcal{R}\stackrel{def}{=}\{(A|C,B|D)|(A,B)\in =,(C,D)\in =\}$，
    令$\mathcal{R}' = (\mathcal{R}\cup =)^*$，我们证明$\mathcal{R}'$是一个符号互模拟关系。
-   对于条件$l$-转移：$(A|C)\rightsquigarrow_{\varphi\mathcal{R'}}\stackrel{\lambda}{\rightarrow}_{\varphi}\mathcal{C}\in\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}/\varphi \mathcal{R}',\mathcal{C}\neq [(A|C)]_{\varphi\mathcal{R}'}$，
+   对于条件$l$-迁移：$(A|C)\rightsquigarrow_{\varphi\mathcal{R'}}\stackrel{\lambda}{\rightarrow}_{\varphi}\mathcal{C}\in\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}/\varphi \mathcal{R}',\mathcal{C}\neq [(A|C)]_{\varphi\mathcal{R}'}$，
    我们可以用引理~\ref{lemma:closure}中的方法递归的构造$(B|C)$的$\varphi\mathcal{E}$条件等价森林来模拟$(A|C)$的动作，
    令$t_{(A|C)}$为$(A|C)$关于$\varphi\mathcal{R'}$的条件等价树。
    \begin{itemize}
@@ -994,10 +997,18 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          $\{B|D\rightsquigarrow_{\varphi_i=}\stackrel{\lambda}{\rightarrow}_{\varphi_i} [(A'|C)]_{\varphi_i=}\}$。
       }
    \end{itemize}
-   对于条件$q$-转移：$(A|C)\rightsquigarrow_{\varphi=}\stackrel{q}{\rightarrow}_{\varphi}\mathcal{C}$的证明方法是相同的。
-
-   对于本地化操作子（Localization），
-
+   对于条件$q$-迁移：$(A|C)\rightsquigarrow_{\varphi=}\stackrel{q}{\rightarrow}_{\varphi}\mathcal{C}$的证明方法是相同的。
 \end{proof}
 
 \section{本章小结}
+本章我们介绍了一种经典的并发进程模型——传值进程模型（The Value-Passing Calculus）和它的一种实现$\mathbb{VPC}_{\mathsf{Th}}$，
+并使用Uniform Approach中的方法将$\mathbb{VPC}_{\mathsf{Th}}$扩展成为随机传值进程模型$\mathbb{RVPC}_{\mathsf{Th}}$，
+给出了随机传值进程模型$\mathbb{RVPC}_{\mathsf{Th}}$的语法和迁移语义。
+
+为了给出$\mathbb{VPC}_{\mathsf{Th}}$观察等价性的定义，
+我们引入了$\mathbb{VPC}_{\mathbb{Th}}$中的符号互模拟的概念，
+并将Uniform Approach中$\mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$的等价树（Epsilon Tree）
+扩展成了$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$的条件等价树，
+并使用条件等价树给出了$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$的符号互模拟关系的定义。
+我们将符号互模拟的全集定义为$\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，
+并证明了$\mathbb{RVPC}_{\mathsf{Th}}$观察等价性是一个同余关系。
