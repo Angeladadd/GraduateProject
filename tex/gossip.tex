@@ -2,12 +2,29 @@
 
 \chapter{随机传值进程模型的应用}
 
-Random VPC可以用于对云计算协议的形式刻画。
-在此我们对一种云计算协议：Gossip-Style Membership Protocol进行建模和模拟实现。
+如前文所述，传值进程模型可以用于对通信协议的形式刻画。
+我们可以使用随机传值进程模型对引入了随机性的通信协议进行形式刻画。
+在此我们对一种云计算协议
+Gossip-Style Membership Protocol进行建模和模拟实现。
 
 \section{Gossip-Style Membership协议}
 \subsection{Gossip协议}
-Gossip协议分为push gossip和pull gossip两种。
+Gossip协议，也称为传染病协议(Epidemic Protocol)是一个基于传染病传播方式的点对点通信协议。
+一些分布式系统使用点对点的Gossip协议来保证数据被传送到集群的所有节点。
+
+Gossip协议可以被解释为办公室流言的传播：
+每一个职员会随机和另一个职员分享最近的流言，
+被分享者得知流言后会随机的和其他人分享，
+在一次分享中，被分享者或许已经知道了这个流言。
+比如有一天，小赵传出老板的一个谣言，
+他在一次会议结束时将这个谣言告诉了小钱；
+小钱得知了谣言后，又在一次会议后将它告诉了小李；
+小李在一次会议后告诉小孙时，
+发现小孙已经从小王那里知道了这个谣言。
+在计算机系统中通常以随机的对等选择的形式实现这一协议：
+每台主机随机的选择另一台（或多台）主机并共享消息。
+
+Gossip协议可以分为Push Gossip和Pull Gossip两种。
 \begin{itemize}
    \item {
       \textbf{Push Gossip:} 
@@ -39,26 +56,34 @@ Membership Protocol是一个通过网络检测节点失效和传播失效信息�
 \subsection{Push Gossip协议的实现}
 由于Push Gossip实现难度较小，并且单一的Push Gossip协议仍然可以达到$O(\log N)$时间复杂度的消息传播，
 我们以Push Gossip协议的实现作为Random VPC的demo。
-其中Gossip单节点的通道示意图如图
-\ref{fig1}。
+其中Gossip单节点的通道示意图和
 以Gossip协议作为通信协议的四节点的Peer-to-Peer Sysyem的示意图如图
-\ref{fig2}。
+\ref{fig1}。
 
-\begin{figure}[!htbp]
-	\small
-	\centering
-	\includegraphics[width=5cm]{../figure/Node_gossip2.png}
-    \caption{\textbf{Gossip 节点示意图}}
-    \label{fig1}
-\end{figure}
+\begin{figure}[!htp]
+   \centering
+   \includegraphics[width=5cm]{../figure/Node_gossip2.png}
+   \hspace{1cm}
+   \includegraphics[width=8cm]{../figure/GossipSystem_4.png}
+   \bicaption{Gossip 节点示意图}{以Gossip协议作为通信协议的四节点的Peer-to-Peer Sysyem示意图}
+   \label{fig:SRR}
+ \end{figure}
 
-\begin{figure}[!htbp]
-	\small
-	\centering
-	\includegraphics[width=8cm]{../figure/GossipSystem_4.png}
-    \caption{\textbf{以Gossip协议作为通信协议的四节点的Peer-to-Peer Sysyem示意图(省略Timer)}}
-    \label{fig2}
-\end{figure}
+% \begin{figure}[!htbp]
+% 	\small
+% 	\centering
+% 	\includegraphics[width=5cm]{../figure/Node_gossip2.png}
+%     \caption{\textbf{Gossip 节点示意图}}
+%     \label{fig1}
+% \end{figure}
+
+% \begin{figure}[!htbp]
+% 	\small
+% 	\centering
+% 	\includegraphics[width=8cm]{../figure/GossipSystem_4.png}
+%     \caption{\textbf{以Gossip协议作为通信协议的四节点的Peer-to-Peer Sysyem示意图(省略Timer)}}
+%     \label{fig2}
+% \end{figure}
 
 Gossip节点Node的状态有以下几种，分别对应Gossip协议中节点的状态:
 \begin{table}[!hpt]
