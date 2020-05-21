@@ -32,18 +32,18 @@ $A(x)$在满足条件$\varphi(x)$时会通过通道$a$输出函数$f(t)$的值�
 在网络通信中，各种通信协议通过在主机间传值进而控制主机的行为，
 通信协议的过程就可以被抽象为传值进程模型，
 支持并发的编程语言也可以被解释为传值进程模型，如Erlang。
-很多通过传值，计算解决的现实问题也都可以抽象为传值进程模型。
+很多通过传值、计算解决的现实问题也都可以抽象为传值进程模型。
 
 
 \subsection{The Value-Passing Calculus}\label{ch:vpc}
-对传值进程模型的研究很多都会依赖一个“神域”，
-这个“神域”提供条件的判定，函数的计算和变量的取值范围。
-如在执行$A(x)$时，我们会将$\varphi(x)$传给“神域”，
-“神域”判定是否满足条件，并将判定结果返回给我们，
-同样的，我们也会将$f(t)$传给“神域”，“神域”帮我们计算这个函数，并将结果返回给我们。
-“神域”通常不包括在传值进程模型中，且通常是未定义的，或只在特定场景下定义。
-由于“神域”的存在，对于这些传值进程模型表达能力的衡量变得十分困难，
-Fu在The Value-Passing Calculus中取缔了“神域”的概念，
+对传值进程模型的研究很多都会依赖一个\textit{神域}，
+这个神域帮组我们进行条件的判定，函数的计算和提供变量的取值范围。
+如在执行$A(x)$时，我们会将$\varphi(x)$传给神域，
+神域判定是否满足条件，并将判定结果返回给我们，
+同样的，我们也会将$f(t)$传给神域，神域帮我们计算这个函数，并将结果返回给我们。
+神域通常不包括在传值进程模型中，且通常是未定义的，或只在特定场景下定义。
+由于神域的存在，对于这些传值进程模型表达能力的衡量变得十分困难，
+Fu在The Value-Passing Calculus中取缔了神域的概念，
 提出了一个封闭的传值进程模型。
 
 The Value-Passing Calculus中的传值进程模型$\mathbb{VPC}_{\mathsf{Th}}$
@@ -79,7 +79,7 @@ $Act$中的元素可以用$\lambda$表示，其中$\mathsf{V}_{\Sigma},\mathsf{T
 
 The Value-Passing Calculus使用可判定的一阶理论判定条件并
 提出了一个图灵完备的数值系统（Numeric System）作为底层模型来实现可计算的函数。
-通过这两种方式，将Value-Passing Calculus从“神域”中解放出来。
+通过这两种方式，将Value-Passing Calculus从神域中解放出来。
 
 \subsection{If Then Else语法符号化}
 进程$A(x)$中出现了If Then Else语法，
@@ -155,7 +155,7 @@ $\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$为所有$\mathbb{RVPC}_\mathsf{Th}$�
 	\small
 	\centering
 	\includegraphics[width=14cm]{../figure/symbolic_sematic.png}
-    \caption{\textbf{随机传值进程模型的符号语义}}
+    \caption{\textbf{随机传值进程模型的符号迁移语义}}
     \label{fig_sematic}
 \end{figure}
 
@@ -177,7 +177,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 类似$A=\tau.B$的$\mathbb{RVPC}_{\mathsf{Th}}$项，
 我们可以认为$A\stackrel{1\tau}{\rightarrow}_{\top} B$，
 这时也满足$A=\bigoplus_{i\in I} p_i\tau.A_i$的定义，
-此时$I=[1],p_1=1,A_1=B$。
+此时$I=\{1\},p_1=1,A_1=B$。
 若将$\mathbb{VPC}_{\mathsf{Th}}$中的此类内部操作同样看待，
 我们可以得出推论~\ref{co:vpc}。
 \begin{corollary}\label{co:vpc}
@@ -193,11 +193,11 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    若$R$是自反的、对称的、传递的，则称$R$是$A$上的等价关系。
    研究等价关系的目的在于将集合中的元素进行分类，选取每类的代表元素来降低问题的复杂度，如软件测试时，可利用等价类来选择测试用例。
    对通信并发系统程序等价的定义和验证，现在已有很多研究。
-   在提出CCS时Milner提出了\textit{观察等价(observation equivalence)}，即\textit{弱互模拟(weak bisimulation)}\cite{2}。
+   在提出CCS时Milner提出了\textit{观察等价(observation equivalence)}与\textit{弱互模拟(weak bisimulation)}\cite{2}。
    Glabbeek和Weijland提出的\textit{分支互模拟(branching bisimulation)}\cite{6}也是十分著名的研究。
 
    对于概率模型的等价性，目前有对同步概率进程模型互模拟关系的研究\cite{13}，
-   仅适用于有限状态的概率进程模型的研究\cite{14,15}。
+   仅适用于有限状态的概率进程模型的研究\cite{14,15}等。
    Uniform Approach在分支互模拟\cite{6}的基础上给出了
    RCCS分支互模拟关系的定义，以及等价关系同余性的证明。
    \subsubsection{Uniform Approach中的分支互模拟}
@@ -205,7 +205,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \begin{definition}
       若二元关系$\mathcal{E}$是$\mathcal{P}_{CCS}$上的等价关系。
       $A$关于等价关系$\mathcal{E}$的等价集写作$[A]_{\mathcal{E}}$，
-      $A\in [A]_{\mathcal{E}}$且$\forall B,(A,B)\in \mathcal{E}$，
+      $A\in [A]_{\mathcal{E}}$，若$(A,B)\in \mathcal{E}$，
       有$B\in [A]_{\mathcal{E}}$。
       我们用$\mathcal{P}_{CCS}/\mathcal{E}$表示所有$\mathcal{P}_{CCS}$关于$\mathcal{E}$的等价集的集合。
    \end{definition}
@@ -268,7 +268,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \end{definition}
    \subsubsection{$\mathbb{VPC}_\mathsf{Th}$的符号互模拟}\label{ch:vpc_symbolic_bisimulation}
    $\mathbb{VPC}_{\mathsf{Th}}$与CCS的区别主要体现在前缀操作子和条件操作子。
-   对于前缀操作子，相似的定义互模拟关系是比较容易的，只需要保证通道一致，值一致即可。
+   对于前缀操作子，相似的定义互模拟关系是比较容易的，只需要保证通道一致、值一致即可。
    而条件操作子给互模拟的定义带来了麻烦，比如：
    $A=\overline{a}(0).S$和$B=((x=0) \overline{a}(0).S|\urcorner (x=0) \overline{a}(0).S)$在观察上应该是一致的，
    这就要求$B$的两个操作：$B\stackrel{\overline{a}(0)}{\longrightarrow}_{x=0} S$和$B\stackrel{\overline{a}(0)}{\longrightarrow}_{\urcorner (x=0)} S$共同模拟$A\stackrel{\overline{a}(0)}{\longrightarrow}_{\top} S$。
@@ -280,7 +280,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
          \item {
             若$A\stackrel{\tau}{\rightarrow}_{\varphi} A'$，则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\Rightarrow_{\psi_i} B_i\}_{i\in I}$，
             对于$\forall i\in I$，$\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\wedge \varphi_i A\mathcal{E} \varphi_i B_i$，
-            且满足$\varphi_i A'\mathcal{E} \varphi_i B_i$或$B_i\stackrel{\tau}{\rightarrow}_{\psi_i'}B_i'\wedge \mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i'\wedge \varphi_i A'\mathcal{E} B_i'$。
+            且满足$\varphi_i A'\mathcal{E} \varphi_i B_i$或$B_i\stackrel{\tau}{\rightarrow}_{\psi_i'}B_i'\wedge \mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i'\wedge \varphi_i A'\mathcal{E} \varphi_i B_i'$。
          }
          \item {
             若$A\stackrel{\overline{a}(t)}{\rightarrow}_{\varphi} A'$，则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\Rightarrow_{\psi_i}B_i\stackrel{\overline{a}(t_i)}{\rightarrow}_{\psi_i'}B_i'\}$，
@@ -291,7 +291,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
             满足$\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\psi_i'$且$(\varphi_i A\mathcal{E}\varphi_i B_i)\wedge(\varphi_i A'\mathcal{E}\varphi_i B_i')$。
          }
       \end{itemize}
-      最大的互模拟关系记为$\approxeq_{\mathsf{Th}}^s$。
+      互模拟关系的全集记为$\approxeq_{\mathsf{Th}}^s$。
    \end{definition}
 
    根据符号互模拟的定义，我们可以解决前述条件操作子带来的麻烦，
@@ -342,7 +342,12 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    条件$\top$具有一定的特殊性：
    对于无条件的操作我们认为操作是在$\top$条件下执行的，
    因此$\top$可以看作是最强的条件。
-
+   \begin{corollary}\label{co:condition0}
+      $A,B\in \mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$，
+      若$A\approxeq_{\mathsf{Th}}^s B$，
+      则对布尔表达式$\varphi$，
+      $\varphi A\approxeq_{\mathsf{Th}}^s\varphi B$。
+   \end{corollary}
    \begin{proof}
       对于$A$可以执行的操作，$\varphi' A$也会有对应的版本：
       \begin{itemize}
@@ -355,8 +360,8 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
       满足$\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i \psi_i' \wedge \varphi_i A\approxeq_{\mathsf{Th}}^s \varphi_i B_i \wedge \varphi_i A'\approxeq_{\mathsf{Th}}^s \varphi_i B_i'$。
       
       若要证明$\varphi' A\approxeq_{\mathsf{Th}}^s\varphi' B$，
-      我们可以构造等价关系$\mathcal{S} = \{(\varphi'A,\varphi'B)|A,B\in \approxeq_{\mathsf{Th}}^s\}$，
-      证明$\mathcal{S}$是符号互模拟的（这样假设的原因是题目中的$A,B$原本也是任意的）。
+      我们可以构造等价关系$\mathcal{S} = \{(\varphi'A,\varphi'B)|(A,B)\in \approxeq_{\mathsf{Th}}^s\}$，
+      证明$\mathcal{S}$是符号互模拟的，其中$A,B$为任意$\mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$。
 
       通过$A\approxeq_{\mathsf{Th}}^sB$我们可以得到集合$\{\varphi'\varphi_i\}_{i\in I}$，
       对于任意$i,j$，由于$\varphi_i \wedge \varphi_j = \bot$，
@@ -400,7 +405,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \begin{corollary}\label{co:condition}
       $A,B\in \mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$，
       若$\varphi A\approxeq_{\mathsf{Th}}^s \varphi B$，
-      则对布尔表达式$\varphi',\mathsf{Th}\vdash \varphi\Rightarrow \varphi'$，
+      则对布尔表达式$\varphi',\mathsf{Th}\vdash \varphi'\Rightarrow \varphi$，
       $\varphi' A\approxeq_{\mathsf{Th}}^s\varphi' B$。
    \end{corollary}
 
@@ -427,7 +432,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    我们用$\{B\Rightarrow_{\psi_i}B'_i\stackrel{a(x)}{\longrightarrow}_{\psi'_i}B_i'\}$模拟，
    其中$(\varphi_i A\mathcal{E}\varphi_i B_i)\wedge(\varphi_i A'\mathcal{E}\varphi_i B_i')$，
    根据条件等价集的定义，我们可以得到$B_i\in [A]_{\varphi\mathcal{E}}$，$B_i'\in [A']_{\varphi \mathcal{E}}$，
-   由于$B_i \approxeq_{\mathsf{Th}}^s A$，$B_i\approxeq_{\mathsf{Th}}^s B$，那么$B\Rightarrow_{\psi_i}B_i$实际上也是\textit{状态保持的静态迁移}。
+   由于$B_i \approxeq_{\mathsf{Th}}^s A$，$B_i\approxeq_{\mathsf{Th}}^s B$，那么$B\Rightarrow_{\psi_i}B_i\in[B]_{\varphi\mathcal{E}}$实际上也是\textit{状态保持的静态迁移}。
 
    对于我们概率扩展后的$\mathbb{RVPC}_{\mathsf{Th}}$，
    对上述例子状态保持静态迁移多了$B\stackrel{q\tau}{\rightarrow}_{\psi_i} B_i$
@@ -463,16 +468,18 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    若$t$的边被标记为$(\psi, q)$，则$\mathsf{Th}\vdash \varphi\Rightarrow \psi$。
    }
    \item[(3)] {
-         若$B.B'$是$t$上的节点，
+         若$B,B'$是$t$上的节点，
          $B\stackrel{(\psi,q)}{\rightarrow}B',q\in (0,1)$，
          则存在$B\stackrel{\coprod_{i\in [k]}}{\longrightarrow}_{\psi} \coprod_{i\in [k]} B_i$，
          $B_i,i\in [k]$是$t$上的节点，
-         且$B$有且仅有$B_1,\dots, B_k$这$k$个儿子节点。
+         且$B$有且仅有$B_1,\dots, B_k$这$k$个儿子节点，
+         且根据(2)，有$\mathsf{Th}\vdash \varphi\Rightarrow \psi$。
    }
    \item[(4)] {
       若$B,B'$是$t$上的节点，
       $B\stackrel{(\psi,1)}{\rightarrow}B'$，
-      则$B\stackrel{\tau}{\rightarrow}_{\psi}B'$且$B$有且仅有$B'$一个儿子节点。
+      则有$B\stackrel{\tau}{\rightarrow}_{\psi}B'$且$B$有且仅有$B'$一个儿子节点，
+      且根据(2)，有$\mathsf{Th}\vdash \varphi\Rightarrow \psi$。
    }
 \end{itemize}
 \end{definition}
@@ -484,7 +491,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 \begin{example}\label{eg:conditional}
    $A(x)=(x>5)(\frac{1}{2}\tau.B(x)\oplus\frac{1}{2}\tau.C(x))|(x\leq 5)(\frac{1}{3}\tau.B(x)\oplus\frac{2}{3}\tau.C(x))$。
    若$[A(x)]_{\mathcal{E}}=[B(x)]_{\mathcal{E}}=[C(x)]_{\mathcal{E}}$，
-   我们可以得到$A(x)$的静态迁移树如图\label{fig:eg_condition}，$A(x)$关于$(x>7)\mathcal{E}$的条件等价树如图\label{fig:eg_condition2}。
+   我们可以得到$A(x)$的静态迁移树如图\ref{fig:eg_condition}，$A(x)$关于$(x>7)\mathcal{E}$的条件等价树如图\ref{fig:eg_condition2}。
    \begin{figure}[!htbp]
       \small
       \centering
@@ -495,7 +502,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \begin{figure}[!htbp]
       \small
       \centering
-      \includegraphics[width=4cm]{../figure/example_condition2.png}
+      \includegraphics[width=5cm]{../figure/example_condition2.png}
       \caption[]{}
       \label{fig:eg_condition2}
    \end{figure}
@@ -506,7 +513,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 
    $[H(x)]_{\mathcal{E}_1} = [G(x)]_{\mathcal{E}_1}$，$H(x),G(x)\in \mathbb{RVPC}_{\mathsf{Th}}$，其中$\mathsf{Th}=\mathsf{PA}$[cite]。
 
-   $H(x)$的静态迁移树如图~\ref{fig_eg0_1}，它包含了$H(x)$的静态迁移。
+   $H(x)$的静态迁移树如图~\ref{fig_eg0_1}，它包含了$H(x)$所有的静态迁移。
    \begin{figure}[!htbp]
       \small
       \centering
@@ -524,7 +531,8 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    其中$\mathsf{Th}\vdash (x<2)\Rightarrow (x\leq 3)$，
    由于$(x<2)\wedge(x\leq 2)G(x) = (x<2)G(x)$，$G(x)\in[H(x)]_{\mathcal{E}_1}$，
    根据推论~\ref{co:all}，$(x\leq 2)G(x)\in [H(x)]_{(x<2)\mathcal{E}_1}$。
-   另一个分支同理。
+   另一个分支同理。此时$(x<2)H(x)\stackrel{\frac{2}{3}\tau}{\rightarrow}_{\top}[(x<2)G(x)]_{(x<2)\mathcal{E_1}}$，
+   因此在条件树内部，我们可以将节点和边都视为状态无关。
    \begin{figure}[!htbp]
       \small
       \centering
@@ -551,7 +559,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
       \end{figure}
 \end{example}
 \begin{example}\label{eg:2}
-   假设之前的不太行的下课铃系统经过岁月的磨练，年久失修，
+   假设例~\ref{eg:1}的下课铃系统经过岁月的磨练，年久失修，
    每自动校准一次音量就会减弱，我们用变量$y$来表示音量，
    音量必须满足$y>1$才可以播放，
    当$y\leq 0$时下课铃系统音量就无法减弱了。
@@ -576,14 +584,14 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 \subsection{随机传值进程模型的符号互模拟}\label{ch:symbolic_bisimulation}
 定义了\textit{概率的状态保持的静态迁移}，
 我们现在可以用Uniform Approach的方法得到$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟。
-类似的，我们首先需要定义概率版的$l$-迁移和$q$-迁移。
+我们首先需要定义随机传值进程模型条件版的$l$-迁移和$q$-迁移。
 
 \begin{definition}[条件$l$-迁移($\varphi l$-transition)]
    $A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}, \mathcal{B}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}/\varphi'\mathcal{E}\backslash \{[A]_{\varphi'\mathcal{E}}\}$，
    其中$\varphi'$是一个布尔表达式，$\mathcal{E}$是$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系，
    若$A$的条件等价树$t_{\varphi' \mathcal{E}}^A$的所有叶子结点$L$，
    存在$L\stackrel{l}{\rightarrow}_{\varphi} L'\in \mathcal{B},l\neq \tau$，
-   称为$A$到$\mathcal{B}$的$\varphi l$-迁移，记作$A\rightsquigarrow_{\varphi'\mathcal{E}}\stackrel{l}{\rightarrow}_{\varphi}\mathcal{B}$。
+   称为$\varphi'$条件下$A$到$\mathcal{B}$的$\varphi l$-迁移，记作$A\rightsquigarrow_{\varphi'\mathcal{E}}\stackrel{l}{\rightarrow}_{\varphi}\mathcal{B}$。
 \end{definition}
 
 \begin{definition}[条件$q$-迁移($\varphi q$-transition)]
@@ -598,10 +606,10 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
 定义$\mathsf{P}_{\varphi, \varphi' \mathcal{E}}(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B}) = \mathsf{P}_\varphi(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B})/(1-\mathsf{P}_\varphi(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}[A]_{\varphi\mathcal{E}}))$。
 
 当$\mathsf{P}_{\varphi,\varphi' \mathcal{E}}(L\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\coprod_{i\in I}\psi_i}\mathcal{B})=q$时，
-称$A$到$\mathcal{B}$存在$\varphi q$-迁移。写作$A\rightsquigarrow_{\varphi'\mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{B}$。
+称$\varphi'$条件下$A$到$\mathcal{B}$存在$\varphi q$-迁移。写作$A\rightsquigarrow_{\varphi'\mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{B}$。
 \end{definition}
 
-符号互模拟实质上是保证$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系满足条件$l$-迁移和条件$q$-迁移。
+符号互模拟实质上是保证$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系满足条件$l$-迁移和条件$q$-迁移的互模拟。
 \begin{definition}[符号互模拟]\label{def:rvpc_symbolic_bisimulation}
    $\mathcal{E}$是一个$\mathcal{T}_{RVPC}$上的二元对称关系，
 当$A\mathcal{E}B$且满足下列条件时，称$\mathcal{E}$是一个符号互模拟(Symbolic Bisimulation)：
@@ -626,7 +634,7 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
 
 如果RCCS的分支互模拟可以看作是用等价树模拟等价树，
 $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟等价树。
-我们可以给出等价森林的具体定义。
+我们可以给出等价森林的递归定义。
 
 \begin{definition}[条件等价森林]
    $A\in\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，$\mathcal{E}$是$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系，
@@ -897,8 +905,6 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
    的条件等价森林……最终构建出$A_k$模拟$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$的条件等价森林。
 
    对于条件$q$-迁移：$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{q}{\rightarrow}_{\varphi}\mathcal{C}$的证明方法是相同的。
-
-   附录中附有递归构建的伪代码。
 \end{proof}
 
 现在我们可以定义$\mathbb{RVPC}_{\mathsf{Th}}$上的观察等价性了。
