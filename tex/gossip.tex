@@ -163,7 +163,7 @@ $p_{\mathsf{perm}}$为向一个特定的排列$perm$发送Gossip Message的概�
 的概率选定$\mathsf{N}/\{i\}$中任选$\mathsf{k}$个元素的全排列
 中的一个排列$perm$作为发送目标，
 进而迁移为$GossipingNode_{i,perm}(x)$，
-向$perm$中的节点发送Gossip Message时，
+向$perm$中的节点发送Gossip Message，
 发送完成后回到$InfectiousNode_i(x)$的状态。
 在一个$GossipSystem_{\mathsf{N}}$中，
 还有状态为$InfectiousNode_i$的节点，
@@ -369,47 +369,101 @@ Gossip-Style Membership协议中的P2P系统定义如下，
     FragileNode_i&\stackrel{def}{=}p_{fail}\tau.BadNode_i\oplus (1-p_{fail})\tau.Node_i\\
     BadNode_i&\stackrel{def}{=}\tau.FragileNode_i\\
     Node_i&\stackrel{def}{=}timeout.accept(x).(\bigoplus_{perm\in \mathsf{PERM}_i} p_{perm}\tau.GossipingNode_{i,perm}(x))\\
-     &+\sum_{j\in \mathsf{N}/\{i\}}trans_{j,i}(x).\overline{deliver}(x).Node_i\\
-    GossipingNode_{i,perm}(x)&\stackrel{def}{=}\overline{trans_{i,perm_{1}}}(x).\dots \overline{trans_{i,perm_{b}}}(x).\overline{time}.Node_i\\
-    GossipSystem_\mathsf{N}&\stackrel{def}{=}(Node_1\mid Node_2\mid \dots \mid Node_n)\\
+     &+\sum_{j\in \mathsf{N}/\{i\}}trans_{j,i}(x).\overline{deliver}(x).FragileNode_i\\
+    GossipingNode_{i,perm}(x)&\stackrel{def}{=}\overline{trans_{i,perm_{1}}}(x).\dots \overline{trans_{i,perm_{b}}}(x).\overline{time}.FragileNode_i\\
+    GossipSystem_\mathsf{N}&\stackrel{def}{=}(FragileNode_1\mid FragileNode_2\mid \dots \mid FragileNode_n)\\
     &\backslash \{trans_{i,j}\mid i\in \mathsf{N} \wedge j\in \mathsf{N} \wedge i\neq j\}\cup \{time, timeout, accept, deliver\}
  \end{align*}
- 
- 其中我们需要定义Membership，来处理Membership List的获取和更新。
+ 其中，每一个节点定义为$FragileNode$，每一时刻
+ 它会有$p_{fail}$的概率成为失效节点$BadNode$，
+ 和$1-p_{fail}$的概率成为可发送列表和接受列表的正常节点$Node$。
+ 在$Node$状态的节点，
+ 可以在外界计时器发送$timeout$信号时通过$accept$通道获取自身的
+ Membership List，
+ 以概率$p_{\mathsf{perm}}$
+ 的概率选定$\mathsf{N}/\{i\}$中任选$\mathsf{k}$个元素的全排列
+ 中的一个排列$perm$作为发送目标，
+ 进而迁移为$GossipingNode_{i,perm}(x)$，
+ 向$perm$中的节点发送Membership List，
+ 发送完成后回到$FragileNode$的状态。
+ 一个有$n=|\mathsf{N}|$个节点的
+ 基于Gossip-Style Membership协议的P2P系统定义为
+ $GossipSystem_{\mathsf{N}}$，
+ 它由$n$个$FragileNode$状态的并发的节点构成。
 
-Membership List的内容一般为：
+ 此外，我们还需要定义每个节点本地的Membership系统，
+ 来处理Membership List的获取和更新。
+ Membership List的内容一般为表~\ref{tab:membership_list}中的内容。
 \begin{table}[!hpt]
-    \caption[Membership List]{Membership List\footnotemark}
-    \label{tab:secondone}
+    \caption[Membership List]{Membership List}
+    \label{tab:membership_list}
     \centering
     \begin{tabular}{@{}ccc@{}} \toprule
     %   \multicolumn{2}{c}{Item} \\ \cmidrule(r){1-2}
-      Address & HeartBeat & Time(local) \\ \midrule
+      Address & HeartBeat & LocalTime \\ \midrule
       1 & 10120 & 66\\
       2 & 10103 & 62\\
       3 & 10098 & 63\\ \bottomrule
     \end{tabular}
   \end{table}
-因此Membership系统需要有一个本地计时器Timer、一个心跳计数器Counter，一个本地$MembershipList(X)$，
-$X$应为一个$(Address, HeartBeat)$的二元组的数组，一个记录本地地址的$AddrInfo(address)$（地址应在加入网络时由DNS分配，此处不考虑它的分配过程）。
-定义$x_i[Address]$为取Address的值的操作子，$x_i[HeartBeat]$同理。
-其中$n$为MembershipList的最大容量。
+其中Address表示系统中其他节点的地址，HeartBeat表示对应节点的心跳计数，
+LocalTime表示Membership List中这一项记录最近一次的更新时间，
+当当前时间与某一项的LocalTime相差超过$T_{fail}$，
+我们认为这一节点失效。
 
-Membership系统的实现如图所示：
+因此Membership系统需要有一个本地计时器Timer、一个心跳计数器Counter，
+一个本地$MembershipList(X)$，
+$X$应为一个(Address, HeartBeat, LocalTime)
+的三元组的数组，
+一个记录本地地址的$AddrInfo(address)$
+（地址应在加入网络时由DNS分配，此处不考虑它的分配过程）。
+定义$x_i[Address]$为取Address的值的操作子，
+$x_i[HeartBeat]$同理。
+$n$为MembershipList的最大容量。
+
+我们定义的Membership系统的实现如图~\ref{fig:membership_system}所示，
 \begin{figure}[!htbp]
 	\small
 	\centering
 	\includegraphics[width=11cm]{../figure/membership.png}
     \caption{\textbf{Membership示意图}}
-    \label{fig_membership}
+    \label{fig:membership_system}
 \end{figure}
+可以看到，我们使用$n$个$MembershipCell$来存储Membership List中的每一项，
+$Membership$可以通过$select_i$通道获取$MembershipCell_i$中的数据，
+也可以通过$update_i$通道更新$MembershipCell_i$中的数据，
+每一个$MembershipCell$连接一个Timer，用来获取本地时间，设置LocalTime字段，
+实际上，对于一个节点它可能只有一个Timer，这里的连接也是指逻辑连接。
+$MembershipCell$的定义如下：
+\begin{align*}
+   &MembershipCell_i(addr,hb,t)\stackrel{def}{=}\\
+   &\quad\overline{select_i}(\{Address:addr,HeartBeat:hb\}).MembershipCell_i(addr,hb,t)\\
+   &\quad+update_i(\{Address:addr',HeartBeat:hb'\}).time(t').MembershipCell_i(addr',hb',t')
+\end{align*}
+$n$个$MembershipCell$组成的$MembershipList$定义如下，在初始状态时，每一个$MembershipCell$中的数据为空($\epsilon$)：
+\begin{align*}
+   MembershipList\stackrel{def}{=}(MembershipCell_1(\epsilon)\mid \dots MembershipCell_n(\epsilon))
+\end{align*}
 
+此外，我们定义了一个$Counter$维护和更新节点的心跳，
+在每一次Gossip周期$hb=hb+1$，
+$Membership$可以通过$heartbeat$通道获取心跳。
+\begin{align*}
+   Counter(hb)\stackrel{def}{=}\overline{heartbeat}(\mathsf{s}(hb)).Counter(\mathsf{s}(hb))
+\end{align*}
+对于节点本地地址的维护，我们定义了一个$AddrInfo$，
+$Membership$可以通过$address$通道获取本地地址。
+\begin{align*}
+   AddrInfo(addr)\stackrel{def}{=}\overline{address}(addr)
+\end{align*}
+
+定义完以上的辅助工具后，我们可以定义$Membership$的逻辑了！
 \begin{align*}
     &Membership\stackrel{def}{=}address(addr).heartbeat(hb).select_1(x_1)\dots select_n(x_n).\\
     &\quad\overline{accept}(\{Address:addr,HeartBeat:hb\},x_1,\dots,x_n).Membership\\
-    &\quad+deliver(x_1,x_2,\dots,x_n).Hashing(x_1,x_2,\dots,x_n)\\
-    &Hashing(x_1,x_2,\dots,x_n)\stackrel{def}{=}(Check(x_1)\mid  \dots \mid Check(x_n) \mid Membership)\\
-    &Check(x)\stackrel{def}{=}address(addr).((addr=x[Address])0|\urcorner(addr=x[Address])Find_1(x))\\
+    &\quad+deliver(x_1,x_2,\dots,x_n).Processing(x_1,x_2,\dots,x_n)\\
+    &Processing(x_1,x_2,\dots,x_n)\stackrel{def}{=}(Check(x_1)\mid  \dots \mid Check(x_n) \mid Membership)\\
+    &Check(x)\stackrel{def}{=}address(addr).((addr=x[Address])0|\urcorner(addr=x[Address])FindAndUpdate_1(x))\\
     &FindAndUpdate_i(x)\stackrel{def}{=}select_i(x_i).(\\
     &\quad(x_i = \epsilon) (\overline{update_i}(x).0)\\
     &\quad| \urcorner(x_i = \epsilon)(\\
@@ -418,16 +472,23 @@ Membership系统的实现如图所示：
     &\quad\mid \urcorner (x_i[HeartBeat]<x[HeartBeat])0)\\
     &\quad\mid \urcorner (x_i[Address]=x[Address])FindAndUpdate_{i+1}(x))),i\leq n\\
     &FindAndUpdate_i(x)\stackrel{def}{=}0,i>n
-   \end{align*}
-   \begin{align*}
-    &MembershipCell_i(addr,hb,t)\stackrel{def}{=}\\
-    &\quad\overline{select_i}(\{Address:addr,HeartBeat:hb\}).MembershipCell_i(addr,hb,t)\\
-    &\quad+update_i(\{Address:addr',HeartBeat:hb'\}).time(t').MembershipCell_i(addr',hb',t')\\
-    &MembershipList\stackrel{def}{=}(MembershipCell_1(\epsilon)\mid \dots MembershipCell_n(\epsilon))\\
-    &AddrInfo(addr)\stackrel{def}{=}\overline{address}(addr)\\
-    &Counter(hb)\stackrel{def}{=}\overline{heartbeat}(\mathsf{s}(hb)).Counter(\mathsf{s}(hb))
 \end{align*}
-其中$\mathsf{s}(x)$表示$\mathsf{s}(x)=x+1$[此处应有引用]。
+其中$\mathsf{s}(x)$表示$\mathsf{s}(x)=x+1$。
+
+$Membership$可以获取$MembershipList$中所有Cell中储存的信息，
+添加本地地址和心跳后，将这一组信息经$accept$通道发出，
+根据$Node$的定义，我们知道$Node$从$accept$通道接受这些信息后会随机的发送给$k$个其他节点。
+另外，$Membership$从$deliver$通道接收了其他节点发送的Membership List后，
+将迁移到状态$Processing(x_1,x_2,\dots,x_n)$。
+$Processing(x_1,x_2,\dots,x_n)$可以并发的运行$Check(x_i)$，
+在$Check(x_i)$状态下，
+若$x_i$的地址为当前节点的地址，不做处理，
+若不为当前节点的地址，
+则从第一个$MembershipCell$开始对比$x_i$的地址与$MembershipCell$的地址，
+若地址相同且$x_i$中的心跳计数大于$MembershipCell$中的心跳计数，
+更新$MembershipCell$的数据；
+若所有有值的$MembershipCell$均无$x_i$的地址，用$x_i$直接更新第一个空的Cell。
+
 \section{Gossip-Style Membership的仿真模拟}
 在本章节我们会根据本章的模型来实现一个Gossip-Style Membership Protocol，
 由于资源限制，不能实际部署在多个主机构成的集群，我们将使用多进程来模拟多个主机。
