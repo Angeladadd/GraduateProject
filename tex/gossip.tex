@@ -73,7 +73,7 @@ SWIM Failure Detector Protocol等。
 
 由于Membership可以看作节点内部的功能，我们可以首先实现Gossip协议，将网络建立起来。
 
-\subsection{Push Gossip协议的实现}
+\subsection{Gossip协议的实现}\label{ch:gossip_impl}
 由于Push Gossip的机制比较简单，
 并且单一的Push Gossip协议仍然可以达到$O(\log N)$时间复杂度的消息传播，
 本节我们使用$\mathbb{RVPC}_{\mathsf{Th}}$来建模以Push Gossip作为通信机制的Gossip协议。
@@ -111,7 +111,7 @@ Gossip单节点的通道示意图如图~\ref{fig:gossip_node_1}和
   \label{fig:gossip_node_1}
 \end{minipage}\hfill
 \begin{minipage}{0.6\textwidth}
-   \includegraphics[width=8cm]{../figure/GossipSystem_4.png}
+   \includegraphics[width=8cm]{../figure/GossipSystem.png}
    \caption{基于Gossip协议的四节点P2P系统结构}
    \label{fig:p2p_system}
 \end{minipage}
@@ -190,18 +190,41 @@ $p_{\mathsf{perm}}$为向一个特定的排列$perm$发送Gossip Message的概�
       }
 \end{itemize}
 
-\subsection{Push Gossip协议的等价性}
+\subsection{Gossip协议的等价性}
+% Brewer在CAP定理[cite]说到，
+% 在分布式环境中设计和部署应用程序时，
+% 存在特殊关系中的三个核心系统需求，
+% 分别是一致性、可用性和分区容忍度。
+% 其中一致性指一致性是指分布式系统中的多个服务节点，给定一系列的操作，在约定协议的保障下，使它们对外界呈现的状态是一致的。
+% 分布式系统中的一致性按照对一致性要求的不同，主要分为严格一致性，强一致性，弱一致性和最终一致性这四大类。
+% Gossip协议具有最终一致性。
 
-Gossip协议的目的是为了在系统内对节点进行多播，我们可以定义一个多播的Specification，同样我们只关注一个消息的多播：
-\begin{definition} 单消息源的多播定义如下，其中$|\mathsf{KNOWN}|$为已经得到此消息的节点编号集合，节点可以通过$deliver$通道告知通信系统外（如本地的其他进程）节点已收到信息。
+Gossip协议的目的是为了在系统内对节点进行多播，
+我们可以定义一个多播的规范，
+证明~\ref{ch:gossip_impl}节中我们使用$\mathbb{RVPC}_{\mathsf{Th}}$实现的基于Gossip协议的P2P系统满足这个规范，
+在进程演算中，我们需要证明二者互模拟。
+由于我们在~\ref{ch:gossip_impl}节中实现的是单消息源单个消息的传播，
+在多播的定义中同样我们只关注单消息源单个消息的多播。
+\begin{definition} 单消息源的多播规范定义如下：
 \begin{align*} 
     MulticastSpec_\mathsf{N}&\stackrel{def}{=}accept_1(x).\overline{deliver_1}(x).Multicasting_{\mathsf{N},\{1\}}(x)\\
     Multicasting_{\mathsf{N},\mathsf{KNOWN}}(x)&\stackrel{def}{=}\overline{deliver_i}(x).Multicasting_{\mathsf{N},\mathsf{KNOWN}\cup\{i\}}(x), \\
     &i\in \mathsf{N}-\mathsf{KNOWN} \wedge |\mathsf{N}|\neq |\mathsf{KNOWN}|
  \end{align*}
 \end{definition} 
+其中$|\mathsf{KNOWN}|$为已经得到此消息的节点编号集合，
+节点可以通过$deliver$通道告知通信系统外（如本地的其他进程）节点已收到信息。
+若一个节点对系统外通过$deliver$通道传递了这个消息，
+我们将这个节点加入$|\mathsf{KNOWN}|$，
+表示这个节点已经收到了消息。
 
- \begin{definition} 为了方便后续的证明，我们给出特定状态下的$GossipSystem$的记法，其中Composition算子符合交换律。
+ \begin{definition} 
+   由于$GossipSystem_{\mathsf{N}}$中的节点可能处于：$InfectiousNode$，$DeliveringNode$，$UnInfectiousNode$
+   三种状态（我们将$GossipingNode$的状态合并进了$InfectiousNode$），
+   在后续的证明过程中表示起来比较冗长，
+   为了方便后续的证明，我们给出特定状态下的
+   $GossipSystem_{\mathsf{N}}$的记法，
+   其中Composition算子符合交换律。
     \begin{align*}
    &GossipSystem_{\mathsf{N},(a,b,c)}(x)\\
    &= (\stackrel{a}{\overbrace{InfectiousNode(x)\mid \dots \mid InfectiousNode(x)}}\\
@@ -209,17 +232,26 @@ Gossip协议的目的是为了在系统内对节点进行多播，我们可以�
    &\mid \stackrel{c}{\overbrace{UnInfectiousNode\mid \dots \mid UnInfectiousNode}})\\
    &\backslash \{trans_{i,j}\mid i\in \mathsf{N} \wedge j\in \mathsf{N} \wedge i\neq j\}\cup \{time, timeout\}
 \end{align*}
- \end{definition} 
+ \end{definition}
+ 其中，$GossipSystem_{\mathsf{N},(a,b,c)}(x)$表示
+ 在系统的$n=|\mathsf{N}|$个节点中，有$a$个处于$InfectiousNode(x)$的状态，
+ 有$b$个处于$DeliveringNode(x)$的状态，
+ 有$c$个处于$UnInfectiousNode$的状态，
+ 且满足$a+b+c=n$。
+ 很显然，初始的$GossipSystem_{\mathsf{N}}$中唯一的$Node$状态的节点此时已经从外界接收了某个消息$x$。
 
-\begin{theorem}
-    $GossipSystem_{\mathsf{N}} \approxeq^s_{\mathsf{Th}} MulticastSpec_{\mathsf{N}}$，当$\top \in \mathsf{Th}$时成立。
-\end{theorem}
-\begin{proof}
-每一个节点能且仅能执行一次deliver操作，且deliver的顺序不影响功能，
+ 接下来我们来证明，我们实现的基于Gossip协议的P2P系统满足多播系统的规范。
+ 由于$GossipSystem_{\mathsf{N}}$和$MulticastSpec_\mathsf{N}$中的每一个节点能且仅能执行一次$deliver$操作，
+ 且$deliver$的顺序不影响功能，
 所以我们可以规定$A\stackrel{\overline{deliver_i}(t_1)}{\longrightarrow}_{\top} B$和$C\stackrel{\overline{deliver_j}(t_2)}{\longrightarrow}_{\top}B$是互模拟的当且仅当$t_1=t_2$，对下标是否一致不作要求。
 因此在后文的证明中忽略了下标。
+\begin{theorem}
+    $GossipSystem_{\mathsf{N}} =_{\mathbb{RVPC}_{\mathsf{Th}}} MulticastSpec_{\mathsf{N}}$，$\mathsf{Th}$是可判定的逻辑。
+\end{theorem}
+\begin{proof}
 
-我们可以通过构建等价集，并证明等价集是一个symbolic bisimulation关系，来证明$GossipSystem_{\mathsf{N}} \approxeq^s_{\mathsf{Th}} MulticastSpec_{\mathsf{N}}$。
+我们可以通过构建等价集，并证明等价集是一个符号互模拟关系
+来证明$GossipSystem_{\mathsf{N}} =_{\mathbb{RVPC}_{\mathsf{Th}}} MulticastSpec_{\mathsf{N}}$。
 
 构造等价集
 \begin{align*}
@@ -228,11 +260,11 @@ Gossip协议的目的是为了在系统内对节点进行多播，我们可以�
       & \cup \{(GossipSystem_{\mathsf{N},(a,b,c)}(x), Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x))\mid |\mathsf{KNOWN}| = a\neq n\}
 \end{align*}
 
-我们来依次证明$\mathcal{S}$中的每一对等价关系为symbolic bisimulation:
+我们来依次证明$\mathcal{S}$中的每一对等价关系为符号互模拟关系:
 \begin{itemize}
     \item {
-       $GossipSystem_{\mathsf{N},(n,0,0)}(x)$和$Multicasting_{\mathsf{N},\mathsf{N}}(x)$的$\top \mathcal{S}$-tree分别只有一个根节点，
-       且不能转移至其他等价集，他们的互模拟性是显然的，实际上$GossipSystem_{\mathsf{N},(n,0,0)}(x)=Multicasting_{\mathsf{N},\mathsf{N}}(x)=0$。
+       $GossipSystem_{\mathsf{N},(n,0,0)}(x)$和$Multicasting_{\mathsf{N},\mathsf{N}}(x)$的$\top \mathcal{S}$条件等价树分别只有一个根节点，
+       且不能转移至其他等价集，他们的互模拟是显然的，实际上$GossipSystem_{\mathsf{N},(n,0,0)}(x)=Multicasting_{\mathsf{N},\mathsf{N}}(x)=0$。
     }
     \item {
         对于$(GossipSystem_{\mathsf{N},(a,b,c)}(x), Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x))\mid |\mathsf{KNOWN}| = a\neq n$:
@@ -240,46 +272,46 @@ Gossip协议的目的是为了在系统内对节点进行多播，我们可以�
         % 对应的$Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top\mathcal{S}} []$
         \begin{itemize}
             \item {\textbf{Case 1: $a<n-1$。}
-            $GossipSystem_{\mathsf{N},(a,b,c)}(x)$的$\top \mathcal{S}$-tree $t$如图所示:
+            $GossipSystem_{\mathsf{N},(a,b,c)}(x)$的$\top \mathcal{S}$条件等价树 $t$如图~\ref{fig:epsilon_1}所示。
             \begin{figure}[!htbp]
             	\small
             	\centering
-            	\includegraphics[width=14cm]{../figure/epsilon_tree.png}
-                \caption{\textbf{$GossipSystem_{\mathsf{N},(a,b,c)}(x)$的$\top\mathcal{S}$-tree $t$}}
-                \label{fig_epsilon_1}
+            	\includegraphics[width=14cm]{../figure/epsilon_tree1.png}
+                \caption{\textbf{$GossipSystem_{\mathsf{N},(a,b,c)}(x)$关于$\top\mathcal{S}$的条件等价树 $t$}}
+                \label{fig:epsilon_1}
             \end{figure}
             当$t$上的节点进入$GossipSystem_{\mathsf{N},(a,b+c,0)}(x)$状态时，
-            等价的$\tau$转移就会终止，因此$GossipSystem_{\mathsf{N},(a,b+c,0)}(x)$为$t$的叶子结点。
+            状态保持的静态迁移（$\tau$动作）就会终止，
+            因此$GossipSystem_{\mathsf{N},(a,b+c,0)}(x)$为$t$的叶子结点。
             很显然，对$t$上的每一个非叶结点，都会经过$Node_j\stackrel{p'_j}{\rightarrow}_{\top}GossipSystem_{\mathsf{N},(a,b+c,0)}(x),p'_j=p_{j_1}p_{j_2}\dots p_{j_m}<1$。
             对$t$的叶子结点有$GossipSystem_{\mathsf{N},(a,b+c,0)}(x)\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} GossipSystem_{\mathsf{N},(a+1,b+c-1,0)}(x)$。
             即
             $$GossipSystem_{\mathsf{N},(a,b,c)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(a+1,b',c')}(x)]_{\top\mathcal{S}}$$
             其中$b'+c'=b+c-1$。
-            对应的我们可以用$$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{KNOWN}'}$$来模拟。
+            我们可以用$$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{KNOWN}'}$$来模拟上述状态迁移。
             对称的模拟依然成立。
             }
             \item {\textbf{Case 2: $a=n-1$。}
             \begin{itemize}
                \item {
                   {\textbf{Case 2.1:} $b=1$。}
-                  $GossipSystem_{\mathsf{N},(n-1,1,0)}(x)$的$\top \mathcal{S}$-tree $t$只有一个根节点:
-
-                  $(GossipSystem_{\mathsf{N},(n-1,1,0)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(n,0,0)}(x)]_{\top\mathcal{S}}$。
+                  $GossipSystem_{\mathsf{N},(n-1,1,0)}(x)$的$\top \mathcal{S}$条件等价树 $t$只有一个根节点，对于
+                  $(GossipSystem_{\mathsf{N},(n-1,1,0)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(n,0,0)}(x)]_{\top\mathcal{S}}$，
                   我们可以用$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{N}}$来模拟。
                }
                \item {
                   {\textbf{Case 2.1:} $b=0$。}
-                  $GossipSystem_{\mathsf{N},(n-1,0,1)}(x)$的$\top \mathcal{S}$-tree $t$如图所示:
+                  $GossipSystem_{\mathsf{N},(n-1,0,1)}(x)$的$\top \mathcal{S}$条件等价树 $t$如图~\ref{fig:epsilon_2}所示。
                   \begin{figure}[!htbp]
                      \small
                      \centering
-                     \includegraphics[width=10cm]{../figure/epsilon_tree_n-1.png}
-                      \caption{\textbf{$GossipSystem_{\mathsf{N},(a,b,c)}(x)$的$\top\mathcal{S}$-tree $t$}}
-                      \label{fig_epsilon_2}
+                     \includegraphics[width=8cm]{../figure/epsilon_tree_2.png}
+                      \caption{\textbf{$GossipSystem_{\mathsf{N},(a,b,c)}(x)$关于$\top\mathcal{S}$的条件等价树 $t$}}
+                      \label{fig:epsilon_2}
                   \end{figure}
                   
-                  $(GossipSystem_{\mathsf{N},(n-1,1,0)}$为$t$的叶节点。
-                  因此，$(GossipSystem_{\mathsf{N},(n-1,0,1)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(n,0,0)}(x)]_{\top\mathcal{S}}$。
+                  $GossipSystem_{\mathsf{N},(n-1,1,0)}$为$t$的叶节点，
+                  且有$(GossipSystem_{\mathsf{N},(n-1,0,1)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(n,0,0)}(x)]_{\top\mathcal{S}}$。
                   我们可以用$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{N}}$来模拟。
                }
             \end{itemize}
@@ -296,17 +328,30 @@ Gossip协议的目的是为了在系统内对节点进行多播，我们可以�
 \subsection{Gossip-Style Membership的实现}
 
 \subsubsection{Gossip Style Membership Protocol}
-Gossip-Style Membership Protocol使用Gossip协议传递每个节点的Membership List。
-每个节点周期性的随机选择$k$个节点发送自己的Membership List，
-收到Membership List的节点根据其他节点的Membership List更新自己的Membership List。
+Renesse等人提出了一种基于Gossip协议的错误检测机制：
+在集群中的每一个节点会维护一个列表Membership List，列表中包含已知的其他节点的\textit{地址}和整数表示的\textit{心跳}。
+在每一个Gossip的周期，节点会增加自己的心跳，
+并且随机的向另一个节点发送自己的Membership List；
+若节点收到了其他节点发送过来的Membership List，
+它会将两个列表合并，保留对应地址心跳最大的项。
+若节点的Membership List的一项经过$T_{fail}$时间没有更新，则认为这一项对应的节点失效。
+
+在本次的实现中，我们规定在每一个Gossip周期中，
+节点可以随机选择$k$个节点发送自己的Membership List。
 
 \subsubsection{对GossipSystem的调整}
-由于Gossip-Style Membership无需与外界的输入输出，并且需要提供判定和修改Membership List的函数，我们需要对之前的Gossip System进行调整。
-同时，系统内的节点也会有失效的可能，我们可以用$p_{fail}$来定义一个节点失效的概率，同时经过一个内部动作$\tau$，这个节点就会被修复。
-另外，由于在系统中的所有节点都是消息源，且Membership List在系统中不停的更新，因此也没有了感染者与被感染者的角色区分，
+由于Gossip-Style Membership无需与外界的输入输出，并且需要提供储存、更新Membership List的函数，
+我们需要对之前的节点结构进行调整。
+同时，系统内的节点也会有失效的可能，我们可以用$p_{fail}$来定义一个节点失效的概率，
+同时经过一个静态迁移$\tau$，这个节点就会被修复。
+另外，由于在系统中的所有节点都是消息源，
+且Membership List在系统中不停的更新，
+因此也没有了感染者与被感染者的角色区分，
 也需要对名称进行了修改。
 
-在Gossip System节点的基础上，将原本对外暴露的$accept,deliver$通道用于连接$Membership$，作为网络中的节点获取和更新本地Membership List的通道，
+在Gossip System节点的基础上，
+将原本对外暴露的$accept,deliver$通道用于连接$Membership$，
+作为链接网络的节点获取和更新本地Membership List的通道，
 修改后的节点如图
 \ref{fig_membership_node}
 所示。
@@ -314,10 +359,12 @@ Gossip-Style Membership Protocol使用Gossip协议传递每个节点的Membershi
 \begin{figure}[!htbp]
 	\small
 	\centering
-	\includegraphics[width=8cm]{../figure/Node.png}
+	\includegraphics[width=6cm]{../figure/Node.png}
     \caption{\textbf{Gossip-Style Membership Protocol 节点示意图}}
     \label{fig_membership_node}
 \end{figure}
+
+Gossip-Style Membership协议中的P2P系统定义如下，
 \begin{align*}
     FragileNode_i&\stackrel{def}{=}p_{fail}\tau.BadNode_i\oplus (1-p_{fail})\tau.Node_i\\
     BadNode_i&\stackrel{def}{=}\tau.FragileNode_i\\
@@ -327,6 +374,7 @@ Gossip-Style Membership Protocol使用Gossip协议传递每个节点的Membershi
     GossipSystem_\mathsf{N}&\stackrel{def}{=}(Node_1\mid Node_2\mid \dots \mid Node_n)\\
     &\backslash \{trans_{i,j}\mid i\in \mathsf{N} \wedge j\in \mathsf{N} \wedge i\neq j\}\cup \{time, timeout, accept, deliver\}
  \end{align*}
+ 
  其中我们需要定义Membership，来处理Membership List的获取和更新。
 
 Membership List的内容一般为：
