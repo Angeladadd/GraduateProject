@@ -66,7 +66,7 @@ Heartbeating Protocol,
 Gossip-Style Membership Protocol, 
 SWIM Failure Detector Protocol等。
 
-\section{Gossip Style Membership的实现}
+\section{Gossip-Style Membership的实现}
 我们使用$\mathbb{RVPC}_{\mathsf{Th}}$来实现Gossip-Style Membership协议，
 来作为使用随机传值进程模型建模通信过程的示例，
 类似的，也可以使用同样的建模方法建模其他现实问题。
@@ -645,3 +645,13 @@ select会等待case中有能够执行的case时执行该case：
 动态效果可以通过附录~\ref{app:run}中的方式获得。
 
  \section{本章小结}
+ 本章我们以一种云计算失效检测协议Gossip-Style Membership协议的
+ $\mathbb{RVPC}_{\mathsf{Th}}$实现作为
+ 本文中提出的随机传值进程模型的应用，
+ 提供了使用$\mathbb{RVPC}_{\mathsf{Th}}$建模及实现通信协议以至其他现实问题的思路。
+
+ 我们首先介绍了Gossip协议和Membership协议，
+并使用$\mathbb{RVPC}_{\mathsf{Th}}$实现了基于Gossip协议的P2P系统，
+使用$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟证明了Gossip协议与多播规范的观察等价性。
+在基于Gossip协议的P2P系统的基础上，我们修改实现使其成为基于
+Gossip-Sytle Membership协议的P2P系统，并给出了GO语言的代码实现和仿真模拟。
