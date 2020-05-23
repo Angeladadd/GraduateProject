@@ -339,7 +339,7 @@ Renesse等人提出了一种基于Gossip协议的错误检测机制：
 在本次的实现中，我们规定在每一个Gossip周期中，
 节点可以随机选择$k$个节点发送自己的Membership List。
 
-\subsubsection{对GossipSystem的调整}
+\subsubsection{对GossipSystem的调整}\label{ch:membership_system}
 由于Gossip-Style Membership无需与外界的输入输出，并且需要提供储存、更新Membership List的函数，
 我们需要对之前的节点结构进行调整。
 同时，系统内的节点也会有失效的可能，我们可以用$p_{fail}$来定义一个节点失效的概率，
@@ -353,7 +353,7 @@ Renesse等人提出了一种基于Gossip协议的错误检测机制：
 将原本对外暴露的$accept,deliver$通道用于连接$Membership$，
 作为链接网络的节点获取和更新本地Membership List的通道，
 修改后的节点如图
-\ref{fig_membership_node}
+\ref{fig:membership_node}
 所示。
 
 \begin{figure}[!htbp]
@@ -361,7 +361,7 @@ Renesse等人提出了一种基于Gossip协议的错误检测机制：
 	\centering
 	\includegraphics[width=6cm]{../figure/Node.png}
     \caption{\textbf{Gossip-Style Membership Protocol 节点示意图}}
-    \label{fig_membership_node}
+    \label{fig:membership_node}
 \end{figure}
 
 Gossip-Style Membership协议中的P2P系统定义如下，
@@ -505,19 +505,143 @@ CSP也是一种进程演算，
 在CCS中对应端口的概念，其本质是相似的。
 使用Go语言的通道可以更加直观的展示出对上述模型的代码实现。
 
-\subsection{说明与实现效果}
-本节仿真实现的Gossip-Style Membership Protocol参数如表~\ref{tab:param}。
+\subsection{代码实现与仿真效果}
+
+ 由于代码的解释比较枯燥，本小节只展示关键部分的代码实现，
+ 完整的代码实现及下载、运行方式可以参考附录~\ref{app:code}。
+ 在编写代码的过程中，考虑到代码的可读性和字符的限制，
+ 我们对前述模型通道和进程状态的名称有所修改，
+ 但本质没有变化。
+
+ 在Go语言中，我们可以用channel特性来实现$\mathbb{RVPC}_{\mathsf{Th}}$中的通道。
+ 如在实现Gossip-Style Membership协议的节点结构时，
+ Node结构体中，chan类型的字段分别
+ 代表了图~\ref{fig:membership_node}中的相应名字的通道。
+ 其中，我们在~\ref{ch:gossip_impl}小节中提到
+ $trans_{i,j}$通道用于节点$i$向节点$j$传输信息，
+ 这一通道实质上表达的是信息传输的逻辑路径，
+ 我们在实现时考虑信息传输的代码层面的物理路径，
+ 只需要每一个节点设置一个
+ $trans$通道用于接收集群中其他节点的信息即可，
+ 向其他节点发送信息时，我们可以通过Others字段向
+ Others[i].trans通道发送消息。
+ 对于Node节点的状态迁移，我们可以使用bool类型的字段isbad表示节点状态是否为BadNode。
+ \begin{codeblock}[language=GO]
+   type Node struct {
+      isbad bool
+      trans chan []Message
+      time chan Nil
+      timeout chan Nil
+      accept chan []Message
+      deliver chan []Message
+      Others []*Node
+   }
+\end{codeblock}
+
+我们可以使用基于select的多路复用实现非确定性选择，
+如我们在~\ref{ch:membership_system}中实现的系统中的：
+\begin{align*}
+   Node_i&\stackrel{def}{=}timeout.accept(x).(\bigoplus_{perm\in \mathsf{PERM}_i} p_{perm}\tau.GossipingNode_{i,perm}(x))\\
+     &+\sum_{j\in \mathsf{N}/\{i\}}trans_{j,i}(x).\overline{deliver}(x).FragileNode_i
+\end{align*}
+这里$Node_i$可以做非确定的选择：
+接收到timeout信号后从accept通道获取本地的Membership List
+随机选择$k$个其他节点发送；或从其他节点接收到Membership List消息，
+通过deliver通道向本地的Membership进程传递该消息。
+
+\begin{codeblock}[language=GO]
+   select {
+      //timeout.accept(x).bigoplus p tau.GossipingNode
+      case <- node.timeout:
+         messages := <- node.accept
+         //随机生成k个其他节点的排列targets
+         node.Gossiping(messages, targets)
+      // sum trans(x).deliver(x).FragileNode
+      case message := <- node.trans:
+         node.deliver <- message
+	}
+\end{codeblock}
+select的语法与switch比较相似，
+每一个case代表一个通信操作，
+select会等待case中有能够执行的case时执行该case：
+当条件满足时，select才会通信并执行case后的语句块，
+其他通信不执行。
+
+在Go语言中，每一个并发执行的单元称为一个goroutine，
+我们同样使用goroutine来实现$\mathbb{RVPC}_{\mathsf{Th}}$
+中的并发。
+如对$GossipSystem_\mathsf{N}\stackrel{def}{=}(FragileNode_1\mid FragileNode_2\mid \dots \mid FragileNode_n)$，
+的实现：
+\begin{codeblock}[language=GO]
+   for i:=0;i<NODE_NUM;i++ {
+        go nodes[i].Fragile()
+    }
+\end{codeblock}
+实际上在我们的系统中，对一个节点本地的Timer，Membership和接入通信网络的Node
+同样应该是并发的。
+
+本节仿真实现的基于Gossip-Style Membership协议的P2P系统参数如表~\ref{tab:param}。
 \begin{table}[!hpt]
-   \caption[Gossip-Style Membership Protocol仿真参数]{Gossip-Style Membership Protocol仿真参数}
+   \caption[基于Gossip-Style Membership协议的P2P系统]{基于Gossip-Style Membership协议的P2P系统}
    \label{tab:param}
    \centering
    \begin{tabular}{@{}ccc@{}} \toprule
    %   \multicolumn{2}{c}{Item} \\ \cmidrule(r){1-2}
      参数名称 & 参数值 & 参数含义 \\ \midrule
      $n$ & 5 & 系统节点数量\\
-     $k$ & 2 & Gossip协议中每次感染的其他节点数\\
+     $k$ & 2 & 每Gossip周期发送的节点数\\
      $p_{fail}$ & 0.1 & 节点失效概率\\ \bottomrule
    \end{tabular}
  \end{table}
+
+ 我们使用上述参数运行我们实现的系统，
+ 我们使用html为我们的系统做了一个前端界面，
+ 我们可以在这个界面观察每个节点Membership List的更新过程。
+
+ 图~\ref{fig:demo_1}展示了每个节点的Membership List的扩展过程，
+ 其中第一行为节点的地址，我们使用字符串表示，也可以根据需要修改成其他的形式，
+ 第二行为对应节点的状态，Bad表示节点失效，对应$BadNode$状态，
+ Normal表示节点正常，对应$FragileNode$和$Node$状态，
+ 第三行的按钮可以改变节点的状态，
+ 接下来的是对应节点的Membership List，可以看到我们展示了Address，Heartbeat, Status字段，
+ 其中Status字段是由LocalTime计算而得，
+ 当当前时间与Membership List项的LocalTime字段相差超过$T_{fail}$时，我们认为这一项对应的节点处于失效状态。
+ 在~\ref{fig:demo_1}的第一个图中，我们可以看到初始状态所有节点的Membership List为空，
+ 第二张图中Membership List进行了扩张，第三张图中全部节点的Membership List包含了所有其他节点。
+ \begin{figure}[!htp]
+   \begin{minipage}{0.9\textwidth}
+     \centering
+     \includegraphics[width=15cm]{../figure/demo/4.png}
+     \\
+     \includegraphics[width=15cm]{../figure/demo/5.png}
+     \\
+     \includegraphics[width=15cm]{../figure/demo/6.png}
+   \end{minipage}
+   \caption{基于Gossip-Style Membership协议的5节点P2P系统的Membership List扩展过程}
+   \label{fig:demo_2}    
+\end{figure}
+
+我们同样可以展示系统的失效检测。在图~\ref{fig:demo_2}中，
+第一张图是正常状态，
+我们在第二张图中手动改变了地址为address1节点状态，使该节点失效，
+可以看到第三张图中address0,address3检测到了address1的失效，
+第四张图所有节点都检测到了address1的失效。
+ \begin{figure}[!htp]
+   \begin{minipage}{0.9\textwidth}
+     \centering
+     \includegraphics[width=15cm]{../figure/demo/0.png}
+     \\
+     \includegraphics[width=15cm]{../figure/demo/1.png}
+     \\
+     \includegraphics[width=15cm]{../figure/demo/2.png}
+     \\
+     \includegraphics[width=15cm]{../figure/demo/3.png}
+   \end{minipage}
+   \caption{基于Gossip-Style Membership协议的5节点P2P系统的错误检测}
+   \label{fig:demo_1}   
+\end{figure}
+
+我们也可以通过设置$p_{fail}$使系统中的节点以一定概率自动失效和恢复，
+动态效果可以通过附录~\ref{app:run}中的方式获得。
 
  \section{本章小结}
