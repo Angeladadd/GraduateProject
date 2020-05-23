@@ -490,27 +490,31 @@ $Processing(x_1,x_2,\dots,x_n)$可以并发的运行$Check(x_i)$，
 若所有有值的$MembershipCell$均无$x_i$的地址，用$x_i$直接更新第一个空的Cell。
 
 \section{Gossip-Style Membership的仿真模拟}
-在本章节我们会根据本章的模型来实现一个Gossip-Style Membership Protocol，
-由于资源限制，不能实际部署在多个主机构成的集群，我们将使用多进程来模拟多个主机。
+在本节我们会根据本章的模型来实现一个基于Gossip-Style Membership Protocol的P2P系统，
+由于资源限制，不能实际部署在多个主机构成的集群，我们将使用多进程来模拟多个主机，
+实际上进程理论本就是用来刻画进程的并发，多个主机上的程序的本质也是进程。
 
 \subsection{Go语言与CSP}
 我们将使用Go语言实现Gossip-Style Membership Protocol，
 Go语言实现了两种并发模型，一种是C++，Java使用的多线程，一种是CSP并发模型。
 
-CSP与CCS存在相似和差异[引用]，本实现主要利用了Go语言的通道特性，
-通道的概念是CSP的组成部分，在CCS中对应port的概念，其本质是相似的。
+CSP也是一种进程演算，
+与CCS存在相似和差异[cite]，
+本实现主要利用了Go语言的通道特性，
+通道的概念是CSP的组成部分，
+在CCS中对应端口的概念，其本质是相似的。
 使用Go语言的通道可以更加直观的展示出对上述模型的代码实现。
 
 \subsection{说明与实现效果}
-本节仿真实现的Gossip-Style Membership Protocol参数如下：
+本节仿真实现的Gossip-Style Membership Protocol参数如表~\ref{tab:param}。
 \begin{table}[!hpt]
-   \caption[Gossip-Style Membership Protocol仿真参数]{Gossip-Style Membership Protocol仿真参数\footnotemark}
-   \label{tab:thirdone}
+   \caption[Gossip-Style Membership Protocol仿真参数]{Gossip-Style Membership Protocol仿真参数}
+   \label{tab:param}
    \centering
    \begin{tabular}{@{}ccc@{}} \toprule
    %   \multicolumn{2}{c}{Item} \\ \cmidrule(r){1-2}
      参数名称 & 参数值 & 参数含义 \\ \midrule
-     $n$ & 8 & 系统节点数量\\
+     $n$ & 5 & 系统节点数量\\
      $k$ & 2 & Gossip协议中每次感染的其他节点数\\
      $p_{fail}$ & 0.1 & 节点失效概率\\ \bottomrule
    \end{tabular}
