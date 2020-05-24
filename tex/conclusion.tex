@@ -1,21 +1,50 @@
 % !TeX root = ../thesis.tex
 \chapter{结论}
 
+本文在传值进程模型$\mathbb{VPC}_{\mathsf{Th}}$的基础上，
+使用一种模型无关的概率扩展方法，
+扩展了$\mathbb{VPC}_{\mathsf{Th}}$的语法和迁移语义，
+增加了随机选择操作子，
+使其除非确定性选择之外还可以做随机选择，
+我们称这一模型为随机传值进程模型，记为$\mathbb{RVPC}_{\mathsf{Th}}$。
 
-\section{总结与评价}
+同时，为了给出$\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性的定义，
+我们使用Uniform Approach的方法定义了条件等价集、条件等价树（森林）、
+条件$l$转移和条件$q$转移，进而定义了$\mathbb{RVPC}_{\mathsf{Th}}$下
+的符号互模拟。
+条件等价树的本质是概率化了$\mathbb{VPC}_{\mathsf{Th}}$中的
+状态保持的静态迁移$A\Rightarrow_{\varphi}A'=A$，
+$\mathbb{RVPC}_{\mathsf{Th}}$中的符号互模拟的本质是
+用条件等价树中条件$\varphi$对应的划分$\{\varphi_i\}_{i\in I}$所
+对应的条件等价森林模拟条件等价树中的条件$l$转移和条件$q$转移。
+我们将共发散的符号互模拟关系的全集定义为$\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，
+并给出了观察等价性的同余性证明。
 
-\section{进一步工作}
-% 我们在定义$\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性时，
-% 将符号互模拟关系的全集定义为观察等价性。
-% 但这样定义对于部分$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$是存在问题的：
-% 对于$A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
-% 若$A$关于$\varphi\mathcal{E}$的条件等价树的所有分支都是无限的，即$A$没有叶子结点，
-% 我们称这样的条件等价树为\textit{发散}。
-% 那么我们就不能找到$A$在$\varphi$条件下的条件$l$-转移和条件$q$-转移，
-% 进而无法找到它与其他$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$的符号互模拟关系。
-% 在Uniform Approach中提出了codivergent的概念，
-% 我们的想法也是用\textit{发散}的条件等价森林去模拟\textit{发散}的条件等价树，
-% 但这部分工作还没有完成，因此本文有关等价性的理论目前只能应用于非发散的$\mathbb{RVPC}_{\mathsf{Th}}$。
+最后，我们以一种云计算协议Gossip-Style Membership Protocol为例，
+给出了使用$\mathbb{RVPC}_{\mathsf{Th}}$建模通信过程，乃至其他现实问题的
+方法和过程，并使用$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟
+给出了Gossip协议与我们定义的多播规范的观察等价性。
+给出Gossip-Style Membership Protocol的模型的同时，
+我们使用Go语言实现了这个模型，并分析了Go语言特性对
+部分$\mathbb{RVPC}_{\mathsf{Th}}$操作子的实现。
+我们希望$\mathbb{RVPC}_{\mathsf{Th}}$可以为
+含有传值、计算性质的现实问题的建模和分析提供有效、可行的方法。
 
-出于展示应用的目的，对Gossip-Style Membership Protocol的建模并不是最优的，
-需要改进的地方有：
+\section{待改进的工作}
+随机传值进程模型中的随机性可以体现在两个方面：\textit{内容随机性}和\textit{通道随机性}，
+内容随机性体现在值的随机性，外界向进程传的值可能会在某一个值域中符合某种概率分布，或近似符合某种概率分布；
+而通道随机性体现在进程对通信通道的选择是随机的，如在第~\ref{ch:gossip}章中，Gossip协议会周期性的随机选择通信的对象。
+由于Uniform Approach中只关注了通道的随机性，
+在本文对随机传值进程模型的定义中，我们也只关注了通道的随机性。
+这样做有一定的合理性：对于一个与具体问题无关的形式化方法，
+我们无法给定值的一个具体的随机分布。
+对于具体的问题，我们可以在$\mathbb{RVPC}_{\mathsf{Th}}$的基础上考虑值的随机分布。
+但遗憾的是，
+在第~\ref{ch:gossip}章中我们给出的应用，
+包括在第~\ref{ch:rvpc}章中的简单的例子，
+实际上是$\mathbb{RVPC}_{\mathsf{Th}}$
+上的\textit{进程}，
+由于系统没有与外界的值的通信，整个系统中没有自由变量，
+因此这依旧是一个不需要考虑值的随机性的模型。
+这是本文在构思上欠考虑的地方，
+实际上建模一个与外界有值传递的系统对于本文的意义会更大一些。

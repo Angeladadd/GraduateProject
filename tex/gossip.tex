@@ -1,6 +1,6 @@
 % !TeX root = ../thesis.tex
 
-\chapter{随机传值进程模型的应用}
+\chapter{随机传值进程模型的应用}\label{ch:gossip}
 
 如前文所述，传值进程模型可以用于对通信协议的形式刻画，
 我们可以使用随机传值进程模型对引入了随机性的通信协议进行形式刻画。
@@ -642,7 +642,7 @@ select会等待case中有能够执行的case时执行该case：
 \end{figure}
 
 我们也可以通过设置$p_{fail}$使系统中的节点以一定概率自动失效和恢复，
-动态效果可以通过附录~\ref{app:run}中的方式获得。
+动态效果可以通过附录~\ref{app:code}中的方式获得。
 
  \section{本章小结}
  本章我们以一种云计算失效检测协议Gossip-Style Membership协议的
