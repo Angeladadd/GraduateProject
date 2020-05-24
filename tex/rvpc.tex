@@ -200,8 +200,8 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    仅适用于有限状态的概率进程模型的研究\cite{14,15}等。
    Uniform Approach在分支互模拟\cite{6}的基础上给出了
    RCCS分支互模拟关系的定义，以及等价关系同余性的证明。
-   \subsubsection{Uniform Approach中的分支互模拟}
-   分支互模拟涉及等价集的概念，我们首先看CCS等价集的定义：
+   
+   Uniform Approach中RCCS的分支互模拟涉及等价集的概念，我们首先看CCS等价集的定义：
    \begin{definition}
       若二元关系$\mathcal{E}$是$\mathcal{P}_{CCS}$上的等价关系。
       $A$关于等价关系$\mathcal{E}$的等价集写作$[A]_{\mathcal{E}}$，
@@ -266,7 +266,9 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
       \end{itemize}
       则等价关系$\mathcal{E}$是分支互模拟关系。
    \end{definition}
-   \subsubsection{$\mathbb{VPC}_\mathsf{Th}$的符号互模拟}\label{ch:vpc_symbolic_bisimulation}
+
+   对于传值进程模型，由于条件操作子的影响不能直接使用分支互模拟。
+   在The Value-Passing Calculus中，Fu Y提出了$\mathbb{VPC}_\mathsf{Th}$的符号互模拟。
    $\mathbb{VPC}_{\mathsf{Th}}$与CCS的区别主要体现在前缀操作子和条件操作子。
    对于前缀操作子，相似的定义互模拟关系是比较容易的，只需要保证通道一致、值一致即可。
    而条件操作子给互模拟的定义带来了麻烦，比如：
@@ -492,35 +494,42 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    $A(x)=(x>5)(\frac{1}{2}\tau.B(x)\oplus\frac{1}{2}\tau.C(x))|(x\leq 5)(\frac{1}{3}\tau.B(x)\oplus\frac{2}{3}\tau.C(x))$。
    若$[A(x)]_{\mathcal{E}}=[B(x)]_{\mathcal{E}}=[C(x)]_{\mathcal{E}}$，
    我们可以得到$A(x)$的静态迁移树如图\ref{fig:eg_condition}，$A(x)$关于$(x>7)\mathcal{E}$的条件等价树如图\ref{fig:eg_condition2}。
-   \begin{figure}[!htbp]
-      \small
-      \centering
-      \includegraphics[width=8cm]{../figure/example_condition.png}
-      \caption[]{}
-      \label{fig:eg_condition}
-   \end{figure}
-   \begin{figure}[!htbp]
-      \small
-      \centering
-      \includegraphics[width=5cm]{../figure/example_condition2.png}
-      \caption[]{}
-      \label{fig:eg_condition2}
-   \end{figure}
-\end{example}
 
+\begin{figure}[!htp]
+   \begin{minipage}{0.6\textwidth}
+   \centering
+   \includegraphics[width=8cm]{../figure/example_condition.png}
+   \caption{}
+  \label{fig:eg_condition}
+\end{minipage}\hfill
+\begin{minipage}{0.45\textwidth}
+   \centering
+   \includegraphics[width=5cm]{../figure/example_condition2.png}
+   \caption{}
+   \label{fig:eg_condition2}
+\end{minipage}
+ \end{figure}
+\end{example}
 \begin{example}
    $H(x)\stackrel{def}{=}(x\leq 3)(\frac{1}{3}\tau.(x\leq 1)G(x)\oplus\frac{1}{3}\tau.(x\leq 2)G(x)\oplus\frac{1}{3}\tau.(x\leq 3)G(x))$
 
    $[H(x)]_{\mathcal{E}_1} = [G(x)]_{\mathcal{E}_1}$，$H(x),G(x)\in \mathbb{RVPC}_{\mathsf{Th}}$，其中$\mathsf{Th}=\mathsf{PA}$[cite]。
 
    $H(x)$的静态迁移树如图~\ref{fig_eg0_1}，它包含了$H(x)$所有的静态迁移。
-   \begin{figure}[!htbp]
-      \small
+   \begin{figure}[!htp]
+      \begin{minipage}{0.6\textwidth}
+         \centering
+         \includegraphics[width=8cm]{../figure/example0_1.png}
+         \caption[]{}
+         \label{fig_eg0_1}
+   \end{minipage}\hfill
+   \begin{minipage}{0.45\textwidth}
       \centering
-      \includegraphics[width=8cm]{../figure/example0_1.png}
+      \includegraphics[width=5cm]{../figure/example0_2.png}
       \caption[]{}
-      \label{fig_eg0_1}
-   \end{figure}
+       \label{fig_eg0_2}
+   \end{minipage}
+    \end{figure}
 
    因为$\mathsf{Th}\vdash \top \not\Rightarrow (x\leq 3)$，
    $H(x)$的$\top\mathcal{E}_1$-tree只有一个根节点$H(x)$。
@@ -533,13 +542,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    根据推论~\ref{co:all}，$(x\leq 2)G(x)\in [H(x)]_{(x<2)\mathcal{E}_1}$。
    另一个分支同理。此时$(x<2)H(x)\stackrel{\frac{2}{3}\tau}{\rightarrow}_{\top}[(x<2)G(x)]_{(x<2)\mathcal{E_1}}$，
    因此在条件树内部，我们可以将节点和边都视为状态无关。
-   \begin{figure}[!htbp]
-      \small
-      \centering
-      \includegraphics[width=5cm]{../figure/example0_2.png}
-      \caption[]{}
-       \label{fig_eg0_2}
-   \end{figure}
+
 \end{example}
 \begin{example}\label{eg:1}
       假设我们有一个不太行的下课铃系统，每一时刻它坏掉的可能性是$\frac{1}{2}$，可以通过内部自动校准系统(静态迁移：$\tau$操作)修复，

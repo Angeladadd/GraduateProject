@@ -25,8 +25,9 @@ $\mathbb{RVPC}_{\mathsf{Th}}$中的符号互模拟的本质是
 方法和过程，并使用$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟
 给出了Gossip协议与我们定义的多播规范的观察等价性。
 给出Gossip-Style Membership Protocol的模型的同时，
-我们使用Go语言实现了这个模型，并分析了Go语言特性对
+我们使用Go语言实现了这个模型，并分析了Go语言特性对应
 部分$\mathbb{RVPC}_{\mathsf{Th}}$操作子的实现。
+事实证明$\mathbb{RVPC}_{\mathsf{Th}}$在建模和分析通信过程时具有一定的可行性。
 我们希望$\mathbb{RVPC}_{\mathsf{Th}}$可以为
 含有传值、计算性质的现实问题的建模和分析提供有效、可行的方法。
 
@@ -50,7 +51,8 @@ $\mathbb{RVPC}_{\mathsf{Th}}$中的符号互模拟的本质是
 这是本文在构思上一个欠考虑的地方，
 实际上建模一个与外界有值传递的系统对于本文的意义会更大一些。
 
-对于内容的随机性的实现，Milner在Communication and Conccurency
+进一步的研究可以关注内容随机性。
+对于内容的随机性的实现，Milner在Communication and Concurrency
 一书中在将书中的提供了一个思路。
 为了建模传值的CCS，Milner将Value-passing CCS转化为CCS时
 将$S=a(x).T$转为$S=\sum_{v\in V} a_v.T\{v/x\}$，其中$V$是给定值的集合。
