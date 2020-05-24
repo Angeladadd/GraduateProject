@@ -37,7 +37,7 @@ $A(x)$在满足条件$\varphi(x)$时会通过通道$a$输出函数$f(t)$的值�
 
 \subsection{The Value-Passing Calculus}\label{ch:vpc}
 对传值进程模型的研究很多都会依赖一个\textit{神域}，
-这个神域帮组我们进行条件的判定，函数的计算和提供变量的取值范围。
+这个神域帮组我们进行条件的判定，函数的计算和提供变元的取值范围。
 如在执行$A(x)$时，我们会将$\varphi(x)$传给神域，
 神域判定是否满足条件，并将判定结果返回给我们，
 同样的，我们也会将$f(t)$传给神域，神域帮我们计算这个函数，并将结果返回给我们。
@@ -75,7 +75,7 @@ $\mathbb{VPC}_{\mathsf{Th}}$的符号语义如图~\ref{fig_vpc}所示。
 其中，$T=\varphi \lambda.T'$在$\varphi$条件下执行$\lambda$动作到达$T'$状态，
 在符号语义下可以写作$T\stackrel{\lambda}{\rightarrow}_{\varphi}T'$。
 符号语义中的动作集合$Act=\{a(x),\overline{a}(t)| a\in Chan, x\in \mathsf{V}_{\Sigma}, t\in \mathsf{T}_{\Sigma}\}\cup \{\tau\}$，
-$Act$中的元素可以用$\lambda$表示，其中$\mathsf{V}_{\Sigma},\mathsf{T}_{\Sigma}$为可判定逻辑$\mathsf{Th}$中变量的集合和项的集合[引用]。
+$Act$中的元素可以用$\lambda$表示，其中$\mathsf{V}_{\Sigma},\mathsf{T}_{\Sigma}$为可判定逻辑$\mathsf{Th}$中变元的集合和项的集合[引用]。
 
 The Value-Passing Calculus使用可判定的一阶理论判定条件并
 提出了一个图灵完备的数值系统（Numeric System）作为底层模型来实现可计算的函数。
@@ -388,10 +388,10 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    我们也可以给出一个简单的证明。
    \begin{proof}
       $A,B\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
-      $fv(\varphi)$为$\varphi$中的自由变量的集合，
+      $fv(\varphi)$为$\varphi$中的自由变元的集合，
       $V$为$fv(\varphi)$的全部取值的集合，
       对于$fv(\varphi)$的每一个赋值$v\in V$，
-      我们可以得到一个无自由变量的布尔表达式$\varphi_v$：
+      我们可以得到一个无自由变元的布尔表达式$\varphi_v$：
       \begin{itemize}
          \item {
             若$\mathsf{Th}\vdash \varphi_v$，$\varphi_vA=A\mathcal{E}B=\varphi_v B$。
@@ -547,7 +547,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 \begin{example}\label{eg:1}
       假设我们有一个不太行的下课铃系统，每一时刻它坏掉的可能性是$\frac{1}{2}$，可以通过内部自动校准系统(静态迁移：$\tau$操作)修复，
       它的内部有一个计时器，每隔定长时间（$\tau$操作）就会从$a$通道广播录好的一段下课铃，
-      录好的下课铃可以用变量$x$表示。
+      录好的下课铃可以用变元$x$表示。
       这个下课铃系统可以被抽象为一个$\mathbb{RVPC}_{\mathsf{Th}}$，其中$\mathsf{Th}$可以认为是$\mathsf{PA}$，
       我们可以用$G(x)$来表示这个系统：
       $$G(x)\stackrel{def}{=}\mu X.(\frac{1}{2}\tau.X\oplus \frac{1}{2}\tau.\overline{a}(x).X)$$
@@ -563,7 +563,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 \end{example}
 \begin{example}\label{eg:2}
    假设例~\ref{eg:1}的下课铃系统经过岁月的磨练，年久失修，
-   每自动校准一次音量就会减弱，我们用变量$y$来表示音量，
+   每自动校准一次音量就会减弱，我们用变元$y$来表示音量，
    音量必须满足$y>1$才可以播放，
    当$y\leq 0$时下课铃系统音量就无法减弱了。
    为了方便建模，我们用$\mathsf{p}(x)=x-1$来表示这种音量减弱。

@@ -23,7 +23,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$中的符号互模拟的本质是
 最后，我们以一种云计算协议Gossip-Style Membership Protocol为例，
 给出了使用$\mathbb{RVPC}_{\mathsf{Th}}$建模通信过程，乃至其他现实问题的
 方法和过程，并使用$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟
-给出了Gossip协议与我们定义的多播规范的观察等价性。
+给出了Gossip协议与我们定义的多播规约的观察等价性。
 给出Gossip-Style Membership Protocol的模型的同时，
 我们使用Go语言实现了这个模型，并分析了Go语言特性对应
 部分$\mathbb{RVPC}_{\mathsf{Th}}$操作子的实现。
@@ -46,7 +46,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$中的符号互模拟的本质是
 包括在第~\ref{ch:rvpc}章中的简单的例子，
 实际上都是$\mathbb{RVPC}_{\mathsf{Th}}$
 上的\textit{进程}，
-由于系统没有与外界的值的通信，整个系统中没有自由变量，
+由于系统没有与外界的值的通信，整个系统中没有自由变元，
 因此依旧是不需要考虑内容随机性的模型。
 这是本文在构思上一个欠考虑的地方，
 实际上建模一个与外界有值传递的系统对于本文的意义会更大一些。

@@ -200,12 +200,12 @@ $p_{\mathsf{perm}}$为向一个特定的排列$perm$发送Gossip Message的概�
 % Gossip协议具有最终一致性。
 
 Gossip协议的目的是为了在系统内对节点进行多播，
-我们可以定义一个多播的规范，
-证明~\ref{ch:gossip_impl}节中我们使用$\mathbb{RVPC}_{\mathsf{Th}}$实现的基于Gossip协议的P2P系统满足这个规范，
+我们可以定义一个多播的规约，
+证明~\ref{ch:gossip_impl}节中我们使用$\mathbb{RVPC}_{\mathsf{Th}}$实现的基于Gossip协议的P2P系统满足这个规约，
 在进程演算中，我们需要证明二者互模拟。
 由于我们在~\ref{ch:gossip_impl}节中实现的是单消息源单个消息的传播，
 在多播的定义中同样我们只关注单消息源单个消息的多播。
-\begin{definition} 单消息源的多播规范定义如下：
+\begin{definition} 单消息源的多播规约定义如下：
 \begin{align*} 
     MulticastSpec_\mathsf{N}&\stackrel{def}{=}accept_1(x).\overline{deliver_1}(x).Multicasting_{\mathsf{N},\{1\}}(x)\\
     Multicasting_{\mathsf{N},\mathsf{KNOWN}}(x)&\stackrel{def}{=}\overline{deliver_i}(x).Multicasting_{\mathsf{N},\mathsf{KNOWN}\cup\{i\}}(x), \\
@@ -240,7 +240,7 @@ Gossip协议的目的是为了在系统内对节点进行多播，
  且满足$a+b+c=n$。
  很显然，初始的$GossipSystem_{\mathsf{N}}$中唯一的$Node$状态的节点此时已经从外界接收了某个消息$x$。
 
- 接下来我们来证明，我们实现的基于Gossip协议的P2P系统满足多播系统的规范。
+ 接下来我们来证明，我们实现的基于Gossip协议的P2P系统满足多播系统的规约。
  由于$GossipSystem_{\mathsf{N}}$和$MulticastSpec_\mathsf{N}$中的每一个节点能且仅能执行一次$deliver$操作，
  且$deliver$的顺序不影响功能，
 所以我们可以规定$A\stackrel{\overline{deliver_i}(t_1)}{\longrightarrow}_{\top} B$和$C\stackrel{\overline{deliver_j}(t_2)}{\longrightarrow}_{\top}B$是互模拟的当且仅当$t_1=t_2$，对下标是否一致不作要求。
@@ -652,6 +652,6 @@ select会等待case中有能够执行的case时执行该case：
 
  我们首先介绍了Gossip协议和Membership协议，
 并使用$\mathbb{RVPC}_{\mathsf{Th}}$实现了基于Gossip协议的P2P系统，
-使用$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟证明了Gossip协议与多播规范的观察等价性。
+使用$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟证明了Gossip协议与多播规约的观察等价性。
 在基于Gossip协议的P2P系统的基础上，我们修改实现使其成为基于
 Gossip-Sytle Membership协议的P2P系统，并给出了GO语言的代码实现和仿真模拟。
