@@ -15,7 +15,6 @@
    Bergstra和Klop等提出了ACP\cite{4}，Hennessy提出ATP\cite{5}等使用代数方法研究通信并发系统，统称为进程代数理论。这些代数理论都使用通信而不是共享内存作为进程之间交互的手段。
    前面提到的Golang语言就包含了上述并发通信模型中的CSP模型。
 
-   \subsection{通信系统演算(CCS)}
    Milner的通信系统演算(以下称为CCS)可以表达操作带来的状态迁移，进程的并行执行，多种操作的选择和通道的范围限制。
    这一并发进程模型可以用标记变迁系统(Labled Transition System)表示：
 
@@ -60,7 +59,6 @@
    其中有对CCS的概率性扩展\cite{9,10},
    概率CSP\cite{11} 和概率ACP\cite{12}等。
 
-   \subsection{A Uniform Approach to Random Process Model}
    Fu提供了一个模型无关的方法—— An Uniform Approach to Random Process Model(后文称为Uniform Approach)，
    进程模型扩展为随机进程模型(Random Process Model)。
    Uniform Approach区分了非确定行为和概率性的行为，
@@ -83,6 +81,8 @@
    由于Uniform Approach具有模型无关性，我们可以用它来扩展其他的进程模型，
    进而使非概率模型概率化。概率化后，模型将会拥有更可计算、可模拟的性质。
    进而可以更好的对现实问题进行仿真和分析。
+
+\section{论文结构}
 
 \section{本章小结}
 本章引入了通信并发系统的概念，
