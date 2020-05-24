@@ -907,9 +907,44 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
    对于条件$q$-迁移：$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{q}{\rightarrow}_{\varphi}\mathcal{C}$的证明方法是相同的。
 \end{proof}
 
-现在我们可以定义$\mathbb{RVPC}_{\mathsf{Th}}$上的观察等价性了。
+我们希望定义符号互模拟关系的全集为$\mathbb{RVPC}_{\mathsf{Th}}$上的观察等价性，
+但这样定义仍会存在问题：考虑$A\in\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
+若$A$在$\varphi\mathcal{E}$下的条件等价树是无限延伸的，即没有叶子节点，
+这时找到$A$的条件$l$转移和条件$q$转移就会变得困难，因此我们引入Uniform Approach中的codivergent的相关概念来解决这个问题。
+
+\begin{definition}\label{def:divergent}
+   对于$A\in\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
+   若$A$在$\varphi\mathcal{E}$下的条件等价树为$t$，
+   定义树$t$的分支$\pi$是$t$从根节点开始到叶节点结束的一条路径，
+   定义$\pi(i)$为分支$\pi$上第$i$条边的标记中的概率部分，$\pi(i)\in(0,1]$。
+
+   定义这条分支的概率$\mathsf{P}(\pi)=\prod\{\pi(i)|i\in [|\pi|]\}$，
+   若这条分支是无穷的，则$\mathsf{P}(\pi)=\lim_{j\rightarrow \infty}\prod_{i=0}^{i=j}\pi(i)$。
+
+   定义条件等价树的概率$\mathsf{P}(t)=\sum\{\mathsf{P}(\pi)|\pi\textrm{是}t\textrm{的一条分支}\}$。
+   
+   定义$t$的前$k$层分支的概率为$\mathsf{P}^k(t)=\sum \{\mathsf{P}(\pi)|\pi\textrm{是}t\textrm{的一条分支且}|\pi|\leq k\}$。
+
+   定义$t$的有限长分支的概率$\mathsf{P}^f(t)=\lim_{k\rightarrow\infty}\mathsf{P}^k(t)$。
+
+   当条件等价树$t$的有限长分支的概率$\mathsf{P}^f(t)=0$时，
+   $t$称为\textit{发散的条件等价树}，我们可以理解为$t$没有有限长的分支。
+\end{definition}
+
+通过定义~\ref{def:divergent}，我们定义了使用符号互模拟关系的全集作为观察等价性时，
+存在问题的情况，我们使用共发散(codivergent)的概念对这种情况的条件等价树的观察等价性单独定义。
+
 \begin{definition}
-   $\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的观察等价性$=_{\mathbb{RVPC}_{\mathsf{Th}}}$定义为$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的符号互模拟关系的全集。
+   若$\mathcal{E}$是$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的等价关系，
+   $\mathcal{E}$是一个共发散的等价关系当且仅当：
+   当对于所有的布尔表达式$\varphi$，
+   对条件等价集$\mathcal{C}\in\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}/\varphi\mathcal{E}$，
+   $\mathcal{C}$中的每一个元素关于$\varphi\mathcal{E}$的条件等价森林中的每一个棵树都是发散的等价树；
+   或$\mathcal{C}$中的每一个元素关于$\varphi\mathcal{E}$的条件等价森林中的每一个棵树都不是是发散的等价树。
+\end{definition}
+
+\begin{definition}
+   $\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的观察等价性$=_{\mathbb{RVPC}_{\mathsf{Th}}}$定义为$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$上的共发散的符号互模拟关系的全集。
 \end{definition}
 由于$=_{\mathbb{RVPC}_{\mathsf{Th}}}$仍然是一个符号互模拟关系，因此我们可以得到定理~\ref{th:equality2}。
 \begin{theorem}\label{th:equality2}
@@ -917,7 +952,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
 \end{theorem}
 
 在数学特别是抽象代数中，同余关系或简称同余是相容于某个代数运算的等价关系。
-设$A=<S,*,\delta>$是一个代数系统，$~$是载体$S$上的等价关系，若$~$在$A$上的所有运算下都是可保持的，则称$~$为代数系统$A$上的同余关系。 
+设$A=<S,*,\delta>$是一个代数系统，$\sim$是载体$S$上的等价关系，若$\sim$在$A$上的所有运算下都是可保持的，则称$\sim$为代数系统$A$上的同余关系。 
 同余关系使得元素所在的等价类在运算上可以作为一个整体来看待。
 我们希望证明我们定义的$=_{\mathbb{RVPC}_{\mathsf{Th}}}$是一个同余关系。
 
@@ -930,7 +965,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
    为方便证明，以下$=_{\mathbb{RVPC}_{\mathsf{Th}}}$简记为$=$，绝对等价性记为$\equiv$，定义记为$\stackrel{def}{=}$。
    
    对于本地化操作子（Localization），对于$A=B,(a)A\rightsquigarrow_{\varphi=}\stackrel{\lambda}{\rightarrow}_{\varphi} (a)A'\notin [(a)A]_{\varphi =}, a\notin \lambda$，
-   易知有$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{(a)B\rightsquigarrow_{\varphi_i=}\stackrel{\lambda}{\rightarrow}_{\varphi_i}\}[(a)A]_{\varphi =}$。
+   易知有$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{(a)B\rightsquigarrow_{\varphi_i=}\stackrel{\lambda}{\rightarrow}_{\varphi_i}[(a)A]_{\varphi =}\}$。
 
    对于并发操作子（Composition），考虑等价关系$\mathcal{R}\stackrel{def}{=}\{(A|C,B|D)|(A,B)\in =,(C,D)\in =\}$，
    令$\mathcal{R}' = (\mathcal{R}\cup =)^*$，我们证明$\mathcal{R}'$是一个符号互模拟关系。
@@ -1004,6 +1039,10 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
       }
    \end{itemize}
    对于条件$q$-迁移：$(A|C)\rightsquigarrow_{\varphi=}\stackrel{q}{\rightarrow}_{\varphi}\mathcal{C}$的证明方法是相同的。
+
+   在上述证明中，若$(A,B)\in =$，且$A$关于$\varphi =$的条件等价树是发散的，
+   根据定义可知$B$对应的条件等价森林中的条件等价树也是发散的，
+   我们可以根据同样的扩展方法证明共发散对上述操作子的同余性。
 \end{proof}
 
 \section{本章小结}
@@ -1016,5 +1055,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
 并将Uniform Approach中$\mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$的等价树（Epsilon Tree）
 扩展成了$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$的条件等价树，
 并使用条件等价树给出了$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$的符号互模拟关系的定义。
-我们将符号互模拟的全集定义为$\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，
+为了解决无限的条件等价树无法得到符号互模拟关系的问题，
+我们根据Uniform Approach提出了$\mathbb{RVPC}_{\mathsf{Th}}$上共发散的定义，
+我们将共发散的符号互模拟的全集定义为$\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，
 并证明了$\mathbb{RVPC}_{\mathsf{Th}}$观察等价性是一个同余关系。
