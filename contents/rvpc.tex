@@ -6,15 +6,15 @@
 我们可以使用该方法概率化扩展其他的进程模型。
 本章会对传值进程模型进行概率化扩展。
 传值进程模型是经典的进程模型，
-在Milner的Communication and Concurrency一书中，
+在MILNER R的Communication and Concurrency一书\cite{Milner_CCS}中，
 也是使用传值的通信并发模型——消息的发送者、接受者和通信媒介——引入并发和通信的概念。
-我们选择传值进程模型的一种定义——The Value-Passing Calculus进行扩展。
+我们选择传值进程模型的一种定义——The Value-Passing Calculus\cite{Fu_VPC}进行扩展。
 
 \section{传值进程模型}
 传值进程模型（Value-Passing Calculus）是一种
 可以将某个域中的值作为通信的内容，
 并且可以在特定逻辑条件执行某个动作的并发进程模型。
-一个经典的例子是Milner书中的一单元缓冲区，它可以接受、储存、发送消息：
+一个经典的例子是\cite{Milner_CCS}中的一单元缓冲区，它可以接受、储存、发送消息：
 \begin{align*}
    C&\stackrel{def}{=}in(x).C'(x)\\
    C'(x)&\stackrel{def}{=}\overline{out}(x).C
@@ -31,7 +31,7 @@ $A(x)$在满足条件$\varphi(x)$时会通过通道$a$输出函数$f(t)$的值�
 这种控制能力显著的增强了并发进程模型的表达能力，拓宽了应用场景。
 在网络通信中，各种通信协议通过在主机间传值进而控制主机的行为，
 通信协议的过程就可以被抽象为传值进程模型，
-支持并发的编程语言也可以被解释为传值进程模型，如Erlang。
+支持并发的编程语言也可以被解释为传值进程模型，如Erlang\cite{Erlang}。
 很多通过传值、计算解决的现实问题也都可以抽象为传值进程模型。
 
 
@@ -84,11 +84,11 @@ The Value-Passing Calculus使用可判定的一阶理论判定条件并
 \subsection{If Then Else语法符号化}
 进程$A(x)$中出现了If Then Else语法，
 If Then Else语法实现的分支控制在编程中也是非常重要的组成部分。
-在Milner的Communication and Concurrency一书中也多次使用If Then Else语法，
+在Communication and Concurrency\cite{Milner_CCS}中也多次使用If Then Else语法，
 然而在CCS的定义中，我们无法通过CCS代理的语法规则来实现这种分支控制；
 书中对分支控制的使用，如第五章（Bisimulation and Observation Equivalence）中对JobShop的建模，
 也比较随意，没有严格的定义也没有判断If条件的可判定性。
-在Fu的The Value-Passing Calculus中，
+在FU Y的The Value-Passing Calculus中，
 规定了If条件是通过一阶理论$\mathsf{Th}$可判定的布尔表达式，
 并说明$\textrm{if }\varphi\textrm{ then }S\textrm{ else }T$
 可以被定义为$\varphi S|\urcorner \varphi T$。
@@ -193,12 +193,12 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    若$R$是自反的、对称的、传递的，则称$R$是$A$上的等价关系。
    研究等价关系的目的在于将集合中的元素进行分类，选取每类的代表元素来降低问题的复杂度，如软件测试时，可利用等价类来选择测试用例。
    对通信并发系统程序等价的定义和验证，现在已有很多研究。
-   在提出CCS时Milner提出了\textit{观察等价(observation equivalence)}与\textit{弱互模拟(weak bisimulation)}\cite{2}。
-   Glabbeek和Weijland提出的\textit{分支互模拟(branching bisimulation)}\cite{6}也是十分著名的研究。
+   在提出CCS时MILNER R提出了\textit{观察等价(observation equivalence)}与\textit{弱互模拟(weak bisimulation)}\cite{2}。
+   van GLABBEEK R和WEIJLAND W提出的\textit{分支互模拟(branching bisimulation)}\cite{Branching_1, Branching_2}也是十分著名的研究。
 
-   对于概率模型的等价性，目前有对同步概率进程模型互模拟关系的研究\cite{13}，
-   仅适用于有限状态的概率进程模型的研究\cite{14,15}等。
-   Uniform Approach在分支互模拟\cite{6}的基础上给出了
+   对于概率模型的等价性，目前有对全概率进程模型，即概率选择代替非确定性选择的进程模型的弱互模拟及分支互模拟的研究\cite{全概率的弱互模拟和分支互模拟}，
+   仅适用于有限状态的概率进程模型的研究\cite{有限状态_1,有限状态_2}等。
+   Uniform Approach在分支互模拟\cite{Branching_1, Branching_2}的基础上给出了
    RCCS分支互模拟关系的定义，以及等价关系同余性的证明。
    
    Uniform Approach中RCCS的分支互模拟涉及等价集的概念，我们首先看CCS等价集的定义：
@@ -268,7 +268,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \end{definition}
 
    对于传值进程模型，由于条件操作子的影响不能直接使用分支互模拟。
-   在The Value-Passing Calculus中，Fu Y提出了$\mathbb{VPC}_\mathsf{Th}$的符号互模拟。
+   在The Value-Passing Calculus中，FU Y提出了$\mathbb{VPC}_\mathsf{Th}$的符号互模拟。
    $\mathbb{VPC}_{\mathsf{Th}}$与CCS的区别主要体现在前缀操作子和条件操作子。
    对于前缀操作子，相似的定义互模拟关系是比较容易的，只需要保证通道一致、值一致即可。
    而条件操作子给互模拟的定义带来了麻烦，比如：
@@ -315,7 +315,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
       $B\stackrel{\overline{a}(0)}{\longrightarrow}_{\urcorner(x=0)}S$同理。
    \end{proof}
 
-   \subsection{条件等价集}
+   \subsection{条件等价树}
 
    根据~\ref{ch:bisimulation}中定义~\ref{def:symbolic_bisimulation}中定义的$\mathbb{VPC}_{\mathsf{Th}}$的符号互模拟关系，
    我们观察$A(x)=(x\geq 5)\overline{a}(\mathsf{s}(x)).0)$和$A'(x)=(x\geq 3)\overline{a}(\mathsf{s}(x)).0$，
@@ -428,7 +428,6 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \end{corollary}
    推论~\ref{co:superset}可以由推论~\ref{co:all_1}得出。
 
-\subsection{条件等价树}
    定义~\ref{def:symbolic_bisimulation}给出了$\mathbb{VPC}_{\mathsf{Th}}$的互模拟的定义，
    观察定义~\ref{def:symbolic_bisimulation}中的$A\stackrel{a(x)}{\longrightarrow}_{\varphi} A'$，
    我们用$\{B\Rightarrow_{\psi_i}B'_i\stackrel{a(x)}{\longrightarrow}_{\psi'_i}B_i'\}$模拟，

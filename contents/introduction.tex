@@ -10,10 +10,10 @@
   研究各种通信和同步机制，
   死锁、可观察性、发散性等并发现象。
   并发程序理论的研究加深了人们对并发系统的认识，
-  其主要的研究成果已经在Ada，Java等程序语言中得到广泛应用。[cite1]
-  20世纪80年代，Milner提出了通信系统演算(A Calculus of Communicating System，简称\textbf{CCS})\cite{2}，
-   同时期Hoare提出了CSP\cite{3}，
-   Bergstra和Klop等提出了ACP\cite{4}，Hennessy提出ATP\cite{5}等，
+  其主要的研究成果已经在Ada，Java等程序语言中得到广泛应用\cite{计算机科学技术百科全书}。
+  20世纪80年代，MILNER R提出了通信系统演算CCS(Calculus of Communicating System)\cite{Milner_CCS}，
+   同时期HOARE C提出了通信顺序进程CSP\cite{Hoare_CSP}，
+   BERGSTRA J等提出了ACP\cite{BERGSTRA_ACP}等。%，Hennessy提出ATPcite{5}等，
    这种使用代数方法研究通信并发系统的方式，称为进程演算。
    他们把输入输出、并行执行作为基本语法成分并使用结构操作语义的方法定义基本语法成分的操作语义。
    作为一种描述并发系统的模型，进程演算受到广泛研究并被成功应用到实际系统的规范、设计、分析及验证中。
@@ -26,16 +26,17 @@
 因此，在并发进程模型中引入随机性的概念是有意义的。
 作为经典并发进程模型的重要扩展，
 概率进程被广泛研究，
-有代表性的工作有对CCS的概率性扩展\cite{9,10},
-概率CSP\cite{11} 和概率ACP\cite{12}等。
-近期，Fu提出了一个通用方法(Uniform Approach)，
+有代表性的工作有对CCS的概率性扩展\cite{CCS_Prob_1,CCS_Prob_2},
+概率CSP\cite{CSP_Prob} 和概率ACP\cite{ACP_Prob}等。
+近期，FU Y提出了一个通用方法Uniform Approach\cite{Fu_UniformApproach}，
 可以用于将并发进程模型扩展为概率并发进程模型。
 由于其模型无关性，
 我们可以使用Uniform Approach对其他并发进程模型进行概率化扩展。
 
 有两种主要的进程演算可以作为概率模型的基础：分别是Milner的Calculus of Communicating System(CCS)和Hoare的Communicating Sequential Process(CSP)。
-  它们的区别在与等价的类型和建模并发系统采用的方法。Uniform Approach以CCS为例进行了概率扩展，
-  为理解Uniform Approach，我们首先对CCS进行简要的介绍。
+它们的区别在与等价的类型和建模并发系统采用的方法\cite{DIFF_CCS_CSP}。
+Uniform Approach以CCS为例进行了概率扩展，
+为理解Uniform Approach，我们首先对CCS进行简要的介绍。
 
 \section{通信系统演算}
 

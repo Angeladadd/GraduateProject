@@ -9,7 +9,7 @@ Gossip-Style Membership Protocol进行建模和模拟实现。
 
 \section{Gossip-Style Membership协议}
 \subsection{Gossip协议}
-Gossip协议，也称为流言协议，传染病协议(Epidemic Protocol)是一个基于传染病传播方式的点对点通信协议。
+Gossip协议，也称为流言协议，传染病协议(Epidemic Protocol)是一个基于传染病传播方式的点对点通信协议\cite{Gossip}。
 
 Gossip协议可以被解释为办公室流言的传播：
 每一个职员会随机和另一个职员分享最近的流言，
@@ -21,9 +21,11 @@ Gossip协议可以被解释为办公室流言的传播：
 小李在一次会议后告诉小孙时，
 发现小孙已经从小王那里知道了这个谣言。
 
-Gossip protocol 最早是在1987年在Epidemic Algorithms for Replicated Database Maintenance中被提出。
-主要用在分布式数据库系统中各个副本节点同步数据之用，这种场景的一个最大特点就是组成的网络的节点都是对等节点，是非结构化网络。
-Bitcoin就是使用了Gossip协议来传播交易和区块信息。
+Gossip协议
+主要用在分布式数据库系统中各个副本节点同步数据之用，
+这种场景的一个最大特点就是组成的网络的节点都是对等节点，
+是非结构化网络。
+2015年之前，Bitcoin就是使用了Gossip协议来传播交易和区块信息\cite{Bitcoin}。
 
 Gossip协议中，节点之间的通信方式有三种：
 \begin{itemize}
@@ -51,10 +53,10 @@ Gossip协议中，节点之间的通信方式有三种：
    }
 \end{itemize}
 
-\subsection{Membership协议}
+\subsection{组成员协议}
 
-Membership协议为集群中的每个节点提供了一个本地的列表，
-成为Membership List，用来维护集群中其他节点的信息。
+组成员协议(Group Membership Protocol，后文简称Membership协议)\cite{Membership}为集群中的每个节点提供了一个本地的列表，
+称为Membership List，用来维护集群中其他节点的信息。
 Membership协议提供了两个主要的服务：
 \begin{itemize}
    \item 检测失效的节点
@@ -62,12 +64,12 @@ Membership协议提供了两个主要的服务：
 \end{itemize}
 
 常见的Membership协议有
-Heartbeating Protocol, 
-Gossip-Style Membership Protocol, 
-SWIM Failure Detector Protocol等。
+Heartbeating Protocol\cite{Heartbeat}, 
+Gossip-Style Membership Protocol\cite{Gossip_style}, 
+SWIM Failure Detector Protocol\cite{SWIM}等。
 
 \section{Gossip-Style Membership的实现}
-我们使用$\mathbb{RVPC}_{\mathsf{Th}}$来实现Gossip-Style Membership协议，
+我们使用$\mathbb{RVPC}_{\mathsf{Th}}$来实现Gossip-Style Membership协议\cite{Gossip_style}，
 来作为使用随机传值进程模型建模通信过程的示例，
 类似的，也可以使用同样的建模方法建模其他现实问题。
 
@@ -498,8 +500,8 @@ $Processing(x_1,x_2,\dots,x_n)$可以并发的运行$Check(x_i)$，
 我们将使用Go语言实现Gossip-Style Membership Protocol，
 Go语言实现了两种并发模型，一种是C++，Java使用的多线程，一种是CSP并发模型。
 如我们在第~\ref{ch:intro}章中提到的，
-CSP也是一种经典的进程演算，它与CCS的区别在于等价的类型和建模并发系统采用的方法，有关CCS和CSP对比的研究也有很多[cite3]。
-Go语言使用了CSP理论中的Process/Channel，对应到语言中的 goroutine/channel。[cite2]
+CSP也是一种经典的进程演算，它与CCS的区别在于等价的类型和建模并发系统采用的方法，有关CCS和CSP对比的研究也有很多\cite{DIFF_CCS_CSP,CCS_CSP1,CCS_CSP2,CCS_CSP3}。
+Go语言使用了CSP理论中的Process/Channel，对应到语言中的 goroutine/channel\cite{Golang}。
 Goroutine是一种轻量级线程，channel用于协程间的通信。
 我们使用Go语言的并发特性可以更加直观的展示出对前述模型的代码实现。
 
