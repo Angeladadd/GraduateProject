@@ -1,26 +1,29 @@
 % !TEX root = ../thesis.tex
 
 \begin{digest}
-  With the rapid development of parrallel and distributed computer system,
-  concurrency theory plays a key role in the theory of programs.
-  Randomization is also am important part in Computer Science since it is a computational property. 
-  Recently, Fu proposed a uniform approach
-  used to turn a process model into a randomized extension.
-  Since it is a model independent approach,
-  we can use it to derive a probabilistic extension of 
-  any other process model.
+  With the rapid development of parallel and distributed computer system, 
+  concurrency theory has become an important branch of the theory of programs. 
+  As an important extant to concurrency theory, 
+  probabilistic process has been widely researched. 
+  Recently, Fu proposed a Uniform Approach used to turn a process model into a randomized extension. 
+  Since it is a model independent approach, 
+  we can use it to derive a probabilistic extension of any other process model. 
+  Fu expressed Uniform Approach by demonstrating how to define the grammar and syntax of RCCS, 
+  a randomized version of CCS, 
+  and provide us a way to define bisimulation and equivalence on RCCS as well.
 
-  A value-passing calculus is a process calculus where the content of communications are values chosen from some data domain,
-  and the propositions appearing in the conditionals are formulas constructed from a logic.
-  It can be applied in modeling and analyzing communicating processes,
-  biological processes and other real-world problems with value-passing characteristics.
-  In most studys, the data domain, logic and even the computation of functions in a value-passing calculus are dependent on undefined oracles.
-  Those oracles make it hard for those value-passing calculus to measure their expressiveness.
-  However,
-  Fu proposed a value-passing calculus, called $\mathbb{VPC}_{\mathsf{Th}}$, successfully avoid such oracles, 
-  using a first order thoery to decide the bool expression and a turing complete numeric system to derive the outcomes of functions.
-  Considering its powerful expressiveness,
-  we 
-
+  A value-passing calculus is a process calculus where the content of communications are values chosen from some data domain, 
+  and the propositions appearing in the conditionals are formulas constructed from a logic. 
+  It can be applied in modeling and analyzing communicating processes, 
+  biological processes and other real-world problems with value-passing characteristics. 
+  In most studies of value-passing calculus, there exits some oracles providing data domain, 
+  logic decision and even computation of functions in value-passing processes. 
+  Those oracles are usually remained undefined making it hard to analyze the expressiveness of those models. 
+  However, Fu proposed a value-passing calculus, 
+  called VPC_Th, using a first order theory to decide the bool expression and a turing complete numeric system to derive the outcomes of functions, 
+  successfully avoid such oracles.
+Consider its great expressiveness, 
+we decide to use Uniform Approach to extend VPC_Th into a probabilistic version, 
+called RVPC_Th. Hopefully, RVPC_Th could help to model and analyze some meaningful real-world process such as communication and network security etc.
 
 \end{digest}
