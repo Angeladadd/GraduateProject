@@ -43,15 +43,15 @@
    CCS的语法如下：
    $$S,T:=X\mid \sum_{i\in I}\alpha_i.T_i\mid S\mid T \mid (a)T \mid \mu X.T$$
 
-   其中$S,T$为CCS的代理(agent)，$X$为代理变元（agent variables）。索引集合$I$是有限自然数集。
-   $Chan$为名字（name）的集合，其中的元素以小写字母表示，
+   其中$S,T$为CCS的进程表达式(agent)，$X$为进程表达式变元（agent variables）。索引集合$I$是有限自然数集。
+   $Chan$为名字（或通道）的集合，其中的元素以小写字母表示，
    集合$\overline{Chan}=\{\overline{a}\mid a\in Chan\}$，
    动作集合$Act=Chan\cup \overline{Chan}\cup \{\tau\} $，
    其中的元素用小写希腊字母表示，$\alpha_i\in Act$，$\tau$表示一切内部动作。
    $\sum_{i\in I}\alpha_i.T$为非确定性选择项，若$I=\emptyset$，我们可以将这一项写作$0$。
    $S\mid T$表示$S,T$可以并发执行。$(a)T$为限制（Restriction）或本地化（Localization）操作子，对外隐藏$T$中的$a$通道，
    也可以写为$T\backslash \{a\}$或$T\backslash a$。$\mu X$表示递归（Recursion）操作。
-   若一个CCS代理$P$中不含自由变元，称$P$为进程（process）。
+   若一个CCS进程表达式$P$中不含自由变元，称$P$为进程（process）。
 
    CCS的迁移语义如图~\ref{fig_ccs}，表示状态之间的变迁规则，其中$\lambda \in Act$。
 

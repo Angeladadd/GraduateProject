@@ -497,13 +497,18 @@ $Processing(x_1,x_2,\dots,x_n)$可以并发的运行$Check(x_i)$，
 \subsection{Go语言与CSP}
 我们将使用Go语言实现Gossip-Style Membership Protocol，
 Go语言实现了两种并发模型，一种是C++，Java使用的多线程，一种是CSP并发模型。
+如我们在第~\ref{ch:intro}章中提到的，
+CSP也是一种经典的进程演算，它与CCS的区别在于等价的类型和建模并发系统采用的方法，有关CCS和CSP对比的研究也有很多[cite3]。
+Go语言使用了CSP理论中的Process/Channel，对应到语言中的 goroutine/channel。[cite2]
+Goroutine是一种轻量级线程，channel用于协程间的通信。
+我们使用Go语言的并发特性可以更加直观的展示出对前述模型的代码实现。
 
-CSP也是一种进程演算，
-与CCS存在相似和差异[cite]，
-本实现主要利用了Go语言的通道特性，
-通道的概念是CSP的组成部分，
-在CCS中对应端口的概念，其本质是相似的。
-使用Go语言的通道可以更加直观的展示出对上述模型的代码实现。
+% CSP也是一种进程演算，
+% 与CCS存在相似和差异[cite]，
+% 本实现主要利用了Go语言的通道特性，
+% 通道的概念是CSP的组成部分，
+% 在CCS中对应端口的概念，其本质是相似的。
+% 使用Go语言的通道可以更加直观的展示出对上述模型的代码实现。
 
 \subsection{代码实现与仿真效果}
 
@@ -598,16 +603,6 @@ select会等待case中有能够执行的case时执行该case：
  我们使用html为我们的系统做了一个前端界面，
  我们可以在这个界面观察每个节点Membership List的更新过程。
 
- 图~\ref{fig:demo_1}展示了每个节点的Membership List的扩展过程，
- 其中第一行为节点的地址，我们使用字符串表示，也可以根据需要修改成其他的形式，
- 第二行为对应节点的状态，Bad表示节点失效，对应$BadNode$状态，
- Normal表示节点正常，对应$FragileNode$和$Node$状态，
- 第三行的按钮可以改变节点的状态，
- 接下来的是对应节点的Membership List，可以看到我们展示了Address，Heartbeat, Status字段，
- 其中Status字段是由LocalTime计算而得，
- 当当前时间与Membership List项的LocalTime字段相差超过$T_{fail}$时，我们认为这一项对应的节点处于失效状态。
- 在~\ref{fig:demo_1}的第一个图中，我们可以看到初始状态所有节点的Membership List为空，
- 第二张图中Membership List进行了扩张，第三张图中全部节点的Membership List包含了所有其他节点。
  \begin{figure}[!htp]
    \begin{minipage}{0.9\textwidth}
      \centering
@@ -620,6 +615,16 @@ select会等待case中有能够执行的case时执行该case：
    \caption{基于Gossip-Style Membership协议的5节点P2P系统的Membership List扩展过程}
    \label{fig:demo_1}    
 \end{figure}
+ 图~\ref{fig:demo_1}展示了每个节点的Membership List的扩展过程，
+ 其中第一行为节点的地址，我们使用字符串表示，也可以根据需要修改成其他的形式，
+ 第二行为对应节点的状态，Bad表示节点失效，对应$BadNode$状态，
+ Normal表示节点正常，对应$FragileNode$和$Node$状态，
+ 第三行的按钮可以改变节点的状态，
+ 接下来的是对应节点的Membership List，可以看到我们展示了Address，Heartbeat, Status字段，
+ 其中Status字段是由LocalTime计算而得，
+ 当当前时间与Membership List项的LocalTime字段相差超过$T_{fail}$时，我们认为这一项对应的节点处于失效状态。
+ 在~\ref{fig:demo_1}的第一个图中，我们可以看到初始状态所有节点的Membership List为空，
+ 第二张图中Membership List进行了扩张，第三张图中全部节点的Membership List包含了所有其他节点。
 
 我们同样可以展示系统的失效检测。在图~\ref{fig:demo_2}中，
 第一张图是正常状态，
