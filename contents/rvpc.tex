@@ -19,8 +19,8 @@
    C&\stackrel{def}{=}in(x).C'(x)\\
    C'(x)&\stackrel{def}{=}\overline{out}(x).C
 \end{align*}
-更“普遍”的传值进程模型也可以对输入进行逻辑判定，
-根据特定的“条件”执行特定的“动作”，
+更普遍的传值进程模型也可以对输入进行逻辑判定，
+根据特定的条件执行特定的动作，
 通过输入控制进程的执行。我们以进程$A(x)$为例：
 $$A(x)=\textrm{if }\varphi(x)\textrm{ then }\overline{a}(f(t))\textrm{ else }B(x)$$
 $A(x)$在满足条件$\varphi(x)$时会通过通道$a$输出函数$f(t)$的值，
@@ -37,14 +37,18 @@ $A(x)$在满足条件$\varphi(x)$时会通过通道$a$输出函数$f(t)$的值�
 
 \subsection{The Value-Passing Calculus}\label{ch:vpc}
 对传值进程模型的研究很多都会依赖一个\textit{神域}，
-这个神域帮组我们进行条件的判定，函数的计算和提供变元的取值范围。
+这个神域是一个领域模型(domain model)或一个逻辑理论(logic theory)，
+帮组我们进行条件的判定，函数的计算和提供变元的取值范围。
 如在执行$A(x)$时，我们会将$\varphi(x)$传给神域，
 神域判定是否满足条件，并将判定结果返回给我们，
 同样的，我们也会将$f(t)$传给神域，神域帮我们计算这个函数，并将结果返回给我们。
+例如，WINSKEL G将变元表达式的取值和计算全部依赖一个集合$V$\cite{Oracle_V}，
+LIN H依赖一个评估$\rho$完成布尔表达式的判定和表达式的计算\cite{Oracle_rho}，
+MILNER R对CCS的扩展Value-Passing CCS也没有讨论函数的计算过程和条件的可判定性\cite{Milner_CCS}。
 神域通常不包括在传值进程模型中，且通常是未定义的，或只在特定场景下定义。
 由于神域的存在，对于这些传值进程模型表达能力的衡量变得十分困难，
-Fu在The Value-Passing Calculus中取缔了神域的概念，
-提出了一个封闭的传值进程模型。
+FU Y在The Value-Passing Calculus中取缔了神域的概念，
+提出了一个封闭的传值进程模型\cite{Fu_VPC}。
 
 The Value-Passing Calculus中的传值进程模型$\mathbb{VPC}_{\mathsf{Th}}$
 的语法可以表示为：
@@ -63,13 +67,13 @@ $(c)(E\{c(z).0/X\}|!\overline{c}(r).E\{c(z).0/X\})$。
 The Value-Passing Calculus提出了两种迁移语义的描述：具体语义（Concrete Semantics）和符号语义（Symbolic Semantics）。
 后文我们只用到了符号语义，因此我们忽略具体语义的相关内容。
 
-$\mathbb{VPC}_{\mathsf{Th}}$的符号语义如图~\ref{fig_vpc}所示。
+$\mathbb{VPC}_{\mathsf{Th}}$的符号迁移语义如图~\ref{fig_vpc}所示。
 
 \begin{figure}[!htbp]
    \small
    \centering
    \includegraphics[width=13cm]{../figures/vpc.png}
-    \caption[]{$\mathbb{VPC}_{\mathsf{Th}}$的符号语义规则}
+    \caption[]{$\mathbb{VPC}_{\mathsf{Th}}$的符号迁移语义规则}
     \label{fig_vpc}
 \end{figure}
 其中，$T=\varphi \lambda.T'$在$\varphi$条件下执行$\lambda$动作到达$T'$状态，
@@ -77,8 +81,8 @@ $\mathbb{VPC}_{\mathsf{Th}}$的符号语义如图~\ref{fig_vpc}所示。
 符号语义中的动作集合$Act=\{a(x),\overline{a}(t)| a\in Chan, x\in \mathsf{V}_{\Sigma}, t\in \mathsf{T}_{\Sigma}\}\cup \{\tau\}$，
 $Act$中的元素可以用$\lambda$表示，其中$\mathsf{V}_{\Sigma},\mathsf{T}_{\Sigma}$为可判定逻辑$\mathsf{Th}$中变元的集合和项的集合[引用]。
 
-The Value-Passing Calculus使用可判定的一阶理论判定条件并
-提出了一个图灵完备的数值系统（Numeric System）作为底层模型来实现可计算的函数。
+The Value-Passing Calculus使用可判定的一阶理论判定条件\cite{PA}并
+提出了一个图灵完备的数值系统（Numeric System）\cite{Fu_UniformApproach}作为底层模型来实现可计算的函数。
 通过这两种方式，将Value-Passing Calculus从神域中解放出来。
 
 \subsection{If Then Else语法符号化}
@@ -129,8 +133,14 @@ If Then Else语法实现的分支控制在编程中也是非常重要的组成�
  \end{table}
 
 \section{随机传值进程模型}
-随机传值进程模型定义在$\mathbb{VPC}_{\mathsf{Th}}$的基础上，
-我们可以用Uniform Approach中的随机选择$\bigoplus_{i\in I}p_i\tau.T_i$
+由于随机性的可计算性，
+许多具有传值性质的通信过程、生物分析等现实问题的建模和分析也被引入了概率的思想，如SWIM协议\cite{SWIM}和对生物自组装系统\cite{BioProcess}。
+我们可以在传值进程模型中引入随机性用于对这些具有随机性、传值特点的问题进行建模和分析。
+目前已经存在使用随机传值进程模型建模和分析网络安全\cite{NetworkSecurity}，
+但由于其是在Value-passing CCS\cite{Milner_CCS}基础上的概率扩展，\cite{NetworkSecurity,Prob_VPCCS}仍然存在神域的问题。
+
+为了避免神域带来的问题，我们可以将随机传值进程模型定义在$\mathbb{VPC}_{\mathsf{Th}}$的基础上，
+用Uniform Approach中的随机选择$\bigoplus_{i\in I}p_i\tau.T_i$
 扩展公式~\ref{eq:vpc}中$\mathbb{VPC}_{\mathsf{Th}}$项的定义。
 我们可以得到随机传值进程模型（Random VPC，记为$\mathbb{RVPC}_{\mathsf{Th}}$）项的定义：
 \begin{equation}\label{eq:rvpc}
@@ -191,9 +201,9 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    程序理论的基本问题是进程的等价性。
    等价关系定义为：设$R$是非空集合$A$上的二元关系，
    若$R$是自反的、对称的、传递的，则称$R$是$A$上的等价关系。
-   研究等价关系的目的在于将集合中的元素进行分类，选取每类的代表元素来降低问题的复杂度，如软件测试时，可利用等价类来选择测试用例。
+   研究等价关系的目的在于将集合中的元素进行分类，选取每类的代表元素来降低问题的复杂度，如软件测试时，可利用等价类来选择测试用例\cite{Equiv}。
    对通信并发系统程序等价的定义和验证，现在已有很多研究。
-   在提出CCS时MILNER R提出了\textit{观察等价(observation equivalence)}与\textit{弱互模拟(weak bisimulation)}\cite{2}。
+   在提出CCS时MILNER R提出了\textit{观察等价(observation equivalence)}与\textit{弱互模拟(weak bisimulation)}\cite{Milner_CCS}。
    van GLABBEEK R和WEIJLAND W提出的\textit{分支互模拟(branching bisimulation)}\cite{Branching_1, Branching_2}也是十分著名的研究。
 
    对于概率模型的等价性，目前有对全概率进程模型，即概率选择代替非确定性选择的进程模型的弱互模拟及分支互模拟的研究\cite{全概率的弱互模拟和分支互模拟}，
@@ -954,7 +964,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
 \end{theorem}
 
 在数学特别是抽象代数中，同余关系或简称同余是相容于某个代数运算的等价关系。
-设$A=<S,*,\delta>$是一个代数系统，$\sim$是载体$S$上的等价关系，若$\sim$在$A$上的所有运算下都是可保持的，则称$\sim$为代数系统$A$上的同余关系。 
+设$A=<S,*,\delta>$是一个代数系统，$\sim$是载体$S$上的等价关系，若$\sim$在$A$上的所有运算下都是可保持的，则称$\sim$为代数系统$A$上的同余关系\cite{Cougruence}。 
 同余关系使得元素所在的等价类在运算上可以作为一个整体来看待。
 我们希望证明我们定义的$=_{\mathbb{RVPC}_{\mathsf{Th}}}$是一个同余关系。
 

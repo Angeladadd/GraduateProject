@@ -33,7 +33,7 @@
 由于其模型无关性，
 我们可以使用Uniform Approach对其他并发进程模型进行概率化扩展。
 
-有两种主要的进程演算可以作为概率模型的基础：分别是Milner的Calculus of Communicating System(CCS)和Hoare的Communicating Sequential Process(CSP)。
+有两种主要的进程演算可以作为概率模型的基础：分别是MILNER R的Calculus of Communicating System(CCS)\cite{Milner_CCS}和HOARE C的Communicating Sequential Process(CSP)\cite{Hoare_CSP}。
 它们的区别在与等价的类型和建模并发系统采用的方法\cite{DIFF_CCS_CSP}。
 Uniform Approach以CCS为例进行了概率扩展，
 为理解Uniform Approach，我们首先对CCS进行简要的介绍。
@@ -66,7 +66,7 @@ Uniform Approach以CCS为例进行了概率扩展，
 
    \section{随机进程模型}
 
-   Fu提供了一个模型无关的方法——An Uniform Approach to Random Process Model(Uniform Approach)，
+   FU Y提供了一个模型无关的方法——An Uniform Approach to Random Process Model(Uniform Approach)\cite{Fu_UniformApproach}，
    将进程模型扩展为随机进程模型。
    Uniform Approach区分了非确定行为和概率性的行为，
    在CCS的基础上建立了Randomized CCS(后文称为RCCS)的语法和等价关系。
