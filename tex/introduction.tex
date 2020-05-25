@@ -1,22 +1,8 @@
 % !TeX root = ../thesis.tex
 
-\chapter{绪论}
+\chapter{绪论}\label{ch:intro}
 
-作为计算机科学中的重要组成，概率算法在
-排序与搜索、素数分解、多项式求根、字符串的模式匹配等方面
-都有很好的应用。
-由于概率的可计算性，概率的思想同样可以应用于并发系统的研究，
-其中对于概率进程模型，
-有代表性的工作有对CCS的概率性扩展\cite{9,10},
-概率CSP\cite{11} 和概率ACP\cite{12}等。
-近期，Fu提出了一个模型无关的通用方法，
-可以用于将并发进程模型扩展为概率并发进程模型。
-由于其模型无关性，
-我们可以使用这一方法对其他并发进程模型进行概率化扩展。
-
-\section{并发进程模型}
-  20世纪70年代初期，为了保证操作系统中多个并行执行程序的正确性，
-  并发程序理论由此产生。随着并行和分布式计算机系统的发展，
+随着并行和分布式计算机系统的发展，
   并发程序理论程序理论的一个重要分支。
   并发程序理论的研究内容包括：
   如何刻画并行进程的行为，
@@ -24,15 +10,36 @@
   研究各种通信和同步机制，
   死锁、可观察性、发散性等并发现象。
   并发程序理论的研究加深了人们对并发系统的认识，
-  其主要的研究成果已经在Ada,Java等程序语言中得到广泛应用。[cite1]
-
-   20世纪80年代，英国学者Milner提出了通信系统演算(A Calculus of Communicating System，简称\textbf{CCS})\cite{2}，
+  其主要的研究成果已经在Ada，Java等程序语言中得到广泛应用。[cite1]
+  20世纪80年代，Milner提出了通信系统演算(A Calculus of Communicating System，简称\textbf{CCS})\cite{2}，
    同时期Hoare提出了CSP\cite{3}，
-   Bergstra和Klop等提出了ACP\cite{4}，Hennessy提出ATP\cite{5}等使用代数方法研究通信并发系统，统称为进程代数理论。
+   Bergstra和Klop等提出了ACP\cite{4}，Hennessy提出ATP\cite{5}等，
+   这种使用代数方法研究通信并发系统的方式，称为进程演算。
+   他们把输入输出、并行执行作为基本语法成分并使用结构操作语义的方法定义基本语法成分的操作语义。
+   作为一种描述并发系统的模型，进程演算受到广泛研究并被成功应用到实际系统的规范、设计、分析及验证中。
 
-   Milner的通信系统演算(以下称为CCS)可以表达操作带来的状态迁移，进程的并行执行，多种操作的选择和通道的隐藏。
-   这一并发进程模型可以用标记变迁系统(Labled Transition System)表示：
+由于现代计算机系统具有开放性、分布式、交互式的特点，
+并发系统中通常包含复杂的行为：非确定性行为和随机性行为。
+为了使用简单、易用的形式化方法描述复杂的并发系统，
+并对并发系统进行建模和分析，
+我们通常会使用非确定性行为的统计行为特性。
+因此，在并发进程模型中引入随机性的概念是有意义的。
+作为经典并发进程模型的重要扩展，
+概率进程被广泛研究，
+有代表性的工作有对CCS的概率性扩展\cite{9,10},
+概率CSP\cite{11} 和概率ACP\cite{12}等。
+近期，Fu提出了一个通用方法(Uniform Approach)，
+可以用于将并发进程模型扩展为概率并发进程模型。
+由于其模型无关性，
+我们可以使用Uniform Approach对其他并发进程模型进行概率化扩展。
 
+有两种主要的进程演算可以作为概率模型的基础：分别是Milner的Calculus of Communicating System(CCS)和Hoare的Communicating Sequential Process(CSP)。
+  它们的区别在与等价的类型和建模并发系统采用的方法。Uniform Approach以CCS为例进行了概率扩展，
+  为理解Uniform Approach，我们首先对CCS进行简要的介绍。
+
+\section{通信系统演算}
+
+   CCS使用了标记变迁系统(Labled Transition System)来建模。
    CCS的语法如下：
    $$S,T:=X\mid \sum_{i\in I}\alpha_i.T_i\mid S\mid T \mid (a)T \mid \mu X.T$$
 
@@ -56,16 +63,10 @@
      \label{fig_ccs}
  \end{figure}
 
-   CCS及其扩展模型可以用于并发系统的建模。
-   提出CCS时，Milner在\cite{2}中对有界缓冲区，存在并行工作的工人的工厂，支持并行计算的编程语言进行了建模。
-   基于CCS的建模还有Guo等的欧洲列车控制系统\cite{16}，
-   Issad等的铁路系统\cite{17}，
-   Cleaveland等的图坐标系语言\cite{18}等。
-   CCS也可以用来评估系统特性，如判断是否出现死锁。[wiki有一个引用]
    \section{随机进程模型}
 
-   Fu提供了一个模型无关的方法——An Uniform Approach to Random Process Model(后文称为Uniform Approach)，
-   进程模型扩展为随机进程模型。
+   Fu提供了一个模型无关的方法——An Uniform Approach to Random Process Model(Uniform Approach)，
+   将进程模型扩展为随机进程模型。
    Uniform Approach区分了非确定行为和概率性的行为，
    在CCS的基础上建立了Randomized CCS(后文称为RCCS)的语法和等价关系。
 
@@ -96,7 +97,7 @@
 我们希望随机传值进程模型的语法、迁移语义
 可以用于为具有传值特点现实问题建模通信、同步等机制，
 为这类问题的模型设计与软件开发提供方法，
-并应用随机传值进程模型的互模拟关系、等价关系等性质
+并应用随机传值进程模型的互模拟关系、等价关系等
 分析模型的死锁、活性、可观察、发散等并发特性。
 
 \section{论文结构}
