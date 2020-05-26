@@ -1,18 +1,40 @@
 % !TEX root = ../main.tex
 
 \begin{abstract}
-  随着并行和分布式计算机系统的迅速发展，
-  并发程序理论成为程序理论的一个重要分支。
-  作为经典并发理论的扩展，概率进程被广泛研究。
-  最近，一个对并发进程模型进行概率化扩展的通用方法被提出，
-  我们使用这个通用方法对经典进程模型——并发传值进程模型进行了概率扩展。
-  我们提出了概率扩展后得到的随机传值进程模型的语法和转移语义，
-  并给出了随机传值进程模型互模拟关系、等价性的定义以及同余性的证明。
-  随机传值进程模型理论上可以用于具有传值特点的现实问题的建模和分析。
-  我们使用随机传值进程模型建模并模拟实现了基于云计算协议Gossip-Style Membership协议的通信过程，
-  证明了随机传值进程模型对于并发传值通信过程的建模和分析具有一定的可行性。
+  并行理论是理论计算机科学中一个活跃的研究领域。
+  随着大规模通讯系统的迅速发展，
+  并发理论成为建模和表征现实并发系统的重要方法论。
+  作为经典并发理论的扩展，概率进程被广泛研究，
+  产生了很多用于不同的应用场景的各种变体。
+  2019年，傅育熙提出了一个对并发进程模型进行概率化扩展的通用方法，
+  这一方法具有模型无关性的优点。
+  在本文中，我们在这一通用方法的框架下对傅的工作进行了扩展，
+  提出了一个传值进程演算的随机版本——随机传值进程模型。
+  这一模型是使用傅的通用方法对经典传值进程演算的概率扩展。
+  首先，我们规范化了随机传值进程模型的语法和转移语义，
+  并研究了这一模型的代数性质，例如互模拟关系。
+  我们还证明了这一模型等价关系的同余性。
+  其次，我们证明了随机传值进程模型可以用于具有传值特点的现实问题的建模和分析。
+  作为应用案例，
+  我们使用随机传值进程模型有效的建模并模拟实现了基于云计算协议Gossip-Style Membership协议的通信过程，
+  证明了随机传值进程模型对于并发通信过程的建模和分析具有一定的可行性。
+  我们的工作是傅的通用方法在理论和应用层面上的延伸。
 \end{abstract}
 
 \begin{abstract*}
-  Concurrency theory has been an active field of research in theoretical computer science. Recently, with the rapid development of massive communication systems, concurrency theory has become an important methodology for modeling and characterizing real concurrent systems. As an extension of classic concurrency theory, probabilistic processes have been widely studied for many years and led to lots of variants for different applications. In 2019, Yuxi Fu has proposed a uniform approach to study the probabilistic extension of concurrency processes which has the merit of being model-independent. In this work, we first extend Yuxi’s original work by introducing a random version of value-passing calculus under the uniform approach framework. This new model is a randomized extension of the classic value-passing calculus. In this paper, we formalize the grammar and transition semantics of the random value-passing calculus, as well as study its algebraic properties such as bisimulation relation. We show that the new equivalence relation is a congruent relation. Second, we show that random value-passing calculus is especially suitable for modeling and analyzing real-world applications with value-passing characteristics. As a case study, we use random value-passing calculus to efficiently model and implement a well-known communication system based on the Gossip-Style Membership Protocol, which is a cloud computing protocol. This shows that our new model is suitable for formalizing and analysis modern concurrent communication systems. Our work extends the uniform approach to random process model in both theoretical and application aspects.
+  Concurrency theory has been an active field of research in theoretical computer science.
+   Recently, with the rapid development of massive communication systems, 
+   concurrency theory has become an important methodology for modeling and characterizing real concurrent systems. 
+   As an extension of classic concurrency theory, probabilistic processes have been widely studied for many years and led to lots of variants for different applications. 
+   In 2019, Yuxi Fu has proposed a uniform approach to study the probabilistic extension of concurrency processes 
+   which has the merit of being model-independent. 
+   In this work, we first extend Yuxi’s original work by introducing a random version of value-passing calculus under the uniform approach framework.
+  This new model is a randomized extension of the classic value-passing calculus.
+   In this paper, we formalize the grammar and transition semantics of the random value-passing calculus, 
+   as well as study its algebraic properties such as bisimulation relation. 
+   We show that the new equivalence relation is a congruent relation. 
+   Second, we show that random value-passing calculus is especially suitable for modeling and analyzing real-world applications with value-passing characteristics. 
+   As a case study, we use random value-passing calculus to efficiently model and implement a well-known communication system based on the Gossip-Style Membership Protocol, which is a cloud computing protocol. 
+   This shows that our new model is suitable for formalizing and analysis modern concurrent communication systems.
+    Our work extends the uniform approach to random process model in both theoretical and application aspects.
 \end{abstract*}
