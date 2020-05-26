@@ -21,6 +21,8 @@
    BERGSTRA J等提出的ACP\cite{BERGSTRA_ACP}，以及BOLOGNESI T等的LOTOS\cite{LOTOS}。%，Hennessy提出ATPcite{5}等，
    作为一种描述并发系统的模型，进程演算受到广泛研究并被成功应用到实际系统的规范、设计、分析及验证中。
 
+随机在现代计算机科学的研究中日趋重要，
+在对并发系统的研究中也备受关注。
 由于现代计算机系统具有开放性、分布式、交互式的特点，
 并发系统中通常包含复杂的行为：非确定性行为和随机性行为。
 为了使用简单、易用的形式化方法描述复杂的并发系统，
@@ -72,7 +74,7 @@ Uniform Approach以CCS为例进行了概率扩展，
    FU Y提供了一个模型无关的方法——An Uniform Approach to Random Process Model(Uniform Approach)\cite{Fu_UniformApproach}，
    将进程模型扩展为随机进程模型。
    Uniform Approach区分了非确定行为和概率性的行为，
-   在CCS的基础上建立了Randomized CCS(后文称为RCCS)的语法和等价关系。
+   在CCS的基础上建立了随机化的CCS(后文称为RCCS)的语法、迁移语义并研究了RCCS的代数特性如互模拟关系。
 
    RCCS在CCS的基础上增加了概率选择操作子$\bigoplus_{i\in I}p_i\tau.T_i$，
    其中$0<p_i<1 \wedge \sum_{i\in I}p_i = 1$。
@@ -88,8 +90,7 @@ Uniform Approach以CCS为例进行了概率扩展，
  \end{figure}
 
    由于Uniform Approach具有模型无关性，我们可以用它来扩展其他的进程模型，
-   进而使非概率模型概率化。概率化后，模型将会拥有更可计算、可模拟的性质。
-   进而可以更好的对现实问题进行仿真和分析。
+   进而使非概率模型概率化。
 
 \section{研究目的}
 本文希望使用Uniform Approach的通用方法，
@@ -101,7 +102,7 @@ Uniform Approach以CCS为例进行了概率扩展，
 我们希望随机传值进程模型的语法、迁移语义
 可以用于为具有传值特点现实问题建模通信、同步等机制，
 为这类问题的模型设计与软件开发提供方法，
-并可以应用随机传值进程模型的互模拟关系、等价关系等
+并可以应用随机传值进程模型的代数特性如互模拟关系、等价关系等
 分析模型的死锁、活性、可观察、发散等并发特性。
 
 \section{论文结构}
