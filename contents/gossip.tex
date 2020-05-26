@@ -1,11 +1,11 @@
-% !TeX root = ../thesis.tex
+% !TEX root = ../main.tex
 
 \chapter{随机传值进程模型的应用}\label{ch:gossip}
 
 如前文所述，传值进程模型可以用于对通信协议的形式刻画，
 我们可以使用随机传值进程模型对引入了随机性的通信协议进行形式刻画。
-本章中我们使用随机传值进程模型对一种云计算协议
-Gossip-Style Membership Protocol进行建模和模拟实现。
+本章中我们使用随机传值进程模型对基于云计算协议
+Gossip-Style Membership协议的通信过程进行建模和模拟实现。
 
 \section{Gossip-Style Membership协议}
 \subsection{Gossip协议}
@@ -174,14 +174,14 @@ $p_{\mathsf{perm}}$为向一个特定的排列$perm$发送Gossip Message的概�
 \begin{itemize}
    \item [(1)] {网络传输可靠。
    然而现实中的网络传输存在丢包、延迟、比特反转等问题，
-   我们可以通过ACK机制来解决[cite]。
-   对不可靠网络下的Gossip协议，我们可以在上述理想条件下增加对网络传输的过程的建模，建模过程在Milner的CCS中有提及
-   [cite]。
+   我们可以通过ACK机制来解决。
+   对不可靠网络下的Gossip协议，我们可以在上述理想条件下增加对网络传输的过程的建模，建模过程在MILNER R的CCS中有提及
+   \cite{Milner_CCS}。
    }
    \item [(2)] {节点不会损坏。
    在现实中节点（主机）在运行了一定时间后就会出现问题，
    对于多个节点构成的P2P系统，
-   存在节点失效的概率只会更高[cite(MTTF)]，
+   存在节点失效的概率只会更高\cite{MTTF}，
    Membership协议是用来探测节点失效的一种方式。
    }
    \item [(3)] {
