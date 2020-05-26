@@ -38,7 +38,7 @@ $A(x)$在满足条件$\varphi(x)$时会通过通道$a$输出函数$f(t)$的值�
 \subsection{The Value-Passing Calculus}\label{ch:vpc}
 对传值进程模型的研究很多都会依赖一个\textit{神域}，
 这个神域是一个领域模型(domain model)或一个逻辑理论(logic theory)，
-帮组我们进行条件的判定，函数的计算和提供变元的取值范围。
+帮助我们进行条件的判定，函数的计算和提供变元的取值范围。
 如在执行$A(x)$时，我们会将$\varphi(x)$传给神域，
 神域判定是否满足条件，并将判定结果返回给我们，
 同样的，我们也会将$f(t)$传给神域，神域帮我们计算这个函数，并将结果返回给我们。
@@ -82,14 +82,14 @@ $\mathbb{VPC}_{\mathsf{Th}}$的符号迁移语义如图~\ref{fig_vpc}所示。
 $Act$中的元素可以用$\lambda$表示，其中$\mathsf{V}_{\Sigma},\mathsf{T}_{\Sigma}$为可判定逻辑$\mathsf{Th}$中变元的集合和项的集合[引用]。
 
 The Value-Passing Calculus使用可判定的一阶理论判定条件\cite{PA}并
-提出了一个图灵完备的数值系统（Numeric System）\cite{Fu_UniformApproach}作为底层模型来实现可计算的函数。
+提出了一个图灵完备的数值系统（Numeric System）\cite{Fu_VPC}作为底层模型来实现可计算的函数。
 通过这两种方式，将Value-Passing Calculus从神域中解放出来。
 
 \subsection{If Then Else语法符号化}
 进程$A(x)$中出现了If Then Else语法，
 If Then Else语法实现的分支控制在编程中也是非常重要的组成部分。
 在Communication and Concurrency\cite{Milner_CCS}中也多次使用If Then Else语法，
-然而在CCS的定义中，我们无法通过CCS代理的语法规则来实现这种分支控制；
+然而在CCS的定义中，我们无法通过CCS进程表达式的语法规则来实现这种分支控制；
 书中对分支控制的使用，如第五章（Bisimulation and Observation Equivalence）中对JobShop的建模，
 也比较随意，没有严格的定义也没有判断If条件的可判定性。
 在FU Y的The Value-Passing Calculus中，
@@ -134,9 +134,9 @@ If Then Else语法实现的分支控制在编程中也是非常重要的组成�
 
 \section{随机传值进程模型}
 由于随机性的可计算性，
-许多具有传值性质的通信过程、生物分析等现实问题的建模和分析也被引入了概率的思想，如SWIM协议\cite{SWIM}和对生物自组装系统\cite{BioProcess}。
+许多具有传值性质的通信过程、生物分析等现实问题的建模和分析也被引入了概率的思想，如SWIM协议\cite{SWIM}和生物自组装系统\cite{BioProcess}。
 我们可以在传值进程模型中引入随机性用于对这些具有随机性、传值特点的问题进行建模和分析。
-目前已经存在使用随机传值进程模型建模和分析网络安全\cite{NetworkSecurity}，
+目前已经存在使用随机传值进程模型建模和分析网络安全\cite{NetworkSecurity}等应用，
 但由于其是在Value-passing CCS\cite{Milner_CCS}基础上的概率扩展，\cite{NetworkSecurity,Prob_VPCCS}仍然存在神域的问题。
 
 为了避免神域带来的问题，我们可以将随机传值进程模型定义在$\mathbb{VPC}_{\mathsf{Th}}$的基础上，
