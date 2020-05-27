@@ -5,11 +5,12 @@
 如前文所述，传值进程模型可以用于对通信协议的形式刻画，
 我们可以使用随机传值进程模型对引入了随机性的通信协议进行形式刻画。
 本章中我们使用随机传值进程模型对基于云计算协议
-Gossip-Style Membership协议的通信过程进行建模和模拟实现。
+Gossip-Style Membership协议的通信过程进行建模和模拟实现，
+作为应用案例，以证明$\mathbb{RVPC}_{\mathsf{Th}}$对并发通信系统的建模和分析具有一定的可行性。
 
 \section{Gossip-Style Membership协议}
 \subsection{Gossip协议}
-Gossip协议，也称为流言协议，传染病协议(Epidemic Protocol)是一个基于传染病传播方式的点对点通信协议\cite{Gossip}。
+Gossip协议，也称为流言协议、传染病协议(Epidemic Protocol)是一个基于传染病传播方式的点对点通信协议\cite{Gossip}。
 
 Gossip协议可以被解释为办公室流言的传播：
 每一个职员会随机和另一个职员分享最近的流言，
@@ -22,7 +23,7 @@ Gossip协议可以被解释为办公室流言的传播：
 发现小孙已经从小王那里知道了这个谣言。
 
 Gossip协议
-主要用在分布式数据库系统中各个副本节点同步数据之用，
+主要作分布式数据库系统中各个副本节点同步数据之用，
 这种场景的一个最大特点就是组成的网络的节点都是对等节点，
 是非结构化网络。
 2015年之前，Bitcoin就是使用了Gossip协议来传播交易信息\cite{Bitcoin}。
@@ -47,7 +48,7 @@ Gossip协议中，节点之间的通信方式有三种：
    \item {
       \textbf{Push/Pull Gossip:}
 
-      在超过$\frac{n}{2}$的节点拥有Gossip Message时，可以证明此时选择Pull Gossip会比Push Gossip传播的更快[cite]。
+      在超过$\frac{n}{2}$的节点拥有Gossip Message时，可以证明此时选择Pull Gossip会比Push Gossip传播的更快\cite{Gossip}。
       因此在使用Gossip协议时，常使用Push Gossip与Pull Gossip的混合：
       在消息传播$\frac{n}{2}$节点之前使用Push Gossip，在消息传播$\frac{n}{2}$之后使用Pull Gossip。
    }
@@ -68,16 +69,16 @@ Heartbeating Protocol\cite{Heartbeat},
 Gossip-Style Membership Protocol\cite{Gossip_style}, 
 SWIM Failure Detector Protocol\cite{SWIM}等。
 
-\section{Gossip-Style Membership的实现}
+\section{基于Gossip-Style Membership协议的通信系统的实现}
 我们使用$\mathbb{RVPC}_{\mathsf{Th}}$来实现Gossip-Style Membership协议\cite{Gossip_style}，
 来作为使用随机传值进程模型建模通信过程的示例，
 类似的，也可以使用同样的建模方法建模其他现实问题。
 
 由于Membership可以看作节点内部的功能，我们可以首先实现Gossip协议，将网络建立起来。
 
-\subsection{Gossip协议的实现}\label{ch:gossip_impl}
+\subsection{基于Gossip协议的通信系统的实现}\label{ch:gossip_impl}
 由于Push Gossip的机制比较简单，
-并且单一的Push Gossip协议仍然可以达到$O(\log N)$时间复杂度的消息传播，
+并且单一的Push Gossip协议仍然可以达到$O(\log N)$时间复杂度的消息传播\cite{Gossip}，
 本节我们使用$\mathbb{RVPC}_{\mathsf{Th}}$来建模以Push Gossip作为通信机制的Gossip协议。
 
 我们首先来建模以Gossip协议为通信的Peer-to-Peer Sysyem的节点。
@@ -121,7 +122,7 @@ Gossip单节点的通道示意图如图~\ref{fig:gossip_node_1}和
 
 Gossip节点Node的状态有以下几种，分别对应Gossip协议中节点的状态:
 \begin{table}[!hpt]
-    \caption{节点状态对应}
+    \caption{节点状态对应表}
     \label{tab:firstone}
     \centering
     \begin{tabular}{@{}llr@{}} \toprule
@@ -182,7 +183,7 @@ $p_{\mathsf{perm}}$为向一个特定的排列$perm$发送Gossip Message的概�
    在现实中节点（主机）在运行了一定时间后就会出现问题，
    对于多个节点构成的P2P系统，
    存在节点失效的概率只会更高\cite{MTTF}，
-   Membership协议是用来探测节点失效的一种方式。
+   Membership协议就是用来探测节点失效的一种方式。
    }
    \item [(3)] {
       系统中只存在一个消息的传输。
@@ -327,21 +328,20 @@ Gossip协议的目的是为了在系统内对节点进行多播，
     }
  \end{itemize}
 \end{proof}
-\subsection{Gossip-Style Membership的实现}
+\subsection{基于Gossip-Style Membership协议的通信系统的实现}\label{ch:membership_system}
 
-\subsubsection{Gossip Style Membership Protocol}
-Renesse等人提出了一种基于Gossip协议的错误检测机制：
+van RENESSE R提出了一种基于Gossip协议的错误检测机制：
 在集群中的每一个节点会维护一个列表Membership List，列表中包含已知的其他节点的\textit{地址}和整数表示的\textit{心跳}。
 在每一个Gossip的周期，节点会增加自己的心跳，
 并且随机的向另一个节点发送自己的Membership List；
 若节点收到了其他节点发送过来的Membership List，
 它会将两个列表合并，保留对应地址心跳最大的项。
-若节点的Membership List的一项经过$T_{fail}$时间没有更新，则认为这一项对应的节点失效。
+若节点的Membership List的一项经过$T_{fail}$时间没有更新，则认为这一项对应的节点失效\cite{Gossip_style}，
+我们称为Gossip-Style Membership 协议。
 
 在本次的实现中，我们规定在每一个Gossip周期中，
 节点可以随机选择$k$个节点发送自己的Membership List。
 
-\subsubsection{对GossipSystem的调整}\label{ch:membership_system}
 由于Gossip-Style Membership无需与外界的输入输出，并且需要提供储存、更新Membership List的函数，
 我们需要对之前的节点结构进行调整。
 同时，系统内的节点也会有失效的可能，我们可以用$p_{fail}$来定义一个节点失效的概率，
@@ -362,7 +362,7 @@ Renesse等人提出了一种基于Gossip协议的错误检测机制：
 	\small
 	\centering
 	\includegraphics[width=6cm]{../figures/Node.png}
-    \caption{\textbf{Gossip-Style Membership Protocol 节点示意图}}
+    \caption{Gossip-Style Membership节点示意图}
     \label{fig:membership_node}
 \end{figure}
 
@@ -491,17 +491,17 @@ $Processing(x_1,x_2,\dots,x_n)$可以并发的运行$Check(x_i)$，
 更新$MembershipCell$的数据；
 若所有有值的$MembershipCell$均无$x_i$的地址，用$x_i$直接更新第一个空的Cell。
 
-\section{Gossip-Style Membership的仿真模拟}
-在本节我们会根据本章的模型来实现一个基于Gossip-Style Membership Protocol的P2P系统，
+\section{基于Gossip-Style Membership协议的通信系统的仿真模拟}
+在本节我们会根据本章的模型来实现一个基于Gossip-Style Membership协议的P2P系统，
 由于资源限制，不能实际部署在多个主机构成的集群，我们将使用多进程来模拟多个主机，
 实际上进程理论本就是用来刻画进程的并发，多个主机上的程序的本质也是进程。
 
 \subsection{Go语言与CSP}
-我们将使用Go语言实现Gossip-Style Membership Protocol，
-Go语言实现了两种并发模型，一种是C++，Java使用的多线程，一种是CSP并发模型。
+我们将使用Go语言实现这个基于Gossip-Style Membership协议的通信系统，
+Go语言实现了两种并发模型，一种是C++，Java使用的多线程，一种是CSP\cite{Hoare_CSP}并发模型。
 如我们在第~\ref{ch:intro}章中提到的，
 CSP也是一种经典的进程演算，它与CCS的区别在于等价的类型和建模并发系统采用的方法，有关CCS和CSP对比的研究也有很多\cite{DIFF_CCS_CSP,CCS_CSP1,CCS_CSP2,CCS_CSP3}。
-Go语言使用了CSP理论中的Process/Channel，对应到语言中的 goroutine/channel\cite{Golang}。
+Go语言使用了CSP理论中的Process/Channel，对应到语言特性中的 goroutine/channel\cite{Golang}。
 Goroutine是一种轻量级线程，channel用于协程间的通信。
 我们使用Go语言的并发特性可以更加直观的展示出对前述模型的代码实现。
 
@@ -521,7 +521,7 @@ Goroutine是一种轻量级线程，channel用于协程间的通信。
  但本质没有变化。
 
  在Go语言中，我们可以用channel特性来实现$\mathbb{RVPC}_{\mathsf{Th}}$中的通道。
- 如在实现Gossip-Style Membership协议的节点结构时，
+ 如在实现Gossip-Style Membership的节点结构时，
  Node结构体中，chan类型的字段分别
  代表了图~\ref{fig:membership_node}中的相应名字的通道。
  其中，我们在~\ref{ch:gossip_impl}小节中提到
@@ -589,7 +589,7 @@ select会等待case中有能够执行的case时执行该case：
 
 本节仿真实现的基于Gossip-Style Membership协议的P2P系统参数如表~\ref{tab:param}。
 \begin{table}[!hpt]
-   \caption[基于Gossip-Style Membership协议的P2P系统]{基于Gossip-Style Membership协议的P2P系统}
+   \caption{基于Gossip-Style Membership协议的P2P系统参数表}
    \label{tab:param}
    \centering
    \begin{tabular}{@{}ccc@{}} \toprule
@@ -597,6 +597,9 @@ select会等待case中有能够执行的case时执行该case：
      参数名称 & 参数值 & 参数含义 \\ \midrule
      $n$ & 5 & 系统节点数量\\
      $k$ & 2 & 每Gossip周期发送的节点数\\
+     $T_{Gossip}$ & 1s & Gossip周期\\
+     $T_{repair}$ & 4s & 失效节点恢复时间\\
+     $T_{fail}$ & 4s & 节点有效期超时时间\\
      $p_{fail}$ & 0.1 & 节点失效概率\\ \bottomrule
    \end{tabular}
  \end{table}
@@ -652,9 +655,9 @@ select会等待case中有能够执行的case时执行该case：
 动态效果可以通过附录~\ref{app:code}中的方式获得。
 
  \section{本章小结}
- 本章我们以一种云计算失效检测协议Gossip-Style Membership协议的
+ 本章我们以一种基于云计算失效检测协议Gossip-Style Membership协议的通信系统的
  $\mathbb{RVPC}_{\mathsf{Th}}$实现作为
- 本文中提出的随机传值进程模型的应用，
+ 本文中提出的随机传值进程模型的应用案例，
  提供了使用$\mathbb{RVPC}_{\mathsf{Th}}$建模及实现通信协议以至其他现实问题的思路。
 
  我们首先介绍了Gossip协议和Membership协议，
@@ -662,3 +665,4 @@ select会等待case中有能够执行的case时执行该case：
 使用$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟证明了Gossip协议与多播规约的观察等价性。
 在基于Gossip协议的P2P系统的基础上，我们修改实现使其成为基于
 Gossip-Sytle Membership协议的P2P系统，并给出了GO语言的代码实现和仿真模拟。
+仿真结果证明了我们的随机传值进程模型在对并发通信过程的建模和分析中有一定的可行性。
