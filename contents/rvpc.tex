@@ -203,6 +203,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    若$R$是自反的、对称的、传递的，则称$R$是$A$上的等价关系。
    研究等价关系的目的在于将集合中的元素进行分类，选取每类的代表元素来降低问题的复杂度，如软件测试时，可利用等价类来选择测试用例\cite{Equiv}。
    对通信并发系统程序等价的定义和验证，现在已有很多研究。
+   互模拟等价性为进程描述语言提供了有效的语义理论。
    在提出CCS时MILNER R提出了\textit{观察等价(observation equivalence)}与\textit{弱互模拟(weak bisimulation)}\cite{Milner_CCS}。
    van GLABBEEK R和WEIJLAND W提出的\textit{分支互模拟(branching bisimulation)}\cite{Branching_1, Branching_2}也是十分著名的研究。
 
@@ -214,7 +215,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    RCCS的分支互模拟是CCS分支互模拟的扩展，我们首先来看CCS的分支互模拟。
    $\mathcal{P}_{CCS}$上的分支互模拟的定义如下：
    \begin{definition}\label{def:branching0}
-      $\mathcal{E}$是在$\mathcal{P}_{CCS}$上的对称关系，若对于任意$A,B\in \mathcal{P}_{CCS}, S\mathcal{E}T$满足：
+      $\mathcal{E}$是在$\mathcal{P}_{CCS}$上的对称关系，若对于任意$A,B\in \mathcal{P}_{CCS},A\mathcal{E}B$满足：
 
             若$A\stackrel{l}{\rightarrow}A'$，则$l=\tau$且$A'\mathcal{E}B$或存在$B',B''$使得
             $B\stackrel{\tau}{\rightarrow}\dots\stackrel{\tau}{\rightarrow}B'\stackrel{l}{\rightarrow}B''$且$A\mathcal{E}B'\wedge A'\mathcal{E}B''$。
@@ -260,8 +261,8 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    为了用类似$\Rightarrow_{\mathcal{E}}$的方式表示这种静态迁移，
    Uniform Approach提出了\textit{等价树（Epsilon Tree）}的概念\cite{Fu_UniformApproach}，
    将概率选择作为树的分支，节点$A$的关于等价关系$\mathcal{E}$的等价树上的任意节点$N\in [A]_{\mathcal{E}}$。
-   同时，Uniform Approach定义了两种迁移：$l$-transition和$q$-transition，
-   分别表示等价树上的节点迁移到其他等价集动作和概率。
+   同时，Uniform Approach定义了两种迁移：$l$-迁移($l$-transition)和$q$-迁移($q$-transition)，
+   分别表示等价树上的节点迁移到其他等价集动作和概率，Uniform Approach中定义的概率版分支互模拟是对$l$-迁移和$q$-迁移的相互模拟。
 
    \begin{definition}[$l$-迁移($l$-transition)]
       $A\in \mathcal{P}_{RCCS}$，
@@ -298,14 +299,20 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
       则等价关系$\mathcal{E}$是分支互模拟关系。
    \end{definition}
 
-   对于传值进程模型，由于条件操作子的影响不能直接使用分支互模拟。
-   在The Value-Passing Calculus中，FU Y提出了$\mathbb{VPC}_\mathsf{Th}$的符号互模拟。
-   $\mathbb{VPC}_{\mathsf{Th}}$与CCS的区别主要体现在前缀操作子和条件操作子。
+   $\mathbb{VPC}_{\mathsf{Th}}$与CCS的区别主要体现在前缀操作子和条件操作子，
+   这也是传值的进程模型与非传值的进程模型的主要区别。
    对于前缀操作子，相似的定义互模拟关系是比较容易的，只需要保证通道一致、值一致即可。
    而条件操作子给互模拟的定义带来了麻烦，比如：
    $A=\overline{a}(0).S$和$B=((x=0) \overline{a}(0).S|\urcorner (x=0) \overline{a}(0).S)$在观察上应该是一致的，
+   但若我们应用分支互模拟$A$可以作出$A\stackrel{a(0)}{\rightarrow}_{\top}S$的动作，
+   而$B$不能。
+   但对于$A\stackrel{a(0)}{\rightarrow}_{x=0}S$和$A\stackrel{a(0)}{\rightarrow}_{\urcorner (x=0)}S$，
+   $B$却可以相应的作出模拟的动作。
    这就要求$B$的两个操作：$B\stackrel{\overline{a}(0)}{\longrightarrow}_{x=0} S$和$B\stackrel{\overline{a}(0)}{\longrightarrow}_{\urcorner (x=0)} S$共同模拟$A\stackrel{\overline{a}(0)}{\longrightarrow}_{\top} S$。
-   为解决这一问题，The Value-Passing Calculus提出了符号互模拟：
+
+   为了上述问题HENNESSY M和LIN H为传值进程模型提出了符号迁移图(Symbolic Transition Graph)和符号互模拟(Symbolic Bisimulation)的概念\cite{Symbolic_bisimulation}。
+   在The Value-Passing Calculus中，FU Y也提出了$\mathbb{VPC}_\mathsf{Th}$的符号互模拟\cite{Fu_VPC}。
+   
    \begin{definition}[符号互模拟]\label{def:symbolic_bisimulation}
       $\mathcal{E}$是一个$\mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$上的二元对称关系，
       当$A\mathcal{E}B$满足下列条件时，称$\mathcal{E}$是一个符号互模拟关系：
@@ -328,7 +335,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \end{definition}
 
    根据符号互模拟的定义，我们可以解决前述条件操作子带来的麻烦，
-   我们可以通过下面的例子证明这一点。
+   我们可以通过下面的例子验证这一点。
    \begin{example}
       证明$A=\overline{a}(0).S$和$B=((x=0) \overline{a}(0).S|\urcorner (x=0) \overline{a}(0).S)$是符号互模拟的。
    \end{example}
@@ -943,7 +950,28 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
 我们希望定义符号互模拟关系的全集为$\mathbb{RVPC}_{\mathsf{Th}}$上的观察等价性，
 但这样定义仍会存在问题：考虑$A\in\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
 若$A$在$\varphi\mathcal{E}$下的条件等价树是无限延伸的，即没有叶子节点，
-这时找到$A$的条件$l$转移和条件$q$转移就会变得困难，因此我们引入Uniform Approach中的codivergent的相关概念来解决这个问题。
+例如：
+\begin{align*}
+   &A(x) \stackrel{def}{=} (\overline{a}(x).0|B(\epsilon)|C)\backslash \{a,b,c\} &\\
+   &B\stackrel{def}{=}a(x).B(x)
+   &B(x)\stackrel{def}{=} \frac{1}{2}\tau.\overline{b}(x).B\oplus \frac{1}{2}\tau.\overline{c}(x).B\\
+   &C\stackrel{def}{=} b(x).C(x)
+   &D\stackrel{def}{=} c(x).D(x)\\
+   &C(x)\stackrel{def}{=} \overline{a}(x).C
+   &D(x)\stackrel{def}{=} \overline{a}(x).D
+\end{align*}
+若定义等价关系$[A(x)]_{\mathcal{E}}=[B(x)|C|D]_{\mathcal{E}}=[B|C(x)|D]_{\mathcal{E}}=[B|C|D(x)]_{\mathcal{E}}$，
+这时$A(x)$的$\top \mathcal{E}$条件等价树如图~\ref{fig:divergent}。
+\begin{figure}[!htbp]
+   \small
+   \centering
+   \includegraphics[width=3cm]{../figures/codivergent.png}
+   \caption[]{$A(x)$的$\top \mathcal{E}$条件等价树} 
+   \label{fig:divergent}
+\end{figure}
+在观察等价性的角度，我们认为$E(x)\stackrel{def}{=}\tau.E(x)$与$A(x)$应该是观察互模拟的，
+然而，这时找到$A(x)$的条件$l$转移和条件$q$转移就会变得困难，
+因此我们引入Uniform Approach中的codivergent的相关概念来解决这个问题。
 
 \begin{definition}\label{def:divergent}
    对于$A\in\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
@@ -1110,6 +1138,3 @@ $\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$的条件等价树。
 我们根据Uniform Approach共发散的概念提出了$\mathbb{RVPC}_{\mathsf{Th}}$上共发散的定义，
 我们将共发散的符号互模拟的全集定义为$\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，
 并证明了$\mathbb{RVPC}_{\mathsf{Th}}$观察等价性是一个同余关系。
-\clearpage
-\phantom{s}
-\clearpage
