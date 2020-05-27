@@ -14,11 +14,13 @@
 传值进程模型（Value-Passing Calculus）是一种
 可以将某个域中的值作为通信的内容，
 并且可以在特定逻辑条件执行某个动作的并发进程模型。
-一个经典的例子是\cite{Milner_CCS}中的一单元缓冲区，它可以接受、储存、发送消息：
+一个经典的例子是MILNER R的Communication and Concurrency一书\cite{Milner_CCS}中的一单元缓冲区，它可以接受、储存、发送消息：
 \begin{align*}
    C&\stackrel{def}{=}in(x).C'(x)\\
    C'(x)&\stackrel{def}{=}\overline{out}(x).C
 \end{align*}
+其中CCS进程表达式$C$接受了$in$通道输入的变元$x$的一个值时会变迁为$C'(x)$状态，$C'(x)$通过$\overline{out}$通道输出$x$的值时会变迁为$C$。
+
 更普遍的传值进程模型也可以对输入进行逻辑判定，
 根据特定的条件执行特定的动作，
 通过输入控制进程的执行。我们以进程$A(x)$为例：
@@ -28,9 +30,10 @@ $A(x)$在满足条件$\varphi(x)$时会通过通道$a$输出函数$f(t)$的值�
 
 传值进程模型赋予了进程传递数据的能力，
 我们可以通过进程之间传递的数据来控制进程的执行和进程间的交互，
-这种控制能力显著的增强了并发进程模型的表达能力，拓宽了应用场景。
+这种控制能力显著的增强了并发进程模型的表达能力，
+拓宽了并发进程模型的应用场景。
 在网络通信中，各种通信协议通过在主机间传值进而控制主机的行为，
-通信协议的过程就可以被抽象为传值进程模型，
+执行通信协议的通信系统就可以被抽象为并发传值进程模型，
 支持并发的编程语言也可以被解释为传值进程模型，如Erlang\cite{Erlang}。
 很多通过传值、计算解决的现实问题也都可以抽象为传值进程模型。
 
@@ -44,7 +47,20 @@ $A(x)$在满足条件$\varphi(x)$时会通过通道$a$输出函数$f(t)$的值�
 同样的，我们也会将$f(t)$传给神域，神域帮我们计算这个函数，并将结果返回给我们。
 例如，WINSKEL G将变元表达式的取值和计算全部依赖一个集合$V$\cite{Oracle_V}，
 LIN H依赖一个评估$\rho$完成布尔表达式的判定和表达式的计算\cite{Oracle_rho}，
-MILNER R对CCS的扩展Value-Passing CCS也没有讨论函数的计算过程和条件的可判定性\cite{Milner_CCS}。
+其中最经典的并发传值模型式MILNER R对CCS的扩展Value-Passing CCS\cite{Milner_CCS}，
+上述两个传值进程模型也是基于Value-Passing CCS。 
+MILNER R的Value-Passing CCS在CCS中引入了带数据参数的动作和进程，
+使它比之CCS刻画实际系统的能力大大提升，Value-Passing CCS中有下列数据类型：
+$Val$表示数据值的集合其元素用$v$表示，相似的$x\in DVar$为数据变量，
+$e\in DExp$为数据表达式，$b\in BExp$为布尔表达式，$\rho$为$DVal$到$Val$的全映射，
+与CCS相同$a,c\in Chan$。
+Value-Passing CCS的语法可以表示为：
+$$S,T:=0|A(e)|\sum_{i\in I}\alpha_i.T|S|T|(a)T|if\;b\;then\;T$$
+其中$\alpha:=\tau|c(x)|\overline{c}(t)$，$t$或是$\rho(x)$计算所得或与$x$无关，
+$A(e)$为进程常量\cite{VPCCS}。
+然而MILNER R在Value-Passing CCS的定义过程中没有讨论函数的计算过程和$if\;b\;then\;T$中条件$b$的可判定性，
+可以认为MILNER R的传值进程模型同样依赖神域帮助Value-Passing CCS完成这些为定义的工作。
+
 神域通常不包括在传值进程模型中，且通常是未定义的，或只在特定场景下定义。
 由于神域的存在，对于这些传值进程模型表达能力的衡量变得十分困难，
 FU Y在The Value-Passing Calculus中取缔了神域的概念，
