@@ -330,7 +330,7 @@ Gossip协议的目的是为了在系统内对节点进行多播，
 \end{proof}
 \subsection{基于Gossip-Style Membership协议的通信系统的实现}\label{ch:membership_system}
 
-van RENESSE R提出了一种基于Gossip协议的错误检测机制：
+Van RENESSE R提出了一种基于Gossip协议的错误检测机制：
 在集群中的每一个节点会维护一个列表Membership List，列表中包含已知的其他节点的\textit{地址}和整数表示的\textit{心跳}。
 在每一个Gossip的周期，节点会增加自己的心跳，
 并且随机的向另一个节点发送自己的Membership List；
