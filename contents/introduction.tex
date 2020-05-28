@@ -47,7 +47,9 @@ Uniform Approach以CCS为例进行了概率扩展，
 
    CCS使用了标记变迁系统(Labled Transition System)来建模。
    CCS的语法如下：
-   $$S,T:=X\mid \sum_{i\in I}\alpha_i.T_i\mid S\mid T \mid (a)T \mid \mu X.T$$
+   \begin{equation}
+    S,T:=X\mid \sum_{i\in I}\alpha_i.T_i\mid S\mid T \mid (a)T \mid \mu X.T
+   \end{equation}
 
    其中$S,T$为CCS的进程表达式(agent)，$X$为进程表达式变元（agent variables）。索引集合$I$是有限自然数集。
    $Chan$为名字（或通道）的集合，其中的元素以小写字母表示，
@@ -65,7 +67,7 @@ Uniform Approach以CCS为例进行了概率扩展，
     \small
     \centering
     \includegraphics[width=11cm]{../figures/ccs.png}
-    \caption[]{CCS迁移语义}
+    \caption[]{\textbf{CCS迁移语义}}
      \label{fig_ccs}
  \end{figure}
 

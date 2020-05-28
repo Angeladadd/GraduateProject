@@ -31,7 +31,7 @@ Gossip协议
 Gossip协议中，节点之间的通信方式有三种：
 \begin{itemize}
    \item[(1)] {
-      \textbf{Push Gossip:} 
+      {\bfseries Push Gossip:} 
       
       消息的发送者周期性的随机选择$k$个目标节点发送Gossip Message。
       接收到Gossip Message的节点可以根据本地时间，
@@ -40,13 +40,13 @@ Gossip协议中，节点之间的通信方式有三种：
       已经拥有Gossip Message的节点仍然可以被选为目标节点。
    }
    \item[(2)] {
-      \textbf{Pull Gossip:}
+      {\bfseries Pull Gossip:}
 
       每个节点周期性的向$k$个目标节点发送Gossip Query，
       收到Gossip Query的节点若拥有Gossip Message的节点会向发送Query的节点返回Gossip Message的拷贝。
    }
    \item[(3)] {
-      \textbf{Push/Pull Gossip:}
+      {\bfseries Push/Pull Gossip:}
 
       在超过$\frac{n}{2}$的节点拥有Gossip Message时，可以证明此时选择Pull Gossip会比Push Gossip传播的更快\cite{Gossip}。
       因此在使用Gossip协议时，常使用Push Gossip与Pull Gossip的混合：
@@ -138,7 +138,8 @@ Gossip节点Node的状态有以下几种，分别对应Gossip协议中节点的�
 
 基于以上定义的节点结构和节点状态，
 我们定义一个基于Gossip协议的P2P系统。
-\begin{align*}
+\begin{equation}
+   \begin{split}
    Node_i& \stackrel{def}{=} accept_i(x).DeliveringNode_i(x)\\
    DeliveringNode_i(x) &\stackrel{def}{=} \overline{deliver_i}(x).InfectiousNode_i(x)\\
    InfectiousNode_i(x)&\stackrel{def}{=}timeout.(\bigoplus_{perm\in \mathsf{PERM}_i} p_{perm}\tau.GossipingNode_{i,perm}(x))\\
@@ -147,7 +148,8 @@ Gossip节点Node的状态有以下几种，分别对应Gossip协议中节点的�
    UnInfectiousNode_i &\stackrel{def}{=} \sum_{j\in \mathsf{N}/\{i\}}trans_{j,i}(x).DeliveringNode_i(x)\\
    GossipSystem_\mathsf{N}&\stackrel{def}{=}(Node_1\mid UnInfectiousNode_2\mid \dots \mid UnInfectiousNode_n)\\
    &\backslash \{trans_{i,j}\mid i\in \mathsf{N} \wedge j\in \mathsf{N} \wedge i\neq j\}\cup \{time, timeout\}
-\end{align*}
+   \end{split}
+\end{equation}
 在这个P2P系统中共有$n$个节点，标号为$\mathsf{N}=\{1,2,\dots, n\}$，
 每一个拥有Gossip Message的节点周期性的向$\mathsf{k}(\mathsf{k}\leq n-1)$
 个其他节点发送Gossip Message。
@@ -209,11 +211,13 @@ Gossip协议的目的是为了在系统内对节点进行多播，
 由于我们在~\ref{ch:gossip_impl}节中实现的是单消息源单个消息的传播，
 在多播的定义中同样我们只关注单消息源单个消息的多播。
 \begin{definition} 单消息源的多播规约定义如下：
-\begin{align*} 
+\begin{equation} 
+   \begin{split}
     MulticastSpec_\mathsf{N}&\stackrel{def}{=}accept_1(x).\overline{deliver_1}(x).Multicasting_{\mathsf{N},\{1\}}(x)\\
     Multicasting_{\mathsf{N},\mathsf{KNOWN}}(x)&\stackrel{def}{=}\overline{deliver_i}(x).Multicasting_{\mathsf{N},\mathsf{KNOWN}\cup\{i\}}(x), \\
     &i\in \mathsf{N}-\mathsf{KNOWN} \wedge |\mathsf{N}|\neq |\mathsf{KNOWN}|
- \end{align*}
+   \end{split}
+   \end{equation}
 \end{definition} 
 其中$|\mathsf{KNOWN}|$为已经得到此消息的节点编号集合，
 节点可以通过$deliver$通道告知通信系统外（如本地的其他进程）节点已收到信息。
@@ -228,13 +232,15 @@ Gossip协议的目的是为了在系统内对节点进行多播，
    为了方便后续的证明，我们给出特定状态下的
    $GossipSystem_{\mathsf{N}}$的记法，
    其中Composition算子符合交换律。
-    \begin{align*}
+    \begin{equation}
+      \begin{split}
    &GossipSystem_{\mathsf{N},(a,b,c)}(x)\\
    &= (\stackrel{a}{\overbrace{InfectiousNode(x)\mid \dots \mid InfectiousNode(x)}}\\
    &\mid \stackrel{b}{\overbrace{DeliveringNode(x)\mid \dots\mid DeliveringNode(x)}}\\
    &\mid \stackrel{c}{\overbrace{UnInfectiousNode\mid \dots \mid UnInfectiousNode}})\\
    &\backslash \{trans_{i,j}\mid i\in \mathsf{N} \wedge j\in \mathsf{N} \wedge i\neq j\}\cup \{time, timeout\}
-\end{align*}
+      \end{split}
+\end{equation}
  \end{definition}
  其中，$GossipSystem_{\mathsf{N},(a,b,c)}(x)$表示
  在系统的$n=|\mathsf{N}|$个节点中，有$a$个处于$InfectiousNode(x)$的状态，
@@ -257,11 +263,13 @@ Gossip协议的目的是为了在系统内对节点进行多播，
 来证明$GossipSystem_{\mathsf{N}} =_{\mathbb{RVPC}_{\mathsf{Th}}} MulticastSpec_{\mathsf{N}}$。
 
 构造等价集
-\begin{align*}
-   \mathcal{S}&=\{(GossipSystem_{\mathsf{N}}, MulticastSpec_{\mathsf{N}}), \\
+\begin{equation}
+   \begin{split}
+      \mathcal{S}&=\{(GossipSystem_{\mathsf{N}}, MulticastSpec_{\mathsf{N}}), \\
       &(GossipSystem_{\mathsf{N},(n,0,0)}(x), Multicasting_{\mathsf{N},\mathsf{N}}(x))\}\\
       & \cup \{(GossipSystem_{\mathsf{N},(a,b,c)}(x), Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x))\mid |\mathsf{KNOWN}| = a\neq n\}
-\end{align*}
+   \end{split}
+\end{equation}
 
 我们来依次证明$\mathcal{S}$中的每一对等价关系为符号互模拟关系:
 \begin{itemize}
@@ -274,13 +282,13 @@ Gossip协议的目的是为了在系统内对节点进行多播，
 
         % 对应的$Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top\mathcal{S}} []$
         \begin{itemize}
-            \item {\textbf{Case 1: $a<n-1$。}
+            \item {{\bfseries Case 1: $a<n-1$。}
             $GossipSystem_{\mathsf{N},(a,b,c)}(x)$的$\top \mathcal{S}$条件等价树 $t$如图~\ref{fig:epsilon_1}所示。
             \begin{figure}[!htbp]
             	\small
             	\centering
             	\includegraphics[width=14cm]{../figures/epsilon_tree1.png}
-                \caption{\textbf{$GossipSystem_{\mathsf{N},(a,b,c)}(x)$关于$\top\mathcal{S}$的条件等价树 $t$}}
+                \caption{$GossipSystem_{\mathsf{N},(a,b,c)}(x)$关于$\top\mathcal{S}$的条件等价树 $t$}
                 \label{fig:epsilon_1}
             \end{figure}
             当$t$上的节点进入$GossipSystem_{\mathsf{N},(a,b+c,0)}(x)$状态时，
@@ -294,22 +302,22 @@ Gossip协议的目的是为了在系统内对节点进行多播，
             我们可以用$$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{KNOWN}'}$$来模拟上述状态迁移。
             对称的模拟依然成立。
             }
-            \item [\textbf{Case 2: $a=n-1$。}]{
+            \item {{\bfseries Case 2: $a=n-1$。}
             \begin{itemize}
                \item {
-                  {\textbf{Case 2.1:} $b=1$。}
+                  {{\bfseries Case 2.1:} $b=1$。}
                   $GossipSystem_{\mathsf{N},(n-1,1,0)}(x)$的$\top \mathcal{S}$条件等价树 $t$只有一个根节点，对于
                   $(GossipSystem_{\mathsf{N},(n-1,1,0)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(n,0,0)}(x)]_{\top\mathcal{S}}$，
                   我们可以用$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{N}}$来模拟。
                }
-               \item [{\textbf{Case 2.1:} $b=0$。}]{
+               \item {{{\bfseries Case 2.1:} $b=0$。}
                   
                   $GossipSystem_{\mathsf{N},(n-1,0,1)}(x)$的$\top \mathcal{S}$条件等价树 $t$如图~\ref{fig:epsilon_2}所示。
                   \begin{figure}[!htbp]
                      \small
                      \centering
                      \includegraphics[width=8cm]{../figures/epsilon_tree_2.png}
-                      \caption{\textbf{$GossipSystem_{\mathsf{N},(a,b,c)}(x)$关于$\top\mathcal{S}$的条件等价树 $t$}}
+                      \caption{$GossipSystem_{\mathsf{N},(a,b,c)}(x)$关于$\top\mathcal{S}$的条件等价树 $t$}
                       \label{fig:epsilon_2}
                   \end{figure}
                   
@@ -367,7 +375,8 @@ Van RENESSE R提出了一种基于Gossip协议的错误检测机制：
 \end{figure}
 
 Gossip-Style Membership协议中的P2P系统定义如下，
-\begin{align*}
+\begin{equation}\label{eq:network_system}
+   \begin{split}
     FragileNode_i&\stackrel{def}{=}p_{fail}\tau.BadNode_i\oplus (1-p_{fail})\tau.Node_i\\
     BadNode_i&\stackrel{def}{=}\tau.FragileNode_i\\
     Node_i&\stackrel{def}{=}timeout.accept(x).(\bigoplus_{perm\in \mathsf{PERM}_i} p_{perm}\tau.GossipingNode_{i,perm}(x))\\
@@ -375,7 +384,8 @@ Gossip-Style Membership协议中的P2P系统定义如下，
     GossipingNode_{i,perm}(x)&\stackrel{def}{=}\overline{trans_{i,perm_{1}}}(x).\dots \overline{trans_{i,perm_{b}}}(x).\overline{time}.FragileNode_i\\
     GossipSystem_\mathsf{N}&\stackrel{def}{=}(FragileNode_1\mid FragileNode_2\mid \dots \mid FragileNode_n)\\
     &\backslash \{trans_{i,j}\mid i\in \mathsf{N} \wedge j\in \mathsf{N} \wedge i\neq j\}\cup \{time, timeout, accept, deliver\}
- \end{align*}
+   \end{split}
+   \end{equation}
  其中，每一个节点定义为$FragileNode$，每一时刻
  它会有$p_{fail}$的概率成为失效节点$BadNode$，
  和$1-p_{fail}$的概率成为可发送列表和接受列表的正常节点$Node$。
@@ -397,7 +407,7 @@ Gossip-Style Membership协议中的P2P系统定义如下，
  来处理Membership List的获取和更新。
  Membership List的内容一般为表~\ref{tab:membership_list}中的内容。
 \begin{table}[!hpt]
-    \caption[Membership List]{Membership List}
+    \caption{Membership List样表}
     \label{tab:membership_list}
     \centering
     \begin{tabular}{@{}ccc@{}} \toprule
@@ -426,9 +436,9 @@ $n$为MembershipList的最大容量。
 我们定义的Membership系统的实现如图~\ref{fig:membership_system}所示，
 \begin{figure}[!htbp]
 	\small
-	\centering
+   \centering
 	\includegraphics[width=11cm]{../figures/membership.png}
-    \caption{\textbf{Membership示意图}}
+    \caption{Membership示意图}
     \label{fig:membership_system}
 \end{figure}
 可以看到，我们使用$n$个$MembershipCell$来存储Membership List中的每一项，
@@ -437,30 +447,33 @@ $Membership$可以通过$select_i$通道获取$MembershipCell_i$中的数据，
 每一个$MembershipCell$连接一个Timer，用来获取本地时间，设置LocalTime字段，
 实际上，对于一个节点它可能只有一个Timer，这里的连接也是指逻辑连接。
 $MembershipCell$的定义如下：
-\begin{align*}
-   &MembershipCell_i(addr,hb,t)\stackrel{def}{=}\\
+\begin{equation}
+   \begin{split}
+      &MembershipCell_i(addr,hb,t)\stackrel{def}{=}\\
    &\quad\overline{select_i}(\{Address:addr,HeartBeat:hb\}).MembershipCell_i(addr,hb,t)\\
    &\quad+update_i(\{Address:addr',HeartBeat:hb'\}).time(t').MembershipCell_i(addr',hb',t')
-\end{align*}
+   \end{split}
+\end{equation}
 $n$个$MembershipCell$组成的$MembershipList$定义如下，在初始状态时，每一个$MembershipCell$中的数据为空($\epsilon$)：
-\begin{align*}
+\begin{equation}
    MembershipList\stackrel{def}{=}(MembershipCell_1(\epsilon)\mid \dots MembershipCell_n(\epsilon))
-\end{align*}
+\end{equation}
 
 此外，我们定义了一个$Counter$维护和更新节点的心跳，
 在每一次Gossip周期$hb=hb+1$，
 $Membership$可以通过$heartbeat$通道获取心跳。
-\begin{align*}
+\begin{equation}
    Counter(hb)\stackrel{def}{=}\overline{heartbeat}(\mathsf{s}(hb)).Counter(\mathsf{s}(hb))
-\end{align*}
+\end{equation}
 对于节点本地地址的维护，我们定义了一个$AddrInfo$，
 $Membership$可以通过$address$通道获取本地地址。
-\begin{align*}
+\begin{equation}
    AddrInfo(addr)\stackrel{def}{=}\overline{address}(addr)
-\end{align*}
+\end{equation}
 
 定义完以上的辅助工具后，我们可以定义$Membership$的逻辑了！
-\begin{align*}
+\begin{equation}
+   \begin{split}
     &Membership\stackrel{def}{=}address(addr).heartbeat(hb).select_1(x_1)\dots select_n(x_n).\\
     &\quad\overline{accept}(\{Address:addr,HeartBeat:hb\},x_1,\dots,x_n).Membership\\
     &\quad+deliver(x_1,x_2,\dots,x_n).Processing(x_1,x_2,\dots,x_n)\\
@@ -474,7 +487,8 @@ $Membership$可以通过$address$通道获取本地地址。
     &\quad\mid \urcorner (x_i[HeartBeat]<x[HeartBeat])0)\\
     &\quad\mid \urcorner (x_i[Address]=x[Address])FindAndUpdate_{i+1}(x))),i\leq n\\
     &FindAndUpdate_i(x)\stackrel{def}{=}0,i>n
-\end{align*}
+    \end{split}
+\end{equation}
 其中$\mathsf{s}(x)$表示$\mathsf{s}(x)=x+1$。
 
 $Membership$可以获取$MembershipList$中所有Cell中储存的信息，
@@ -546,11 +560,7 @@ Goroutine是一种轻量级线程，channel用于协程间的通信。
 \end{codeblock}
 
 我们可以使用基于select的多路复用实现非确定性选择，
-如我们在~\ref{ch:membership_system}中实现的系统中的：
-\begin{align*}
-   Node_i&\stackrel{def}{=}timeout.accept(x).(\bigoplus_{perm\in \mathsf{PERM}_i} p_{perm}\tau.GossipingNode_{i,perm}(x))\\
-     &+\sum_{j\in \mathsf{N}/\{i\}}trans_{j,i}(x).\overline{deliver}(x).FragileNode_i
-\end{align*}
+如我们在~\ref{eq:network_system}中实现的系统中的$Node_i$：
 这里$Node_i$可以做非确定的选择：
 接收到timeout信号后从accept通道获取本地的Membership List
 随机选择$k$个其他节点发送；或从其他节点接收到Membership List消息，

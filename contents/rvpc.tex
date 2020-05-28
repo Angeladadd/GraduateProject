@@ -15,16 +15,20 @@
 可以将某个域中的值作为通信的内容，
 并且可以在特定逻辑条件执行某个动作的并发进程模型。
 一个经典的例子是MILNER R的Communication and Concurrency一书\cite{Milner_CCS}中的一单元缓冲区，它可以接受、储存、发送消息：
-\begin{align*}
-   C&\stackrel{def}{=}in(x).C'(x)\\
+\begin{equation}
+   \begin{split}
+      C&\stackrel{def}{=}in(x).C'(x)\\
    C'(x)&\stackrel{def}{=}\overline{out}(x).C
-\end{align*}
+   \end{split}
+\end{equation}
 其中CCS进程表达式$C$接受了$in$通道输入的变元$x$的一个值时会变迁为$C'(x)$状态，$C'(x)$通过$\overline{out}$通道输出$x$的值时会变迁为$C$。
 
 更普遍的传值进程模型也可以对输入进行逻辑判定，
 根据特定的条件执行特定的动作，
 通过输入控制进程的执行。我们以进程$A(x)$为例：
-$$A(x)=\textrm{if }\varphi(x)\textrm{ then }\overline{a}(f(t))\textrm{ else }B(x)$$
+\begin{equation}
+   A(x)=\textrm{if }\varphi(x)\textrm{ then }\overline{a}(f(t))\textrm{ else }B(x)
+\end{equation}
 $A(x)$在满足条件$\varphi(x)$时会通过通道$a$输出函数$f(t)$的值，
 其中$t$可能是$x$的函数，也可能与$x$无关；若不满足$\varphi(x)$，则执行程序$B(x)$。
 
@@ -55,7 +59,9 @@ $Val$表示数据值的集合其元素用$v$表示，相似的$x\in DVar$为数�
 $e\in DExp$为数据表达式，$b\in BExp$为布尔表达式，$\rho$为$DVal$到$Val$的全映射，
 与CCS相同$a,c\in Chan$。
 Value-Passing CCS的语法可以表示为：
-$$S,T:=0|A(e)|\sum_{i\in I}\alpha_i.T|S|T|(a)T|if\;b\;then\;T$$
+\begin{equation}
+   S,T:=0|A(e)|\sum_{i\in I}\alpha_i.T|S|T|(a)T|if\;b\;then\;T
+\end{equation}
 其中$\alpha:=\tau|c(x)|\overline{c}(t)$，$t$或是$\rho(x)$计算所得或与$x$无关，
 $A(e)$为进程常量\cite{VPCCS}。
 然而MILNER R在Value-Passing CCS的定义过程中没有讨论函数的计算过程和$if\;b\;then\;T$中条件$b$的可判定性，
@@ -136,7 +142,7 @@ If Then Else语法实现的分支控制在编程中也是非常重要的组成�
 \end{proof}
 进而我们可以得到If Then Else语法与$\mathbb{VPC}_\mathsf{Th}$规则的对照表：
 \begin{table}[!hpt]
-   \caption[If Then Else语法对照表]{If Then Else语法对照表}
+   \caption{\textbf{If Then Else语法对照表}}
    \label{tab:ifthenelse}
    \centering
    \begin{tabular}{@{}cc@{}} \toprule
@@ -182,7 +188,7 @@ $\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$为所有$\mathbb{RVPC}_\mathsf{Th}$�
 	\small
 	\centering
 	\includegraphics[width=14cm]{../figures/symbolic_sematic.png}
-    \caption{\textbf{随机传值进程模型的符号迁移语义}}
+    \caption{随机传值进程模型的符号迁移语义}
     \label{fig_sematic}
 \end{figure}
 
@@ -553,13 +559,13 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \begin{minipage}{0.6\textwidth}
    \centering
    \includegraphics[width=8cm]{../figures/example_condition.png}
-   \caption{}
+   \caption{$A(x)$的静态迁移树}
   \label{fig:eg_condition}
 \end{minipage}\hfill
 \begin{minipage}{0.45\textwidth}
    \centering
    \includegraphics[width=5cm]{../figures/example_condition2.png}
-   \caption{}
+   \caption{$A(x)$关于$(x>7)\mathcal{E}$的条件等价树}
    \label{fig:eg_condition2}
 \end{minipage}
  \end{figure}
@@ -574,13 +580,13 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
       \begin{minipage}{0.6\textwidth}
          \centering
          \includegraphics[width=8cm]{../figures/example0_1.png}
-         \caption[]{}
+         \caption[]{$H(x)$的静态迁移树}
          \label{fig_eg0_1}
    \end{minipage}\hfill
    \begin{minipage}{0.45\textwidth}
       \centering
       \includegraphics[width=5cm]{../figures/example0_2.png}
-      \caption[]{}
+      \caption[]{$H(x)$的$(x<2)\mathcal{E}_1$条件等价树}
        \label{fig_eg0_2}
    \end{minipage}
     \end{figure}
@@ -590,7 +596,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 
    同理，$H(x)$的$(x>3)\mathcal{E}_1$-tree只有一个根节点$H(x)$。
 
-   $H(x)$的$(x<2)\mathcal{E}_1$-tree如图~\ref{fig_eg0_2}，
+   $H(x)$的$(x<2)\mathcal{E}_1$条件等价树如图~\ref{fig_eg0_2}，
    其中$\mathsf{Th}\vdash (x<2)\Rightarrow (x\leq 3)$，
    由于$(x<2)\wedge(x\leq 2)G(x) = (x<2)G(x)$，$G(x)\in[H(x)]_{\mathcal{E}_1}$，
    根据推论~\ref{co:all}，$(x\leq 2)G(x)\in [H(x)]_{(x<2)\mathcal{E}_1}$。
@@ -604,14 +610,16 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
       录好的下课铃可以用变元$x$表示。
       这个下课铃系统可以被抽象为一个$\mathbb{RVPC}_{\mathsf{Th}}$，其中$\mathsf{Th}$可以认为是$\mathsf{PA}$\cite{PA}，
       我们可以用$G(x)$来表示这个系统：
-      $$G(x)\stackrel{def}{=}\mu X.(\frac{1}{2}\tau.X\oplus \frac{1}{2}\tau.\overline{a}(x).X)$$
+      \begin{equation}
+         G(x)\stackrel{def}{=}\mu X.(\frac{1}{2}\tau.X\oplus \frac{1}{2}\tau.\overline{a}(x).X)
+      \end{equation}
       $G(x)$在$\mathcal{E}_2$的等价集$[G(x)]_{\top\mathcal{E}_2} = [\overline{a}(x).G(x)]_{\top\mathcal{E}_2}$。
-      $G(x)$的$\top \mathcal{E}_2$-tree如图~\ref{fig_eg1}。
+      $G(x)$的$\top \mathcal{E}_2$条件等价树如图~\ref{fig_eg1}。
       \begin{figure}[!htbp]
          \small
          \centering
          \includegraphics[width=5cm]{../figures/example1.png}
-         \caption[]{} 
+         \caption[]{$G(x)$的$\top \mathcal{E}_2$条件等价树} 
          \label{fig_eg1}
       \end{figure}
 \end{example}
@@ -624,15 +632,17 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    校长出于节约经费的考虑，只要下课铃还能在他办公室听见($y>3$)就可以继续使用，
    现在的下课铃系统依然是一个$\mathbb{RVPC}_{\mathsf{Th}}$，
    我们可以用修改的$G'(x,y)$来表示这个系统：
-   $$G'(x,y)\stackrel{def}{=}(y>3)(\frac{1}{2}\tau.((y>0)\tau.G'(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G'(x,y))\oplus \frac{1}{2}\tau.((y>1)\overline{a}(x).G'(x,y)))$$
+   \begin{equation}
+      G'(x,y)\stackrel{def}{=}(y>3)(\frac{1}{2}\tau.((y>0)\tau.G'(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G'(x,y))\oplus \frac{1}{2}\tau.((y>1)\overline{a}(x).G'(x,y)))
+   \end{equation}
    $G'(x,y)$在$(y>3)\mathcal{E}_3$的等价集$[G'(x,y)]_{(y>3)\mathcal{E_3}}=[G'(x,y')]_{(y'>3)\mathcal{E_3}}=[\overline{a}(x).G'(x,y'')]_{(y''>3)\mathcal{E_3}}$，其中$y,y',y''$不一定相等。
 
-   $G'(x,y)$的$(y>3)\mathcal{E}_3$-tree如图~\ref{fig_eg2}。
+   $G'(x,y)$的$(y>3)\mathcal{E}_3$条件等价树如图~\ref{fig_eg2}。
    \begin{figure}[!htbp]
       \small
       \centering
       \includegraphics[width=11cm]{../figures/example2.png}
-      \caption[]{} 
+      \caption[]{$G'(x,y)$的$(y>3)\mathcal{E}_3$条件等价树} 
       \label{fig_eg2}
    \end{figure}
 
@@ -719,12 +729,14 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟
 \end{example}
 \begin{proof}
    构造等价集
-   \begin{align*}
+   \begin{equation}
+      \begin{split}
       \mathcal{S} &= \{(G(x),G''(x,y)),\\
       &(G(x),(y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y)),\\
       &(\overline{a}(x).G(x),(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)),\\
       &(G(t),G''(t,y))|t\in V\}
-   \end{align*}
+      \end{split}
+   \end{equation}
    其中$V$是$x$的取值范围。
    我们只需证明$\mathcal{S}$是一个符号互模拟关系即可。
    \begin{itemize}
@@ -771,14 +783,14 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟
             \small
             \centering
             \includegraphics[width=5cm]{../figures/example1.png}
-            \caption[]{} 
+            \caption[]{$G(x)$的静态迁移树} 
             \label{fig_eg4_1}
          \end{figure}
          \begin{figure}[!htbp]
             \small
             \centering
             \includegraphics[width=13cm]{../figures/example4_2.png}
-            \caption[]{} 
+            \caption[]{$G''(x,y)$的静态迁移树} 
             \label{fig_eg4_2}
          \end{figure}
 
@@ -969,6 +981,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
 若$A$在$\varphi\mathcal{E}$下的条件等价树是无限延伸的，即没有叶子节点，
 例如：
 \begin{align*}
+   % \begin{split}
    &A(x) \stackrel{def}{=} (\overline{a}(x).0|B(\epsilon)|C)\backslash \{a,b,c\} &\\
    &B\stackrel{def}{=}a(x).B(x)
    &B(x)\stackrel{def}{=} \frac{1}{2}\tau.\overline{b}(x).B\oplus \frac{1}{2}\tau.\overline{c}(x).B\\
@@ -976,6 +989,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
    &D\stackrel{def}{=} c(x).D(x)\\
    &C(x)\stackrel{def}{=} \overline{a}(x).C
    &D(x)\stackrel{def}{=} \overline{a}(x).D
+   % \end{split}
 \end{align*}
 若定义等价关系$[A(x)]_{\mathcal{E}}=[B(x)|C|D]_{\mathcal{E}}=[B|C(x)|D]_{\mathcal{E}}=[B|C|D(x)]_{\mathcal{E}}$，
 这时$A(x)$的$\top \mathcal{E}$条件等价树如图~\ref{fig:divergent}。

@@ -999,7 +999,7 @@
   {\endgroup}
 \NewDocumentCommand{\sjtuSetFloatFontOn}{}{\sjtu@setfloatfonttrue}
 \NewDocumentCommand{\sjtuSetFloatFontOff}{}{\sjtu@setfloatfontfalse}
-\DeclareCaptionFont{sjtu@caption@font}{\zihao{5}\kaishu}
+\DeclareCaptionFont{sjtu@caption@font}{\zihao{5}\bfseries\songti}
 \DeclareCaptionFont{sjtu@subcaption@font}{\zihao{5}\normalfont}
 \captionsetup{%
   format        = plain,
