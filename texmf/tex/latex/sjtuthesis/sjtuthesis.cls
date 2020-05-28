@@ -430,7 +430,7 @@
   本人授权\sjtu@name@school@zh 可以将本\sjtu@name@thesis@kind 的全部或部
   分内容编入有关数据库进行检索，可以采用影印、缩印或扫描等复制手段保存和
   汇编本\sjtu@name@thesis@kind 。}
-\sjtu@name@def{abstract@zh}{摘\hspace{\ccwd}要}
+\sjtu@name@def{abstract@zh}{摘要}
 \sjtu@name@def{abstract@en}{Abstract}
 \sjtu@name@def{keywords@zh}{关键词：}
 \sjtu@name@def{keywords@en}{Key words:~}
