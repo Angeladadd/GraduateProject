@@ -30,7 +30,7 @@ Gossip协议
 
 Gossip协议中，节点之间的通信方式有三种：
 \begin{itemize}
-   \item {
+   \item[(1)] {
       \textbf{Push Gossip:} 
       
       消息的发送者周期性的随机选择$k$个目标节点发送Gossip Message。
@@ -39,13 +39,13 @@ Gossip协议中，节点之间的通信方式有三种：
       在发送过程中，
       已经拥有Gossip Message的节点仍然可以被选为目标节点。
    }
-   \item {
+   \item[(2)] {
       \textbf{Pull Gossip:}
 
       每个节点周期性的向$k$个目标节点发送Gossip Query，
       收到Gossip Query的节点若拥有Gossip Message的节点会向发送Query的节点返回Gossip Message的拷贝。
    }
-   \item {
+   \item[(3)] {
       \textbf{Push/Pull Gossip:}
 
       在超过$\frac{n}{2}$的节点拥有Gossip Message时，可以证明此时选择Pull Gossip会比Push Gossip传播的更快\cite{Gossip}。
@@ -60,8 +60,8 @@ Gossip协议中，节点之间的通信方式有三种：
 称为Membership List，用来维护集群中其他节点的信息。
 Membership协议提供了两个主要的服务：
 \begin{itemize}
-   \item 检测失效的节点
-   \item 传播消息，如：告知其他节点失效信息
+   \item[(1)] 检测失效的节点
+   \item[(2)] 传播消息，如：告知其他节点失效信息
 \end{itemize}
 
 常见的Membership协议有
@@ -265,11 +265,11 @@ Gossip协议的目的是为了在系统内对节点进行多播，
 
 我们来依次证明$\mathcal{S}$中的每一对等价关系为符号互模拟关系:
 \begin{itemize}
-    \item {
+    \item[(1)] {
        $GossipSystem_{\mathsf{N},(n,0,0)}(x)$和$Multicasting_{\mathsf{N},\mathsf{N}}(x)$的$\top \mathcal{S}$条件等价树分别只有一个根节点，
        且不能转移至其他等价集，他们的互模拟是显然的，实际上$GossipSystem_{\mathsf{N},(n,0,0)}(x)=Multicasting_{\mathsf{N},\mathsf{N}}(x)=0$。
     }
-    \item {
+    \item[(2)] {
         对于$(GossipSystem_{\mathsf{N},(a,b,c)}(x), Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x))\mid |\mathsf{KNOWN}| = a\neq n$:
 
         % 对应的$Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top\mathcal{S}} []$
@@ -294,7 +294,7 @@ Gossip协议的目的是为了在系统内对节点进行多播，
             我们可以用$$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{KNOWN}'}$$来模拟上述状态迁移。
             对称的模拟依然成立。
             }
-            \item {\textbf{Case 2: $a=n-1$。}
+            \item [\textbf{Case 2: $a=n-1$。}]{
             \begin{itemize}
                \item {
                   {\textbf{Case 2.1:} $b=1$。}
@@ -302,8 +302,8 @@ Gossip协议的目的是为了在系统内对节点进行多播，
                   $(GossipSystem_{\mathsf{N},(n-1,1,0)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(n,0,0)}(x)]_{\top\mathcal{S}}$，
                   我们可以用$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{N}}$来模拟。
                }
-               \item {
-                  {\textbf{Case 2.1:} $b=0$。}
+               \item [{\textbf{Case 2.1:} $b=0$。}]{
+                  
                   $GossipSystem_{\mathsf{N},(n-1,0,1)}(x)$的$\top \mathcal{S}$条件等价树 $t$如图~\ref{fig:epsilon_2}所示。
                   \begin{figure}[!htbp]
                      \small
@@ -321,7 +321,7 @@ Gossip协议的目的是为了在系统内对节点进行多播，
             }
         \end{itemize}
     }
-    \item {
+    \item[(3)] {
         对$(GossipSystem_{\mathsf{N}}, MulticastSpec_{\mathsf{N}})$，
         我们可以用$$GossipSystem_{\mathsf{N}}\stackrel{accept(x).\overline{deliver(x)}}{\longrightarrow}_{\top}GossipSystem_{\mathsf{N},(1,0,0)}(x)$$
         $$MulticastSpec_{\mathsf{N}}\stackrel{accept(x).\overline{deliver(x)}}{\longrightarrow}_{\top}Multicasting_{\mathsf{N},\{1\}}$$来相互模拟。

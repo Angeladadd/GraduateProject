@@ -306,10 +306,10 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \begin{definition}
       当$\mathcal{P}_{RCCS}$上的等价关系$\mathcal{E}$满足：
       \begin{itemize}
-         \item {
+         \item[(1)] {
             若$B\mathcal{E}A\rightsquigarrow_{\mathcal{E}}\stackrel{l}{\rightarrow}\mathcal{C}\in \mathcal{P}_{RCCS}/\mathcal{E}, l\neq \tau \wedge \mathcal{C}\neq [A]_{\mathcal{E}}$，则$B\rightsquigarrow_{\mathcal{E}}\stackrel{l}{\rightarrow}\mathcal{C}$。
          }
-         \item {
+         \item[(2)] {
             若$B\mathcal{E}A\rightsquigarrow_{\mathcal{E}}\stackrel{q}{\rightarrow}\mathcal{C}\in \mathcal{P}_{RCCS}/\mathcal{E}, l\neq \tau \wedge \mathcal{C}\neq [A]_{\mathcal{E}}$，则$B\rightsquigarrow_{\mathcal{E}}\stackrel{q}{\rightarrow}\mathcal{C}$。
          }
       \end{itemize}
@@ -334,16 +334,16 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
       $\mathcal{E}$是一个$\mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$上的二元对称关系，
       当$A\mathcal{E}B$满足下列条件时，称$\mathcal{E}$是一个符号互模拟关系：
       \begin{itemize}
-         \item {
+         \item[(1)] {
             若$A\stackrel{\tau}{\rightarrow}_{\varphi} A'$，则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\Rightarrow_{\psi_i} B_i\}_{i\in I}$，
             对于$\forall i\in I$，$\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\wedge \varphi_i A\mathcal{E} \varphi_i B_i$，
             且满足$\varphi_i A'\mathcal{E} \varphi_i B_i$或$B_i\stackrel{\tau}{\rightarrow}_{\psi_i'}B_i'\wedge \mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i'\wedge \varphi_i A'\mathcal{E} \varphi_i B_i'$。
          }
-         \item {
+         \item[(2)] {
             若$A\stackrel{\overline{a}(t)}{\rightarrow}_{\varphi} A'$，则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\Rightarrow_{\psi_i}B_i\stackrel{\overline{a}(t_i)}{\rightarrow}_{\psi_i'}B_i'\}$，
             满足$\mathsf{Th}\vdash (\varphi_i\Rightarrow \psi_i\psi_i')\wedge (\varphi_i \Rightarrow t=t_i)$且$(\varphi_i A\mathcal{E}\varphi_i B_i)\wedge(\varphi_i A'\mathcal{E}\varphi_i B_i')$。
          }
-         \item {
+         \item[(3)] {
             若$A\stackrel{a(x)}{\rightarrow}_{\varphi} A'$，则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\Rightarrow_{\psi_i}B_i\stackrel{a(x)}{\rightarrow}_{\psi_i'}B_i'\}$，
             满足$\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\psi_i'$且$(\varphi_i A\mathcal{E}\varphi_i B_i)\wedge(\varphi_i A'\mathcal{E}\varphi_i B_i')$。
          }
@@ -408,9 +408,9 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \begin{proof}
       对于$A$可以执行的操作，$\varphi' A$也会有对应的版本：
       \begin{itemize}
-         \item 若$A\stackrel{\tau}{\rightarrow}_{\varphi} A'$，则$\varphi' A\stackrel{\tau}{\rightarrow}_{\varphi' \varphi}A'$。
-         \item 若$A\stackrel{a(x)}{\rightarrow}_{\varphi} A'$，则$\varphi' A\stackrel{a(x)}{\rightarrow}_{\varphi' \varphi} A'$。
-         \item 若$A\stackrel{\overline{a}(t)}{\rightarrow}_{\varphi} A'$，则$\varphi' A\stackrel{\overline{a}(t)}{\rightarrow}_{\varphi' \varphi} A'$。
+         \item[(1)] 若$A\stackrel{\tau}{\rightarrow}_{\varphi} A'$，则$\varphi' A\stackrel{\tau}{\rightarrow}_{\varphi' \varphi}A'$。
+         \item[(2)] 若$A\stackrel{a(x)}{\rightarrow}_{\varphi} A'$，则$\varphi' A\stackrel{a(x)}{\rightarrow}_{\varphi' \varphi} A'$。
+         \item[(3)] 若$A\stackrel{\overline{a}(t)}{\rightarrow}_{\varphi} A'$，则$\varphi' A\stackrel{\overline{a}(t)}{\rightarrow}_{\varphi' \varphi} A'$。
       \end{itemize}
       对$\varphi' A\stackrel{a(x)}{\rightarrow}_{\varphi'\varphi} A'$，
       根据$A\approxeq_{\mathsf{Th}}^sB$，我们知道存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\Rightarrow_{\psi_i}B_i\stackrel{a(x)}{\rightarrow}_{\psi_i'}B_i'\}_{i\in I}$，
@@ -448,10 +448,10 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
       对于$fv(\varphi)$的每一个赋值$v\in V$，
       我们可以得到一个无自由变元的布尔表达式$\varphi_v$：
       \begin{itemize}
-         \item {
+         \item[(1)] {
             若$\mathsf{Th}\vdash \varphi_v$，$\varphi_vA=A\mathcal{E}B=\varphi_v B$。
          }
-         \item {
+         \item[(2)] {
             若$\mathsf{Th}\not\vdash \varphi_v$，$\varphi_v A=0=\varphi_v B$。
          }
       \end{itemize}
@@ -503,8 +503,8 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    若$A\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$,
    $A$的静态迁移树$t$满足如下定义：
    \begin{itemize}
-   \item 每一个节点都被标记成$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$的一个项，$A$是根节点。
-   \item {
+   \item[(1)] 每一个节点都被标记成$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$的一个项，$A$是根节点。
+   \item[(2)] {
       节点间的边被标记成$(\varphi,p)$，其中$p\in(0,1]$，$\varphi$是一个布尔表达式。
       如果一条从$A'$到$A''$的有向边被标记成$(\varphi,p)$，表示$A'\stackrel{p\tau}{\rightarrow}_{\varphi} A''$。
    }
@@ -671,17 +671,17 @@ $i\in I, L_i\in \mathcal{B}$，且$\mathsf{Th}\vdash \varphi \Rightarrow \psi_i$
    $\mathcal{E}$是一个$\mathcal{T}_{RVPC}$上的二元对称关系，
 当$A\mathcal{E}B$且满足下列条件时，称$\mathcal{E}$是一个符号互模拟(Symbolic Bisimulation)：
 \begin{itemize}
-   \item {
+   \item[(1)] {
       若$ A \rightsquigarrow_{\varphi \mathcal{E}}\stackrel{a(x)}{\rightarrow}_{\varphi} L\notin [A]_{\varphi \mathcal{E}}$，
       则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\varphi_i \mathcal{E}}\stackrel{a(x)}{\rightarrow}_{\psi_i} L'\in[L]_{\varphi_i\mathcal{E}}\}$，
       使得对$i\in I$，$\mathsf{Th}\vdash \varphi_i \Rightarrow \psi_i$。
    }
-   \item {
+   \item[(2)] {
       若$A \rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\bar{a}(t)}{\rightarrow}_{\varphi} L\notin [A]_{\varphi\mathcal{E}}$，
       则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{\bar{a}(t_i)}{\rightarrow}_{\psi_i} L'\in [L]_{\varphi_i\mathcal{E}}\}$，
       使得对$i\in I$，$\mathsf{Th}\vdash (\varphi_i \Rightarrow \psi_i)\wedge (\varphi_i \Rightarrow (t=t_i))$。
    }
-   \item {
+   \item[(3)] {
       若$ A\rightsquigarrow_{\varphi\mathcal{E}} \stackrel{q}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}/\mathcal{E}, \mathcal{C}\neq [A]_{\varphi \mathcal{E}}$，
       则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$，和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\varphi_i} [\mathcal{C}]_{\varphi_i\mathcal{E}}\}$，
       使得$i\in I$，$q_i= q$。
@@ -728,7 +728,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟
    其中$V$是$x$的取值范围。
    我们只需证明$\mathcal{S}$是一个符号互模拟关系即可。
    \begin{itemize}
-      \item {
+      \item[(1)] {
          $\overline{a}(x).G(x)$和$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)$关于$(x=t)\mathcal{S}$的等价树只有一个根节点，
          由于不涉及概率，这里实际可以使用$\mathbb{VPC}_{\mathsf{Th}}$的符号互模拟证明，
          但由于$\mathbb{VPC}_{\mathsf{Th}}$是$\mathbb{RVPC}_{\mathsf{Th}}$的特例，
@@ -762,10 +762,10 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟
             }
          \end{itemize}
       }
-      \item {
+      \item[(2)] {
          $(G(t),(y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y))$的这一对等价关系也是常规的$\mathbb{VPC}_{\mathsf{Th}}$证明，此处不做赘述。
       }
-      \item {
+      \item[(3)] {
          $G(x)$的静态迁移树如图~\ref{fig_eg4_1}，$G''(x,y)$的静态迁移树如图~\ref{fig_eg4_2}。
          \begin{figure}[!htbp]
             \small
@@ -817,7 +817,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟
 \begin{proof}
    证明符号互模拟的传递性等价于证明若$\mathcal{E}$是一个符号互模拟，且$A\mathcal{E}B, B \mathcal{E} C$，则$A \mathcal{E} C$。
    \begin{itemize}
-      \item {
+      \item[(1)] {
          若$A\rightsquigarrow_{\varphi \mathcal{E}}\stackrel{\lambda}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{RVPC}/\varphi\mathcal{E},\mathcal{C}\neq [A]_{\varphi\mathcal{E}}$，
          由于$A\mathcal{E}B$，
          根据定义存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$
@@ -839,7 +839,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟
          和集合$S'=\bigcup_{i\in I}S_i'$，使得$C$可以符号模拟$A$。
          对称的证明是完全一致的。
       }
-      \item {
+      \item[(2)] {
          若$A\rightsquigarrow_{\varphi \mathcal{E}}\stackrel{q}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{RVPC}/\varphi\mathcal{E},\mathcal{C}\neq [A]_{\varphi\mathcal{E}},q\in(0,1]$，
          由于$A\mathcal{E}B$，存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\psi_i} [\mathcal{C}]_{\varphi_i\mathcal{E}}|\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\wedge q=q_i\}$，
          因此存在$\{B\rightsquigarrow_{\varphi_i\mathcal{E}}\stackrel{q_i}{\rightarrow}_{\varphi_i} [\mathcal{C}]_{\varphi_i\mathcal{E}}\}$可以模拟$A$的条件$q$-迁移，
@@ -884,7 +884,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
    我们可以递归的构建出$A_1$关于$\varphi\mathcal{E}$的条件等价森林。
 
    \begin{itemize}
-      \item {
+      \item[(1)] {
          \textbf{$t_{A_0}$的根节点$A_0$只有一个儿子节点$A_0'$。}
          若$A_0'\in[A_0]_{\varphi\mathcal{E}_{i_1}}$，
          我们将以$\varphi A_0'$作为下次递归的根节点，
@@ -908,7 +908,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          与每个$B'$的$\varphi_i\mathcal{E}$的等价森林中的等价树相连，
          我们可以得到$A_1$关于$\varphi\mathcal{E}$的条件等价森林。
       }
-      \item {
+      \item[(2)] {
          \textbf{$t_{A_0}$的根节点$A_0$有$h$个儿子节点$A_0^1,\dots,A_0^h$。}
          根据定义$A_0\stackrel{\coprod_{i\in [h]p_j\tau}}{\rightarrow}_{\psi} \coprod_{j\in [h]}A_0^j$，
          $A_0$到$A_0^j$的边被标记为$(\psi, p_j)$，其中$\varphi\Rightarrow\psi$。
@@ -926,7 +926,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          存在$\mathsf{P}_{\varphi_i,\varphi_i\mathcal{E}_{i_1}}(N\stackrel{\coprod_{i'\in [h']}p_{i'}\tau}{\longrightarrow}_{\varphi_i} N'\in [A_0^1]_{\varphi_i\mathcal{E}_{i_1}}) = q$，
          我们根据$\varphi_i A_0^1$构建每个$\varphi_i N'$关于$\varphi_i\mathcal{E}$的条件等价森林。
       }
-      \item {
+      \item[(3)] {
          \textbf{$t_{A_0}$的根节点$A_0$可以作$A_0\stackrel{\lambda}{\rightarrow}_{\varphi} L'$。}
          根据定义存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
          $\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{\lambda}{\rightarrow}_{\varphi_i} [L']_{\varphi_i\mathcal{E}_{i_1}}\}$。
@@ -1051,7 +1051,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
    我们可以用引理~\ref{lemma:closure}中的方法递归的构造$(B|C)$的$\varphi\mathcal{E}$条件等价森林来模拟$(A|C)$的动作，
    令$t_{(A|C)}$为$(A|C)$关于$\varphi\mathcal{R'}$的条件等价树。
    \begin{itemize}
-      \item {
+      \item[(1)] {
          $t_{(A|C)}$上的边：
          $A|C\stackrel{(\psi, 1)}{\rightarrow} A'|C, \mathsf{Th}\vdash \varphi\Rightarrow\psi$
          是由于$A\stackrel{\tau}{\rightarrow}_{\varphi} A'$。
@@ -1068,7 +1068,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          其中$\{\varphi_i\}_{i\in I}$是$\varphi$的划分。
          我们根据$\varphi_i A'$构建$\varphi_i B_i$的$\varphi_i \mathcal{R}'$条件等价森林。
       }
-      \item {
+      \item[(2)] {
          $t_{(A|C)}$上的边：
          $A|C\stackrel{(\psi, 1)}{\rightarrow} A'|C', \mathsf{Th}\vdash \varphi\Rightarrow\psi$
          是由于$A\stackrel{\overline{a}(t)}{\longrightarrow}_{\psi'} A', C\stackrel{a(x)}{\longrightarrow}_{\psi''} C', \psi=\psi'\psi''$。
@@ -1085,7 +1085,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          $(B_i\mid D_j)\in[A'\mid C']_{\varphi_i\varphi_j \mathcal{R'}}$，
          我们根据$\varphi_i\varphi_j(A'|C')$的$\varphi_i\varphi_j \mathcal{R}' $条件等价树构建$\varphi_i\varphi_j(B_i|D_j)$的$\varphi_i\varphi_j \mathcal{R}' $条件等价森林。
       }
-      \item {
+      \item[(3)] {
          $t_{(A|C)}$上的边：
          $A|C\stackrel{(\psi, q)}{\rightarrow} A'|C, \mathsf{Th}\vdash \varphi\Rightarrow\psi, q\in(0,1)$，
          则存在$A\stackrel{\coprod_{i\in I}p_i\tau}{\longrightarrow}_{\varphi} \coprod_{i\in I} A_i$，
@@ -1109,7 +1109,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          我们有$(B|D)\rightsquigarrow_{\varphi_i\varphi_j=}\stackrel{q_0+q_1}{\longrightarrow}_{\varphi_i\varphi_j}(B'|D)\in[A_0|C]_{\varphi_i\varphi_j=}$，
          我们根据$\varphi_i\varphi_j (A_0|C)$的$\varphi_i\varphi_j \mathcal{R}' $条件等价树构建$\varphi_i\varphi_j(B'|D)$的$\varphi_i\varphi_j \mathcal{R}' $条件等价森林。
       }
-      \item {
+      \item[(4)] {
          若$(A|C)\stackrel{\lambda}{\rightarrow}_{\varphi} (A'|C), \lambda\neq \tau$，
          则$A\stackrel{\lambda}{\rightarrow}_{\varphi} A'$，
          根据定义存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
