@@ -8,18 +8,19 @@
   并发理论的研究内容包括：
   如何刻画并行进程的行为，
   在什么情况下他们可以互相模拟，
-  研究各种通信和同步机制，
+  研究各种通信和同步机制和
   死锁、可观察性、发散性等并发现象。
   对并发理论的研究加深了人们对并发系统的认识，
-  其主要的研究成果已经在Ada，Java等程序语言中得到广泛应用\cite{计算机科学技术百科全书}。
+  其主要的研究成果已经在Ada，Java等编程语言中得到广泛应用\cite{计算机科学技术百科全书}。
   在计算机科学中，进程演算（或进程代数）是用于形式化建模并发系统的多种相关方法。
-  进程演算提供了具体描述多个独立代理人程序或者是多个进程之间交互、通信、同步的方法，
+  进程演算提供了具体描述多个独立程序或者是多个进程之间交互、通信、同步的方法，
   其中包含了对进程操作和分析的描述、以及证明形式化推导进程之间存在等价关系的代数法则\cite{History}。
   关于进程演算的典例主要包括
   MILNER R提出的通信系统演算CCS(Calculus of Communicating System)\cite{Milner_CCS}，
-   HOARE C提出的通信顺序进程CSP\cite{Hoare_CSP}，
-   BERGSTRA J等提出的ACP\cite{BERGSTRA_ACP}，以及BOLOGNESI T等的LOTOS\cite{LOTOS}。%，Hennessy提出ATPcite{5}等，
-   作为一种描述并发系统的模型，进程演算受到广泛研究并被成功应用到实际系统的规范、设计、分析及验证中。
+   HOARE C提出的通信顺序进程CSP(Communicating Sequential Process)\cite{Hoare_CSP}，
+   BERGSTRA J等提出的ACP(Algebra of Communicating Processes)\cite{BERGSTRA_ACP}，
+   以及BOLOGNESI T等的LOTOS\cite{LOTOS}。%，Hennessy提出ATPcite{5}等，
+   作为描述并发系统的模型，进程演算受到广泛研究并被成功应用到实际系统的规范、设计、分析及验证中。
 
 随机在现代计算机科学的研究中日趋重要，
 在对并发系统的研究中也备受关注。
@@ -38,7 +39,7 @@
 由于其模型无关性，
 我们可以使用Uniform Approach对其他并发进程模型进行概率化扩展。
 
-有两种主要的进程演算可以作为概率模型的基础：分别是MILNER R的Calculus of Communicating System(CCS)\cite{Milner_CCS}和HOARE C的Communicating Sequential Process(CSP)\cite{Hoare_CSP}。
+有两种主要的进程演算可以作为概率模型的基础：分别是MILNER R的CCS\cite{Milner_CCS}和HOARE C的CSP\cite{Hoare_CSP}。
 它们的区别在与等价的类型和建模并发系统采用的方法\cite{DIFF_CCS_CSP}。
 Uniform Approach以CCS为例进行了概率扩展，
 为理解Uniform Approach，我们首先对CCS进行简要的介绍。
@@ -57,7 +58,7 @@ Uniform Approach以CCS为例进行了概率扩展，
    动作集合$Act=Chan\cup \overline{Chan}\cup \{\tau\} $，
    其中的元素用小写希腊字母表示，$\alpha_i\in Act$，$\tau$表示一切静态迁移（内部动作）。
    $\sum_{i\in I}\alpha_i.T$为非确定性选择项，若$I=\emptyset$，我们可以将这一项写作$0$。
-   $S\mid T$表示$S,T$可以并发执行。$(a)T$为限制（Restriction）或本地化（Localization）操作子，对外隐藏$T$中的$a$通道，
+   $S\mid T$表示$S,T$可以并发执行。$(a)T$为限制（Restriction）或内部化（Localization）操作子，对外隐藏$T$中的$a$通道，
    也可以写为$T\backslash \{a\}$或$T\backslash a$。$\mu X$表示递归（Recursion）操作。
    若一个CCS进程表达式$P$中不含自由变元，称$P$为进程（process）。
 
@@ -73,15 +74,15 @@ Uniform Approach以CCS为例进行了概率扩展，
 
    \section{随机进程模型}
 
-   FU Y提供了一个模型无关的方法——An Uniform Approach to Random Process Model(Uniform Approach)\cite{Fu_UniformApproach}，
+   FU Y提供了一个模型无关的方法——An Uniform Approach to Random Process Model(本文中统称为Uniform Approach)\cite{Fu_UniformApproach}，
    将进程模型扩展为随机进程模型。
-   Uniform Approach区分了非确定性行为和概率性的行为，
-   在CCS的基础上建立了随机化的CCS(后文称为RCCS)的语法、迁移语义并研究了RCCS的代数特性，如互模拟关系。
+   Uniform Approach区分了非确定性行为和概率性行为，
+   在CCS的基础上建立了随机化的CCS(本文中统称为RCCS)的语法、迁移语义并研究了RCCS的代数特性，如互模拟关系。
 
    RCCS在CCS的基础上增加了概率选择操作子$\bigoplus_{i\in I}p_i\tau.T_i$，
    其中$0<p_i<1 \wedge \sum_{i\in I}p_i = 1$。
-   例如，$S=\frac{1}{3}\tau.T_1+\frac{2}{3}\tau.T_2$意味着$S$经过静态迁移（内部动作）到达$T_1$的概率为$\frac{1}{3}$，
-   到达$T_2$的概率为$\frac{2}{3}$。
+   例如，$S=\frac{1}{3}\tau.T_1+\frac{2}{3}\tau.T_2$意味着$S$经过静态迁移（内部动作）变迁为$T_1$状态的概率为$\frac{1}{3}$，
+   变迁为$T_2$状态的概率为$\frac{2}{3}$。
 
    对应随机选择操作子的迁移语义为：
    \begin{figure}[!htbp]
@@ -108,8 +109,8 @@ Uniform Approach以CCS为例进行了概率扩展，
 分析模型的死锁、活性、可观察、发散等并发特性。
 
 \section{论文结构}
-本文分为三个章节。第一章为绪论，引入了通信并发系统的概念，
+本文分为四个章节。第\ref{ch:intro}章为绪论，引入了进程演算的概念，
 介绍了通信并发演算CCS，引入了一种对进程模型进行概率化扩展的通用方法Uniform Approach。
-第二章我们使用Uniform Approach中的方法对传值进程模型进行概率化扩展得到随机传值进程模型。
-第三章我们使用随机传值进程模型对基于云计算协议Gossip-Style Membership协议的通信过程建模。
-第四章为总结以及本文待改进的工作。
+第\ref{ch:rvpc}章我们使用Uniform Approach中的方法对传值进程模型进行概率化扩展得到随机传值进程模型。
+第\ref{ch:gossip}章我们使用随机传值进程模型对基于云计算协议Gossip-Style Membership协议的通信过程建模。
+第\ref{ch:conclusion}章为总结以及未来的工作方向。
