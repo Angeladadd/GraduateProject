@@ -17,8 +17,8 @@
   其中包含了对进程操作和分析的描述、以及证明形式化推导进程之间存在等价关系的代数法则\cite{History}。
   关于进程演算的典例主要包括
   MILNER R提出的通信系统演算CCS(Calculus of Communicating System)\cite{Milner_CCS}，
-   HOARE C提出的通信顺序进程CSP(Communicating Sequential Process)\cite{Hoare_CSP}，
-   BERGSTRA J等提出的ACP(Algebra of Communicating Processes)\cite{BERGSTRA_ACP}，
+   HOARE C的通信顺序进程CSP(Communicating Sequential Process)\cite{Hoare_CSP}，
+   BERGSTRA J等的ACP(Algebra of Communicating Processes)\cite{BERGSTRA_ACP}，
    以及BOLOGNESI T等的LOTOS\cite{LOTOS}。%，Hennessy提出ATPcite{5}等，
    作为描述并发系统的模型，进程演算受到广泛研究并被成功应用到实际系统的规范、设计、分析及验证中。
 
@@ -74,10 +74,10 @@ Uniform Approach以CCS为例进行了概率扩展，
 
    \section{随机进程模型}
 
-   FU Y提供了一个模型无关的方法——An Uniform Approach to Random Process Model(本文中统称为Uniform Approach)\cite{Fu_UniformApproach}，
+   FU Y提供了一个模型无关的方法Uniform Approach(A Uniform Approach to Random Process Model)\cite{Fu_UniformApproach}，
    将进程模型扩展为随机进程模型。
    Uniform Approach区分了非确定性行为和概率性行为，
-   在CCS的基础上建立了随机化的CCS(本文中统称为RCCS)的语法、迁移语义并研究了RCCS的代数特性，如互模拟关系。
+   在CCS的基础上建立了RCCS(Randomized CCS)的语法、迁移语义并研究了RCCS的代数特性，如互模拟关系。
 
    RCCS在CCS的基础上增加了概率选择操作子$\bigoplus_{i\in I}p_i\tau.T_i$，
    其中$0<p_i<1 \wedge \sum_{i\in I}p_i = 1$。
