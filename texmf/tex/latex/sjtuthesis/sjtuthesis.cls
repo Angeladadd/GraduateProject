@@ -882,7 +882,7 @@
     afterskip    = {\ifsjtu@degree@graduate 3ex\else 4ex\fi},
   },
   section = {%
-    format       = \zihao{4}\bfseries\heiti,
+    format       = \zihao{4}\heiti,
     afterindent  = true,
     afterskip    = {1ex \@plus .2ex},
   },
@@ -982,7 +982,7 @@
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{2}
 \renewcommand\tableofcontents{%
-  \sjtu@chapter*{\normalfont\heiti\contentsname}%
+  \sjtu@chapter*{\contentsname}%
   \@starttoc{toc}%
 }
 \def\sjtu@listof#1{% #1: float type
