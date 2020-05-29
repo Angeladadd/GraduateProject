@@ -132,7 +132,7 @@ Gossip节点Node的状态有以下几种，分别对应Gossip协议中节点的�
       DeliveringNode&可向系统外传递信息\\
       UnInfectiousNode&未获取Gossip Message\\
       InfectiousNode&已获取Gossip Message\\
-      GossipingNode&可向系统内部特定b个其他节点发送Gossip Message\\ \bottomrule
+      GossipingNode&可向系统内部特定$k$个其他节点发送Gossip Message\\ \bottomrule
     \end{tabular}
   \end{table}
 
@@ -144,7 +144,7 @@ Gossip节点Node的状态有以下几种，分别对应Gossip协议中节点的�
    DeliveringNode_i(x) &\stackrel{def}{=} \overline{deliver_i}(x).InfectiousNode_i(x)\\
    InfectiousNode_i(x)&\stackrel{def}{=}timeout.(\bigoplus_{perm\in \mathsf{PERM}_i} p_{perm}\tau.GossipingNode_{i,perm}(x))\\
 %    &+\sum_{j\in \mathsf{N}/\{i\}}trans_{j,i}(x).DeliveringNode_i(x)\\
-   GossipingNode_{i,perm}(x)&\stackrel{def}{=}\overline{trans_{i,perm_{1}}}(x).\dots \overline{trans_{i,perm_{b}}}(x).\overline{time}.InfectiousNode_i(x)\\
+   GossipingNode_{i,perm}(x)&\stackrel{def}{=}\overline{trans_{i,perm_{1}}}(x).\dots \overline{trans_{i,perm_{k}}}(x).\overline{time}.InfectiousNode_i(x)\\
    UnInfectiousNode_i &\stackrel{def}{=} \sum_{j\in \mathsf{N}/\{i\}}trans_{j,i}(x).DeliveringNode_i(x)\\
    GossipSystem_\mathsf{N}&\stackrel{def}{=}(Node_1\mid UnInfectiousNode_2\mid \dots \mid UnInfectiousNode_n)\\
    &\backslash \{trans_{i,j}\mid i\in \mathsf{N} \wedge j\in \mathsf{N} \wedge i\neq j\}\cup \{time, timeout\}
@@ -154,17 +154,17 @@ Gossip节点Node的状态有以下几种，分别对应Gossip协议中节点的�
 每一个拥有Gossip Message的节点周期性的向$\mathsf{k}(\mathsf{k}\leq n-1)$
 个其他节点发送Gossip Message。
 其中$\mathsf{PERM}_i$为$\mathsf{N}/\{i\}$中任选$\mathsf{k}$个元素的全排列，
-$p_{\mathsf{perm}}$为向一个特定的排列$perm$发送Gossip Message的概率，
+$p_{perm}$为向一个特定的排列$perm$发送Gossip Message的概率，
 为了方便建模，
-我们假设一个节点选择任意其他节点作为Gossip的目标节点的概率是相同的，
+我们可以假设一个节点选择任意其他节点作为Gossip的目标节点的概率是相同的，
 即$p_{perm} = \frac{1}{A_{n-1}^{\mathsf{k}}} = \frac{(n-\mathsf{k}-1)!}{(n-1)!}$为固定值，
 当$\mathsf{k}=2$时，$p_{perm} = \frac{1}{(n-1)(n-2)}$。
 
 我们可以看到节点$Node_i$接受到外界消息$x$后，
 迁移为$DeliveringNode_i(x)$的状态，
 向外界递送这个消息，
-进而迁移为$InfectiousNode)i(x)$的状态，
-可以在接受到$timeout$信号时以概率$p_{\mathsf{perm}}$
+进而迁移为$InfectiousNode_i(x)$的状态，
+可以在接受到$timeout$信号时以概率$p_{perm}$
 的概率选定$\mathsf{N}/\{i\}$中任选$\mathsf{k}$个元素的全排列
 中的一个排列$perm$作为发送目标，
 进而迁移为$GossipingNode_{i,perm}(x)$，
@@ -219,10 +219,10 @@ Gossip协议的目的是为了在系统内对节点进行多播，
    \end{split}
    \end{equation}
 \end{definition} 
-其中$|\mathsf{KNOWN}|$为已经得到此消息的节点编号集合，
+其中$\mathsf{KNOWN}$为已经得到此消息的节点编号集合，
 节点可以通过$deliver$通道告知通信系统外（如本地的其他进程）节点已收到信息。
 若一个节点对系统外通过$deliver$通道传递了这个消息，
-我们将这个节点加入$|\mathsf{KNOWN}|$，
+我们将这个节点加入$\mathsf{KNOWN}$，
 表示这个节点已经收到了消息。
 
  \begin{definition} 
@@ -231,7 +231,7 @@ Gossip协议的目的是为了在系统内对节点进行多播，
    在后续的证明过程中表示起来比较冗长，
    为了方便后续的证明，我们给出特定状态下的
    $GossipSystem_{\mathsf{N}}$的记法，
-   其中Composition算子符合交换律。
+   其中并发操作子符合交换律。
     \begin{equation}
       \begin{split}
    &GossipSystem_{\mathsf{N},(a,b,c)}(x)\\
@@ -271,6 +271,7 @@ Gossip协议的目的是为了在系统内对节点进行多播，
    \end{split}
 \end{equation}
 
+首先需要声明，根据等价关系的传递性，我们可以得到$GossipSystem_{\mathsf{N},(a,b,c)}(x)\in [GossipSystem_{\mathsf{N},(a,b',c')}(x)]_{\top\mathcal{S}}, b+c=b'+c'$。
 我们来依次证明$\mathcal{S}$中的每一对等价关系为符号互模拟关系:
 \begin{itemize}
     \item[(1)] {
@@ -299,7 +300,7 @@ Gossip协议的目的是为了在系统内对节点进行多播，
             即
             $$GossipSystem_{\mathsf{N},(a,b,c)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(a+1,b',c')}(x)]_{\top\mathcal{S}}$$
             其中$b'+c'=b+c-1$。
-            我们可以用$$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{KNOWN}'}$$来模拟上述状态迁移。
+            我们可以用$$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{KNOWN}'},|\mathsf{KNOWN}'|=a+1$$来模拟上述状态迁移。
             对称的模拟依然成立。
             }
             \item[(b)] {若$a=n-1$：
@@ -340,12 +341,19 @@ Van RENESSE R提出了一种基于Gossip协议的错误检测机制：
 并且随机的向另一个节点发送自己的Membership List；
 若节点收到了其他节点发送过来的Membership List，
 它会将两个列表合并，保留对应地址心跳最大的项。
-若节点的Membership List的一项经过$T_{fail}$时间没有更新，则认为这一项对应的节点失效\cite{Gossip_style}，
-我们称为Gossip-Style Membership 协议。
+若节点的Membership List的一项经过$T_{fail}$时间没有更新，则认为这一项对应的节点失效，
+我们称为Gossip-Style Membership 协议\cite{Gossip_style}。
 
 在本次的实现中，我们规定在每一个Gossip周期中，
 节点可以随机选择$k$个节点发送自己的Membership List。
 
+\begin{figure}[!htbp]
+	\small
+	\centering
+	\includegraphics[width=6cm]{../figures/Node.png}
+    \caption{Gossip-Style Membership节点示意图}
+    \label{fig:membership_node}
+\end{figure}
 由于Gossip-Style Membership无需与外界的输入输出，并且需要提供储存、更新Membership List的函数，
 我们需要对之前的节点结构进行调整。
 同时，系统内的节点也会有失效的可能，我们可以用$p_{fail}$来定义一个节点失效的概率，
@@ -354,13 +362,6 @@ Van RENESSE R提出了一种基于Gossip协议的错误检测机制：
 且Membership List在系统中不停的更新，
 因此也没有了感染者与被感染者的角色区分，
 也需要对名称进行了修改。
-\begin{figure}[!htbp]
-	\small
-	\centering
-	\includegraphics[width=6cm]{../figures/Node.png}
-    \caption{Gossip-Style Membership节点示意图}
-    \label{fig:membership_node}
-\end{figure}
 在Gossip System节点的基础上，
 将原本对外暴露的$accept,deliver$通道用于连接$Membership$，
 作为链接网络的节点获取和更新本地Membership List的通道，
@@ -375,7 +376,7 @@ Gossip-Style Membership协议中的P2P系统定义如下，
     BadNode_i&\stackrel{def}{=}\tau.FragileNode_i\\
     Node_i&\stackrel{def}{=}timeout.accept(x).(\bigoplus_{perm\in \mathsf{PERM}_i} p_{perm}\tau.GossipingNode_{i,perm}(x))\\
      &+\sum_{j\in \mathsf{N}/\{i\}}trans_{j,i}(x).\overline{deliver}(x).FragileNode_i\\
-    GossipingNode_{i,perm}(x)&\stackrel{def}{=}\overline{trans_{i,perm_{1}}}(x).\dots \overline{trans_{i,perm_{b}}}(x).\overline{time}.FragileNode_i\\
+    GossipingNode_{i,perm}(x)&\stackrel{def}{=}\overline{trans_{i,perm_{1}}}(x).\dots \overline{trans_{i,perm_{k}}}(x).\overline{time}.FragileNode_i\\
     GossipSystem_\mathsf{N}&\stackrel{def}{=}(FragileNode_1\mid FragileNode_2\mid \dots \mid FragileNode_n)\\
     &\backslash \{trans_{i,j}\mid i\in \mathsf{N} \wedge j\in \mathsf{N} \wedge i\neq j\}\cup \{time, timeout, accept, deliver\}
    \end{split}
@@ -386,8 +387,8 @@ Gossip-Style Membership协议中的P2P系统定义如下，
  在$Node$状态的节点，
  可以在外界计时器发送$timeout$信号时通过$accept$通道获取自身的
  Membership List，
- 以概率$p_{\mathsf{perm}}$
- 的概率选定$\mathsf{N}/\{i\}$中任选$\mathsf{k}$个元素的全排列
+ 以概率$p_{perm}$
+ 的概率选定$\mathsf{N}/\{i\}$中任选$k$个元素的全排列
  中的一个排列$perm$作为发送目标，
  进而迁移为$GossipingNode_{i,perm}(x)$，
  向$perm$中的节点发送Membership List，
@@ -458,7 +459,7 @@ $n$个并发的$MembershipCell$组成的$MembershipList$定义如下，
 在每一次Gossip周期$hb=hb+1$，
 $Membership$可以通过$heartbeat$通道获取心跳。
 \begin{equation}
-   Counter(hb)\stackrel{def}{=}\overline{heartbeat}(\mathsf{s}(hb)).Counter(\mathsf{s}(hb))
+   Counter(hb)\stackrel{def}{=}\overline{heartbeat}(hb).Counter(\mathsf{s}(hb))
 \end{equation}
 
 对于节点本地地址的维护，我们定义了一个$AddrInfo$来储存本地地址，
@@ -553,7 +554,7 @@ Goroutine是一种轻量级线程，channel用于协程间的通信。
 \end{codeblock}
 
 我们可以使用基于select的多路复用实现非确定性选择，
-如我们在~\ref{eq:network_system}中实现的系统中的$Node_i$：
+如我们在~\ref{eq:network_system}中实现的系统中的$Node_i$，
 这里$Node_i$可以做非确定的选择：
 接收到timeout信号后从accept通道获取本地的Membership List
 随机选择$k$个其他节点发送；或从其他节点接收到Membership List消息，
