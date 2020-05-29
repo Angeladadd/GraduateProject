@@ -908,7 +908,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          和集合$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{\tau}{\rightarrow}_{\psi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}_{i_1}}|\mathsf{Th}\vdash \varphi_i\Rightarrow \psi_i\}_{i\in I}$。
          
          根据推论~\ref{lemma:transitivity}的证明经验，我们其实可以用$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{\tau}{\rightarrow}_{\varphi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}_{i_1}}\}_{i\in I}$
-         模拟$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\tau}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}\}_{i\in I}$，
+         模拟$A_0\rightsquigarrow_{\varphi\mathcal{E}}\stackrel{\tau}{\rightarrow}_{\varphi} \mathcal{C}\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}},\mathcal{C}\neq [A_0]_{\varphi\mathcal{E}}$，
          为了方便证明，后续的证明中我们将直接使用$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{\lambda}{\rightarrow}_{\varphi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}_{i_1}}\}_{i\in I}$的形式。
          
          $\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{\tau}{\rightarrow}_{\varphi_i}[\mathcal{C}]_{\varphi_i\mathcal{E}_{i_1}}\}_{i\in I}$
@@ -940,7 +940,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
       \item[(3)] {
          \textbf{$t_{A_0}$的根节点$A_0$可以作$A_0\stackrel{\lambda}{\rightarrow}_{\varphi} L'$。}
          根据定义存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
-         $\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{\lambda}{\rightarrow}_{\varphi_i} [L']_{\varphi_i\mathcal{E}_{i_1}}\}$。
+         $\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}}\stackrel{\lambda}{\rightarrow}_{\varphi_i} [L']_{\varphi_i\mathcal{E}_{i_1}}\}_{i\in I}$。
       }
    \end{itemize}
 
@@ -957,7 +957,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
    对于每一个$i\in I$，
    右侧的条件等价树都会复制一份，
    全部的条件等价树构成$\varphi\mathcal{E}$条件等价森林，
-   作$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}\stackrel{\tau}{\rightarrow}_{\varphi_i}}[A_0']_{\varphi_i\mathcal{E}_{i_1}}\}$
+   作$\{A_1\rightsquigarrow_{\varphi_i\mathcal{E}_{i_1}\stackrel{\tau}{\rightarrow}_{\varphi_i}}[A_0']_{\varphi_i\mathcal{E}_{i_1}}\}_{i\in I}$
    对$A_0\stackrel{\tau}{\rightarrow}_{\varphi\mathcal{E}_{i_1}}A_0'$的模拟。
 
    第二层描述了根节点有多个儿子节点情况的构建方法，
@@ -981,7 +981,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
 例如：
 \begin{align*}
    % \begin{split}
-   &A(x) \stackrel{def}{=} (\overline{a}(x).0|B(\epsilon)|C)\backslash \{a,b,c\} &\\
+   &A(x) \stackrel{def}{=} (\overline{a}(x).0|B|C)\backslash \{a,b,c\} &\\
    &B\stackrel{def}{=}a(x).B(x)
    &B(x)\stackrel{def}{=} \frac{1}{2}\tau.\overline{b}(x).B\oplus \frac{1}{2}\tau.\overline{c}(x).B\\
    &C\stackrel{def}{=} b(x).C(x)
@@ -1113,10 +1113,10 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          $A|C\rightsquigarrow_{\varphi = }\stackrel{q_0+q_1}{\longrightarrow}_{\varphi}[A_1|C]_{\varphi=}$。
 
          根据$A=B$，存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
-         $\{B\rightsquigarrow_{\varphi_i=}\stackrel{q_0}{\rightarrow}_{\varphi_i}B_i\in [A_0]_{\varphi_i =}\}$
+         $\{B\rightsquigarrow_{\varphi_i=}\stackrel{q_0}{\rightarrow}_{\varphi_i}B_i\in [A_0]_{\varphi_i =}\}_{i\in I}$
          模拟$A\rightsquigarrow_{\varphi = }\stackrel{q_0}{\rightarrow}_{\varphi}[A_0]_{\varphi=}$。
          存在$\varphi$的划分$\{\varphi_j\}_{j\in J}$和集合
-         $\{B\rightsquigarrow_{\varphi_j=}\stackrel{q_1}{\rightarrow}_{\varphi_j}B_j\in [A_1]_{\varphi_j =}\}$
+         $\{B\rightsquigarrow_{\varphi_j=}\stackrel{q_1}{\rightarrow}_{\varphi_j}B_j\in [A_1]_{\varphi_j =}\}_{i\in I}$
          模拟$A\rightsquigarrow_{\varphi = }\stackrel{q_1}{\rightarrow}_{\varphi}[A_1]_{\varphi=}$。
          对所有的$i\in I, j\in J, \mathsf{Th}\vdash \varphi_i\varphi_j\not\Rightarrow \bot$，
          我们有$(B|D)\rightsquigarrow_{\varphi_i\varphi_j=}\stackrel{q_0+q_1}{\longrightarrow}_{\varphi_i\varphi_j}(B'|D)\in[A_0|C]_{\varphi_i\varphi_j=}$，
@@ -1126,7 +1126,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          若$(A|C)\stackrel{\lambda}{\rightarrow}_{\varphi} (A'|C), \lambda\neq \tau$，
          则$A\stackrel{\lambda}{\rightarrow}_{\varphi} A'$，
          根据定义存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
-         $\{B|D\rightsquigarrow_{\varphi_i=}\stackrel{\lambda}{\rightarrow}_{\varphi_i} [(A'|C)]_{\varphi_i=}\}$。
+         $\{B|D\rightsquigarrow_{\varphi_i=}\stackrel{\lambda}{\rightarrow}_{\varphi_i} [(A'|C)]_{\varphi_i=}\}_{i\in I}$。
       }
    \end{itemize}
    对于条件$q$-迁移：$(A|C)\rightsquigarrow_{\varphi=}\stackrel{q}{\rightarrow}_{\varphi}\mathcal{C}$的证明方法是相同的。
