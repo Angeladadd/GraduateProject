@@ -128,8 +128,10 @@
     choices = {
       -4,
       5,
+      auto,
+      false,
     },
-    initial = 5,
+    initial = auto,
   },
   latinfontset = {
     choices = {
@@ -146,25 +148,28 @@
     },
   },
 }
-\newif\ifsjtu@degree@graduate
-\newcommand\sjtu@set@graduate{%
-  \sjtu@degree@graduatefalse
-  \ifsjtu@degree@doctor
-    \sjtu@degree@graduatetrue
-  \fi
-  \ifsjtu@degree@master
-    \sjtu@degree@graduatetrue
-  \fi
-}
-\sjtu@set@graduate
-\sjtu@option@hook{sjtu}{degree}{%
-  \sjtu@set@graduate
-}
 \DeclareBoolOption{review}
+\DeclareBoolOption[false]{continuous}
 \DeclareDefaultOption{\PassOptionsToClass{\CurrentOption}{ctexbook}}
 \ProcessKeyvalOptions*
+\newif\ifsjtu@degree@graduate
+\sjtu@degree@graduatefalse
+\ifsjtu@degree@doctor
+  \sjtu@degree@graduatetrue
+\fi
+\ifsjtu@degree@master
+  \sjtu@degree@graduatetrue
+\fi
+\ifsjtu@zihao@auto
+  \ifsjtu@degree@graduate
+    \def\sjtu@zihao{-4}
+  \else
+    \def\sjtu@zihao{5}
+  \fi
+\fi
+\PassOptionsToClass{zihao=\sjtu@zihao}{ctexbook}
 \PassOptionsToPackage{no-math}{fontspec}
-\LoadClass[a4paper,UTF8,scheme=plain,linespread=1.3,zihao=\sjtu@zihao]{ctexbook}[2018/04/01]
+\LoadClass[a4paper,UTF8,scheme=plain,linespread=1.3]{ctexbook}[2018/04/01]
 \AtEndOfClass{
   \ifsjtu@degree@graduate
     \input{sjtuthesis-graduate.ltx}
@@ -189,9 +194,10 @@
 \RequirePackage{caption}
 \RequirePackage[list=off]{bicaption}
 \RequirePackage{subcaption}
+\RequirePackage{chngcntr}
 \RequirePackage[titles]{tocloft}
 \RequirePackage[inline]{enumitem}
-\RequirePackage[perpage, bottom]{footmisc}
+\RequirePackage[perpage, bottom, hang]{footmisc}
 \RequirePackage{pdfpages}
 \includepdfset{fitpaper=true}
 \RequirePackage{url}
@@ -209,20 +215,27 @@
 \sjtu@package@conflict{unicode-math}{eucal}
 \sjtu@package@conflict{unicode-math}{eufrak}
 \sjtu@package@conflict{unicode-math}{mathrsfs}
-\kv@define@key{sjtu}{format}{
-  \kvsetkeys{sjtu@format}{#1}
+\kv@define@key{sjtu}{style}{
+  \kvsetkeys{sjtu@style}{#1}
 }
-\sjtu@set@family@handler{sjtu@format}
-\sjtu@define@key{sjtu@format}{
-  indent-headings = {
-    name = indent@headings,
+\sjtu@set@family@handler{sjtu@style}
+\sjtu@define@key{sjtu@style}{
+  frontmatter-numbering = {
+    name = frontmatter@numbering,
     choices = {
       true,
       false,
+    }
+  },
+  indent-headings = {
+    name = indent@headings,
+    choices = {
       fixed,
+      auto,
+      false,
     },
     initial = false,
-    default = true,
+    default = fixed,
   },
   title-logo-color = {
     name = title@logo@color,
@@ -286,7 +299,7 @@
 }
 \newcommand\sjtu@clist@use[2]{%
   \def\sjtu@@tmp{}%
-  \kv@set@family@handler{sjtu@clist}{%
+  \def\sjtu@clist@processor##1{%
     \ifx\sjtu@@tmp\@empty
       \def\sjtu@@tmp{#2}%
     \else
@@ -294,7 +307,7 @@
     \fi
     ##1%
   }%
-  \kvsetkeys@expandafter{sjtu@clist}{#1}%
+  \expandafter\comma@parse\expandafter{#1}{\sjtu@clist@processor}%
 }
 \ifsjtu@language@chinese
   \def\sjtu@info@title{\sjtu@info@title@zh}
@@ -773,6 +786,7 @@
 }
 \def\sjtu@thepage{}
 \def\sjtu@lastpageref{}
+\newif\ifsjtu@pagenumbering \sjtu@pagenumberingtrue
 \ifsjtu@degree@graduate
   \newcommand\sjtu@thepage@format[2]{---~{\bfseries{#1}}~---}
 \else
@@ -794,7 +808,9 @@
     \fancyhf{}
     \fancyhead[C]{\zihao{-5}\sjtu@name@subject@zh}
     \fancyfoot[C]{%
-      \zihao{-5}\sjtu@thepage@format{\sjtu@thepage}{\sjtu@lastpageref}%
+      \ifsjtu@pagenumbering
+        \zihao{-5}\sjtu@thepage@format{\sjtu@thepage}{\sjtu@lastpageref}%
+      \fi
     }
     \renewcommand\headrule{%
       \hrule\@height2.25\p@\@width\headwidth
@@ -808,7 +824,7 @@
     \fancyhf{}
     \fancyhead[L]{%
       \includegraphics[height=32pt]%
-        {sjtu-vi-logo-\sjtu@format@header@logo@color.pdf}%
+        {sjtu-vi-logo-\sjtu@style@header@logo@color.pdf}%
     }
     \fancyhead[R]{%
       \parbox[b]{0.75\textwidth}{%
@@ -816,7 +832,9 @@
       }
     }
     \fancyfoot[C]{%
-      \zihao{-5}\sjtu@thepage@format{\sjtu@thepage}{\sjtu@lastpageref}%
+      \ifsjtu@pagenumbering
+        \zihao{-5}\sjtu@thepage@format{\sjtu@thepage}{\sjtu@lastpageref}%
+      \fi
     }
     \renewcommand\headrulewidth{0.75\p@}
   }
@@ -831,22 +849,26 @@
   \pagenumbering{Alph}
   \pagestyle{empty}}
 \renewcommand\frontmatter{%
-  \if@openright\cleardoublepage\else\clearpage\fi%
+  \cleardoublepage
   \@mainmatterfalse
+  \ifsjtu@style@frontmatter@numbering@false
+    \sjtu@pagenumberingfalse
+  \fi
   \pagenumbering{Roman}
   \def\sjtu@thepage{\thepage}
   \def\sjtu@lastpageref{\lastpageref{pagesLTS.Roman}}
   \pagestyle{sjtu@plain}
 }
 \renewcommand\mainmatter{%
-  \if@openright\cleardoublepage\else\clearpage\fi%
+  \cleardoublepage
   \@mainmattertrue
+  \sjtu@pagenumberingtrue
   \sjtu@setfloatfonttrue
   \pagenumbering{arabic}
   \def\sjtu@lastpageref{\lastpageref{pagesLTS.arabic}}
 }
 \renewcommand\backmatter{%
-  \if@openright\cleardoublepage\else\clearpage\fi%
+  \cleardoublepage
   \@mainmatterfalse
 }
 \ctexset{%
@@ -877,21 +899,14 @@
   paragraph/afterindent    = true,
   subparagraph/afterindent = true,
 }
-\newlength{\sjtu@indent@headings@fixed@width}
-\setlength{\sjtu@indent@headings@fixed@width}{2\ccwd}
-\newcommand\sjtu@format@set@indent@headings{%
-  \ifsjtu@format@indent@headings@fixed
-    \sjtu@format@indent@headings@truetrue
-    \def\sjtu@indent@headings@width{\sjtu@indent@headings@fixed@width}
+\newcommand\sjtu@style@set@indent@headings{%
+  \ifsjtu@style@indent@headings@fixed
+    \sjtu@style@indent@headings@autotrue
+    \gdef\sjtu@indent@headings@width{\parindent}
   \else
-    \def\sjtu@indent@headings@width{2\ccwd}
+    \gdef\sjtu@indent@headings@width{2\ccwd}
   \fi
-  \ifsjtu@format@indent@headings@true
-    \ctexset{%
-      section/indent       = \sjtu@indent@headings@width,
-      subsection/indent    = \sjtu@indent@headings@width,
-      subsubsection/indent = \sjtu@indent@headings@width,
-    }
+  \ifsjtu@style@indent@headings@auto
     \ifsjtu@degree@graduate\relax\else
       \ctexset{%
         subsubsection/name   = {(,)},
@@ -899,18 +914,21 @@
       }
     \fi
   \else
+    \gdef\sjtu@indent@headings@width{\z@}
     \ctexset{%
-      section/indent       = 0pt,
-      subsection/indent    = 0pt,
-      subsubsection/indent = 0pt,
       subsubsection/name   = {},
       subsubsection/number = \thesubsubsection,
     }
   \fi
+  \ctexset{%
+    section/indent       = \sjtu@indent@headings@width,
+    subsection/indent    = \sjtu@indent@headings@width,
+    subsubsection/indent = \sjtu@indent@headings@width,
+  }
 }
-\sjtu@format@set@indent@headings
-\sjtu@option@hook{sjtu@format}{indent-headings}{%
-  \sjtu@format@set@indent@headings
+\sjtu@style@set@indent@headings
+\sjtu@option@hook{sjtu@style}{indent-headings}{%
+  \sjtu@style@set@indent@headings
 }
 \ctexset{%
   punct          = quanjiao,
@@ -921,6 +939,22 @@
 \setlist{nosep}
 \setlist*{leftmargin=*}
 \setlist[1]{labelindent=\parindent}
+\def\sjtu@enclosed@number#1{%
+  \ifnum\value{#1} >10%
+    \sjtu@error{%
+      Too many footnotes in this page.
+      Keep footnote no more than 10%
+    }%
+  \fi
+  {\CJKfamily+{}\symbol{\the\numexpr\value{#1}+"245F\relax}}%
+}
+\renewcommand{\thefootnote}{\sjtu@enclosed@number{footnote}}
+\renewcommand{\thempfootnote}{\sjtu@enclosed@number{mpfootnote}}
+\footnotemargin1.5em\relax
+\let\sjtu@makefnmark\@makefnmark
+\def\sjtu@@makefnmark{\hbox{{\normalfont\@thefnmark}}}
+\pretocmd{\@makefntext}{\let\@makefnmark\sjtu@@makefnmark}{}{}
+\apptocmd{\@makefntext}{\let\@makefnmark\sjtu@makefnmark}{}{}
 \urlstyle{same}
 \g@addto@macro\UrlBreaks{%
   \do0\do1\do2\do3\do4\do5\do6\do7\do8\do9%
@@ -932,7 +966,7 @@
 \Urlmuskip=0mu plus 0.1mu
 \newcommand\sjtu@pdfbookmark[2]{}
 \newcommand\sjtu@phantomsection{}
-\NewDocumentCommand\sjtu@chapter{s O{#3} m O{#2}}{
+\NewDocumentCommand{\sjtu@chapter}{s O{#3} m O{#2}}{
   \if@openright\cleardoublepage\else\clearpage\fi%
   \IfBooleanTF{#1}{%
     \ifthenelse{\equal{#4}{}}{\relax}{%
@@ -977,11 +1011,36 @@
 \renewcommand\topfraction{0.85}
 \renewcommand\bottomfraction{0.65}
 \renewcommand\floatpagefraction{0.60}
+\newcommand\sjtu@def@thefloats{
+  \def\thefigure{\thechapter\sjtu@style@fl@num@sep\arabic{figure}}
+  \def\p@subfigure{\thefigure}
+  \def\thetable{\thechapter\sjtu@style@fl@num@sep\arabic{table}}
+}
+\newcommand\sjtu@counter@without@chapter{
+  \counterwithout{figure}{chapter}
+  \setcounter{figure}{0}
+  \counterwithout{table}{chapter}
+  \setcounter{table}{0}
+}
+\newcommand\sjtu@counter@within@chapter{
+  \counterwithin*{figure}{chapter}
+  \counterwithin*{table}{chapter}
+  \sjtu@def@thefloats
+}
+\ifsjtu@continuous
+  \apptocmd{\mainmatter}{%
+    \sjtu@counter@without@chapter
+  }{}{}
+  \apptocmd{\appendix}{%
+    \sjtu@counter@within@chapter
+  }{}{}
+\else
+  \AtBeginDocument{%
+    \sjtu@def@thefloats
+  }
+\fi
 \AtBeginDocument{%
-  \renewcommand\thefigure{\thechapter\sjtu@format@fl@num@sep\arabic{figure}}
-  \renewcommand\p@subfigure{\thefigure}
-  \renewcommand\thetable{\thechapter\sjtu@format@fl@num@sep\arabic{table}}
-  \renewcommand\theequation{\thechapter\sjtu@format@eq@num@sep\arabic{equation}}
+  \def\theequation{\thechapter\sjtu@style@eq@num@sep\arabic{equation}}
 }
 \newif\ifsjtu@setfloatfont
 \renewcommand\@floatboxreset{%
@@ -1001,10 +1060,11 @@
 \NewDocumentCommand{\sjtuSetFloatFontOff}{}{\sjtu@setfloatfontfalse}
 \DeclareCaptionFont{sjtu@caption@font}{\zihao{5}\bfseries\songti}
 \DeclareCaptionFont{sjtu@subcaption@font}{\zihao{5}\normalfont}
+\DeclareCaptionLabelSeparator{enskip}{\enskip}
 \captionsetup{%
   format        = plain,
   labelformat   = simple,
-  labelsep      = space,
+  labelsep      = enskip,
   justification = centering,
   font          = sjtu@caption@font
 }
@@ -1031,14 +1091,14 @@
 \renewcommand\boldsymbol{\symbf}
 \newcommand\square{\mdlgwhtsquare}
 \newcommand\sjtu@square{%
-  \begingroup\CJKfamily+{zhsong}\symbol{"25A1}\endgroup
+  \begingroup\CJKfamily+{}\symbol{"25A1}\endgroup
 }
 \newcommand\sjtu@authconf{%
-  \par\hspace{7em}%
-  {\heiti 保\quad 密}~\sjtu@square，在 \uline{\hspace{3em}}
+  \par\hspace{7\ccwd}%
+  {\heiti 保\hspace{1\ccwd}密}~\sjtu@square，在 \uline{\hspace{3em}}
   年解密后适用本授权书。\par
   本\sjtu@name@thesis@type 属于
-  \par\hspace{7em}%
+  \par\hspace{7\ccwd}%
   {\heiti 不保密}~\sjtu@square。
   \vskip 1ex
   （请在以上方框内打“$\checkmark$”）
@@ -1052,6 +1112,7 @@
 }
 \NewDocumentCommand{\makeorigpage}{s o}{%
   \ifsjtu@review\relax\else
+    \cleardoublepage
     \IfNoValueTF{#2}{%
       \thispagestyle{empty}
       \sjtu@chapter*[\sjtu@name@orig@subtitle]{%
@@ -1071,7 +1132,6 @@
         \end{minipage}
       \endgroup
     }{%
-      \if@openright\cleardoublepage\else\clearpage\fi%
       \sjtu@pdfbookmark{0}{\sjtu@name@orig@subtitle}%
       \includepdf[pagecommand={\thispagestyle{empty}}]{#1}
     }
@@ -1079,6 +1139,7 @@
 }
 \NewDocumentCommand{\makeauthpage}{o}{%
   \ifsjtu@review\relax\else
+    \cleardoublepage
     \IfNoValueTF{#1}{%
       \thispagestyle{empty}
       \sjtu@chapter*[\sjtu@name@auth@subtitle]{%
@@ -1098,12 +1159,12 @@
         \end{minipage}
       \endgroup
     }{%
-      \if@openright\cleardoublepage\else\clearpage\fi%
       \sjtu@pdfbookmark{0}{\sjtu@name@auth@subtitle}%
       \includepdf[pagecommand={\thispagestyle{empty}}]{#1}
     }
   \fi
 }
+\newcommand\sjtu@save@env@body[1]{\long\gdef\sjtu@saved@env@body{#1}}
 \NewDocumentEnvironment{nomenclature}{}{%
   \sjtu@chapter{\sjtu@name@nomenclature}
 }{}
@@ -1113,13 +1174,12 @@
 \NewDocumentEnvironment{summary}{}{%
   \sjtu@chapter{\sjtu@name@summary}
 }{}
-\newcommand\sjtu@acknowledgements[1]{\long\gdef\sjtu@acknowledgements@body{#1}}
 \NewDocumentEnvironment{acknowledgements}{}{%
-  \Collect@Body\sjtu@acknowledgements
+  \Collect@Body\sjtu@save@env@body
 }{%
   \ifsjtu@review\relax\else
     \sjtu@chapter{\sjtu@name@acknowledgements}
-    \sjtu@acknowledgements@body
+    \sjtu@saved@env@body
   \fi
 }
 \newenvironment{sjtu@bibliolist}[2]{%
@@ -1142,53 +1202,48 @@
     {\@latex@warning{Empty `bibliolist' environment}}%
   \endlist
 }
-\newcommand\sjtu@publications[1]{\long\gdef\sjtu@publications@body{#1}}
 \NewDocumentEnvironment{publications}{O{99}}{%
-  \Collect@Body\sjtu@publications
+  \Collect@Body\sjtu@save@env@body
 }{%
   \ifsjtu@review\relax\else
     \begin{sjtu@bibliolist}{#1}{\sjtu@name@publications}
-      \sjtu@publications@body
+      \sjtu@saved@env@body
     \end{sjtu@bibliolist}
   \fi
 }
-\newcommand\sjtu@@publications[1]{\long\gdef\sjtu@@publications@body{#1}}
 \NewDocumentEnvironment{publications*}{O{99}}{%
-  \Collect@Body\sjtu@@publications
+  \Collect@Body\sjtu@save@env@body
 }{%
   \ifsjtu@review
     \begin{sjtu@bibliolist}{#1}{\sjtu@name@publications}
-      \sjtu@@publications@body
+      \sjtu@saved@env@body
     \end{sjtu@bibliolist}
   \fi
 }
-\newcommand\sjtu@achievements[1]{\long\gdef\sjtu@achievements@body{#1}}
 \NewDocumentEnvironment{achievements}{O{99}}{%
-  \Collect@Body\sjtu@achievements
+  \Collect@Body\sjtu@save@env@body
 }{%
   \ifsjtu@review\relax\else
     \begin{sjtu@bibliolist}{#1}{\sjtu@name@achievements}
-      \sjtu@achievements@body
+      \sjtu@saved@env@body
     \end{sjtu@bibliolist}
   \fi
 }
-\newcommand\sjtu@@achievements[1]{\long\gdef\sjtu@@achievements@body{#1}}
 \NewDocumentEnvironment{achievements*}{O{99}}{%
-  \Collect@Body\sjtu@@achievements
+  \Collect@Body\sjtu@save@env@body
 }{%
   \ifsjtu@review
     \begin{sjtu@bibliolist}{#1}{\sjtu@name@achievements}
-      \sjtu@@achievements@body
+      \sjtu@saved@env@body
     \end{sjtu@bibliolist}
   \fi
 }
-\newcommand\sjtu@resume[1]{\long\gdef\sjtu@resume@body{#1}}
 \NewDocumentEnvironment{resume}{}{%
-  \Collect@Body\sjtu@resume
+  \Collect@Body\sjtu@save@env@body
 }{%
   \ifsjtu@review\relax\else
     \sjtu@chapter{\sjtu@name@resume}
-    \sjtu@resume@body
+    \sjtu@saved@env@body
   \fi
 }
 \AtEndPreamble{
@@ -1327,7 +1382,7 @@
 \PassOptionsToPackage{amsmath,thmmarks,hyperref}{ntheorem}
 \AtEndOfPackageFile*{ntheorem}{
   \sjtu@def@theorem@name
-  \theoremheaderfont{\bfseries\heiti}
+  \theoremheaderfont{\hspace*{\sjtu@indent@headings@width}\bfseries\heiti}
   \theorembodyfont{\normalfont}
   \theoremseparator{\enskip}
   \theoremsymbol{\ensuremath{\square}}
@@ -1338,6 +1393,8 @@
 }
 \AtEndOfPackageFile*{amsthm}{
   \sjtu@def@theorem@name
+  \let\sjtu@thmhead\thmhead@plain
+  \def\thmhead@plain{\hspace*{\sjtu@indent@headings@width}\sjtu@thmhead}
   \newtheoremstyle{sjtuplain}
     {}{}
     {\normalfont}{}
@@ -1351,7 +1408,7 @@
     \normalfont \topsep6\p@\@plus6\p@\relax
     \trivlist
     \item\relax
-      {\bfseries\heiti #1~}
+      {\hspace*{\sjtu@indent@headings@width}\bfseries\heiti #1~}
       \hspace\labelsep\ignorespaces
   }{%
     \popQED\endtrivlist\@endpefalse
@@ -1369,15 +1426,27 @@
   \setlength{\cftalgindent}{1.5em}
   \setlength{\cftalgnumwidth}{2.3em}
   \renewcommand\cftalgpresnum{\sjtu@name@algorithm~}
+  \apptocmd{\sjtu@counter@without@chapter}{%
+    \counterwithout{algocf}{chapter}
+    \setcounter{algocf}{0}
+  }{}{}
+  \pretocmd{\sjtu@counter@within@chapter}{%
+    \counterwithin*{algocf}{chapter}
+  }{}{}
+  \apptocmd{\sjtu@def@thefloats}{%
+    \def\thealgocf{\thechapter\sjtu@style@fl@num@sep\arabic{algocf}}
+  }{}{}
+  \patchcmd{\algocf@latexcaption}{\addcontentsline}{%
+    \caption@iflist
+      {\addcontentsline}
+      {\@gobblethree}
+  }{}{}
   \AtEndPreamble{%
     \newlength{\sjtu@cftalgnumwidth@tmp}
       \settowidth{\sjtu@cftalgnumwidth@tmp}{\cftalgpresnum}
     \addtolength{\cftalgnumwidth}{\sjtu@cftalgnumwidth@tmp}
   }
   \renewcommand\listofalgorithms{\sjtu@listof{algocf}}
-  \AtBeginDocument{%
-   \renewcommand\thealgocf{\thechapter\sjtu@format@fl@num@sep\@arabic\c@algocf}
-  }
 }
 \AtEndOfPackageFile*{algorithm}{
   \RequirePackage{algorithmicx, algpseudocode}
@@ -1394,15 +1463,22 @@
   \setlength{\cftalgindent}{1.5em}
   \setlength{\cftalgnumwidth}{2.3em}
   \renewcommand\cftalgpresnum{\sjtu@name@algorithm~}
+  \apptocmd{\sjtu@counter@without@chapter}{%
+    \counterwithout{algorithm}{chapter}
+    \setcounter{algorithm}{0}
+  }{}{}
+  \pretocmd{\sjtu@counter@within@chapter}{%
+    \counterwithin*{algorithm}{chapter}
+  }{}{}
+  \apptocmd{\sjtu@def@thefloats}{%
+    \def\thealgorithm{\thechapter\sjtu@style@fl@num@sep\arabic{algorithm}}
+  }{}{}
   \AtEndPreamble{%
     \newlength{\sjtu@cftalgnumwidth@tmp}
       \settowidth{\sjtu@cftalgnumwidth@tmp}{\cftalgpresnum}
     \addtolength{\cftalgnumwidth}{\sjtu@cftalgnumwidth@tmp}
   }
   \renewcommand\listofalgorithms{\sjtu@listof{algorithm}}
-  \AtBeginDocument{%
-    \renewcommand\thealgorithm{\thechapter\sjtu@format@fl@num@sep\arabic{algorithm}}
-  }
 }
 \AtEndOfPackageFile*{listings}{
   \lstdefinestyle{lstStyleCode}{
