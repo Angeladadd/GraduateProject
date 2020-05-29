@@ -948,7 +948,7 @@
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{2}
 \renewcommand\tableofcontents{%
-  \sjtu@chapter*{\contentsname}%
+  \sjtu@chapter*{\normalfont\heiti\contentsname}%
   \@starttoc{toc}%
 }
 \def\sjtu@listof#1{% #1: float type
