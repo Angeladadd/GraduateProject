@@ -63,15 +63,13 @@ Uniform Approach以CCS为例进行了概率扩展，
    若一个CCS进程表达式$P$中不含自由变元，称$P$为进程（process）。
 
    CCS的迁移语义如图~\ref{fig_ccs}，表示状态之间的变迁规则，其中$\lambda \in Act$。
-
    \begin{figure}[!htbp]
     \small
     \centering
-    \includegraphics[width=11cm]{../figures/ccs.png}
+    \includegraphics[width=10cm]{../figures/ccs.png}
     \caption[]{\textbf{CCS迁移语义}}
      \label{fig_ccs}
  \end{figure}
-
    \section{随机进程模型}
 
    FU Y提供了一个模型无关的方法Uniform Approach(A Uniform Approach to Random Process Model)\cite{Fu_UniformApproach}，
@@ -83,12 +81,12 @@ Uniform Approach以CCS为例进行了概率扩展，
    其中$0<p_i<1 \wedge \sum_{i\in I}p_i = 1$。
    例如，$S=\frac{1}{3}\tau.T_1+\frac{2}{3}\tau.T_2$意味着$S$经过静态迁移（内部动作）变迁为$T_1$状态的概率为$\frac{1}{3}$，
    变迁为$T_2$状态的概率为$\frac{2}{3}$。
-
-   对应随机选择操作子的迁移语义为：
+  对应随机选择操作子的迁移语义如图~\ref{fig_rccs}。
    \begin{figure}[!htbp]
     \small
     \centering
-    \includegraphics[width=3cm]{../figures/rccs.png}
+    \includegraphics[width=2.5cm]{../figures/rccs.png}
+    \caption[]{随机选择操作子的迁移语义}
      \label{fig_rccs}
  \end{figure}
 

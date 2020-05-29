@@ -6,22 +6,23 @@
 我们可以使用该方法概率化扩展其他的进程模型。
 本章会对传值进程模型进行概率化扩展。
 传值进程模型是经典的进程模型，
-在MILNER R的Communication and Concurrency一书\cite{Milner_CCS}中，
-也是使用传值的通信并发模型——消息的发送者、接受者和通信媒介——引入并发和通信的概念。
+在MILNER R的Communication and Concurrency一书中，
+也使用了传值的通信并发模型——消息的发送者、接受者和通信媒介，
+引入并发和通信的概念\cite{Milner_CCS}。
 我们选择传值进程模型的一种定义——The Value-Passing Calculus\cite{Fu_VPC}进行扩展。
 
 \section{传值进程模型}
 传值进程模型（Value-Passing Calculus）是一种
-可以将某个域中的值作为通信的内容，
-并且可以在特定逻辑条件执行某个动作的并发进程模型。
-一个经典的例子是MILNER R的Communication and Concurrency一书\cite{Milner_CCS}中的一单元缓冲区，它可以接受、储存、发送消息：
+将某个域中的值作为通信的内容，
+并且在特定逻辑条件下执行特定动作的并发进程模型。
+一个经典的例子是MILNER R的Communication and Concurrency一书中的一单元缓冲区，它可以接受、储存、发送消息：
 \begin{equation}
    \begin{split}
       C&\stackrel{def}{=}in(x).C'(x)\\
    C'(x)&\stackrel{def}{=}\overline{out}(x).C
    \end{split}
 \end{equation}
-其中CCS进程表达式$C$接受了$in$通道输入的变元$x$的一个值时会变迁为$C'(x)$状态，$C'(x)$通过$\overline{out}$通道输出$x$的值时会变迁为$C$。
+其中CCS进程表达式$C$接受了$in$通道输入的变元$x$的一个值时会变迁为$C'(x)$状态，$C'(x)$通过$\overline{out}$通道输出$x$的值时会变迁为$C$\cite{Milner_CCS}。
 
 更普遍的传值进程模型也可以对输入进行逻辑判定，
 根据特定的条件执行特定的动作，
@@ -44,7 +45,7 @@ $A(x)$在满足条件$\varphi(x)$时会通过通道$a$输出函数$f(t)$的值�
 
 \subsection{The Value-Passing Calculus}\label{ch:vpc}
 对传值进程模型的研究很多都会依赖一个\textit{神域}，
-这个神域是一个领域模型(domain model)或一个逻辑理论(logic theory)，
+这个神域是一个领域模型(Domain Model)或一个逻辑理论(Logic Theory)，
 帮助我们进行条件的判定，函数的计算和提供变元的取值范围。
 如在执行$A(x)$时，我们会将$\varphi(x)$传给神域，
 神域判定是否满足条件，并将判定结果返回给我们，
@@ -55,14 +56,14 @@ LIN H等人依赖一个评估$\rho$完成布尔表达式的判定和表达式的
 上述两个传值进程模型也是基于Value-Passing CCS。 
 MILNER R的Value-Passing CCS在CCS中引入了带数据参数的动作和进程，
 使它比之CCS刻画实际系统的能力大大提升，Value-Passing CCS中有下列数据类型：
-$Val$表示数据值的集合其元素用$v$表示，相似的$x\in DVar$为数据变量，
-$e\in DExp$为数据表达式，$b\in BExp$为布尔表达式，$\rho$为$DVal$到$Val$的全映射，
+$Val$表示数据值的集合，其元素用$v$表示，相似的$x\in DVar$为数据变量，
+$e\in DExp$为数据表达式，$b\in BExp$为布尔表达式，$\rho$为$DVal$到$Val$的映射，
 与CCS相同$a,c\in Chan$。
 Value-Passing CCS的语法可以表示为：
 \begin{equation}
    S,T:=0|A(e)|\sum_{i\in I}\alpha_i.T|S|T|(a)T|if\;b\;then\;T
 \end{equation}
-其中$\alpha:=\tau|c(x)|\overline{c}(t)$，$t$或是$\rho(x)$计算所得或与$x$无关，
+其中$\alpha_i:=\tau|c(x)|\overline{c}(t)$，$t$或是$\rho(x)$计算所得或与$x$无关，
 $A(e)$为进程常量\cite{VPCCS}。
 然而MILNER R在Value-Passing CCS的定义过程中没有讨论函数的计算过程和$if\;b\;then\;T$中条件$b$的可判定性，
 可以认为MILNER R的传值进程模型同样依赖神域帮助Value-Passing CCS完成这些未定义的工作。
@@ -78,13 +79,13 @@ The Value-Passing Calculus中的传值进程模型$\mathbb{VPC}_{\mathsf{Th}}$
    T:=\sum_{i\in I}\varphi_i a(x).T_i|\sum_{i\in I}\varphi_i\overline{a}(t_i).T_i|T|T'|(c)T|\varphi T|!a(x).T|!\overline{a}(t).T
 \end{equation}
 其中$T$是一个$\mathbb{VPC}_{\mathsf{Th}}$项，$\mathsf{Th}$是可判定的逻辑，
-$\varphi_i$是一个布尔表达式，可以通过$\mathsf{Th}$证明或证伪，
+$\varphi_i,\varphi$是布尔表达式，可以通过$\mathsf{Th}$证明或证伪，
 若$\mathsf{Th}$可以给出$\varphi_i$的一个证明，记为$\mathsf{Th}\vdash \varphi_i$。
 $a(x)$是一个输入前缀，$\overline{a}(t_i)$是一个输出前缀，
 我们可以用$\sum_{i\in I}\varphi_i\lambda_i.T_i$来表示$\sum_{i\in I}\varphi_i a(x).T_i$或$\sum_{i\in I}\varphi_i \overline{a}(t).T_i$。
 $!a(x).T$和$!\overline{a}(t).T$对应递归操作，$\mu X.E$可以表示为
 $(c)(E\{c(z).0/X\}|!\overline{c}(r).E\{c(z).0/X\})$。
-其余的表达与第一章CCS语法定义的解释相同。
+其余的语法与第\ref{ch:intro}章CCS语法定义的解释相同。
 
 The Value-Passing Calculus提出了两种迁移语义的描述：具体语义（Concrete Semantics）和符号语义（Symbolic Semantics）。
 后文我们只用到了符号语义，因此我们忽略具体语义的相关内容。
@@ -94,7 +95,7 @@ $\mathbb{VPC}_{\mathsf{Th}}$的符号迁移语义如图~\ref{fig_vpc}所示。
 \begin{figure}[!htbp]
    \small
    \centering
-   \includegraphics[width=13cm]{../figures/vpc.png}
+   \includegraphics[width=12cm]{../figures/vpc.png}
     \caption[]{$\mathbb{VPC}_{\mathsf{Th}}$的符号迁移语义规则}
     \label{fig_vpc}
 \end{figure}
@@ -103,7 +104,7 @@ $\mathbb{VPC}_{\mathsf{Th}}$的符号迁移语义如图~\ref{fig_vpc}所示。
 符号语义中的动作集合$Act=\{a(x),\overline{a}(t)| a\in Chan, x\in \mathsf{V}_{\Sigma}, t\in \mathsf{T}_{\Sigma}\}\cup \{\tau\}$，
 $Act$中的元素可以用$\lambda$表示，其中$\mathsf{V}_{\Sigma},\mathsf{T}_{\Sigma}$为可判定逻辑$\mathsf{Th}$中变元的集合和项的集合\cite{Fu_VPC}。
 
-The Value-Passing Calculus使用可判定的一阶理论判定条件\cite{PA}并
+The Value-Passing Calculus使用可判定的一阶理论\cite{PA}判定条件并
 提出了一个图灵完备的数值系统（Numeric System）\cite{Fu_VPC}作为底层模型来实现可计算的函数。
 通过这两种方式，将Value-Passing Calculus从神域中解放出来。
 
@@ -118,7 +119,7 @@ If Then Else语法实现的分支控制在编程中也是非常重要的组成�
 规定了If条件是通过一阶理论$\mathsf{Th}$可判定的布尔表达式，
 并说明$\textrm{if }\varphi\textrm{ then }S\textrm{ else }T$
 可以被定义为$\varphi S|\urcorner \varphi T$。
-以下推论依据The Value-Passing Calculus中对If Then Else语法的定义和$\mathbb{VPC}_{\mathsf{Th}}$的Proof System，
+以下推论依据The Value-Passing Calculus中对If Then Else语法的定义和$\mathbb{VPC}_{\mathsf{Th}}$的Proof System\cite{Fu_VPC}，
 给出If Then Else的变体的符号化定义，在本文的后续章节会统一使用这些符号。
 
 以下推论中$S,T\in \mathcal{T}_{\mathbb{VPC}_\mathsf{Th}}$。
@@ -155,8 +156,8 @@ If Then Else语法实现的分支控制在编程中也是非常重要的组成�
  \end{table}
 \section{随机传值进程模型}
 由于随机性的可计算性，
-许多具有传值性质的通信过程、生物分析等现实问题的建模和分析也被引入了概率的思想，如SWIM协议\cite{SWIM}和生物自组装系统\cite{BioProcess}。
-我们可以在传值进程模型中引入随机性用于对这些具有随机性、传值特点的问题，或者可以用概率分布近似表示非确定性行为的系统进行建模和分析。
+许多具有传值性质的通信过程、生物现象等现实问题的建模和分析也被引入了概率的思想，如SWIM协议\cite{SWIM}和生物自组装系统\cite{BioProcess}。
+我们可以在传值进程模型中引入随机性用于对这些具有随机性、传值特点的问题，或者可以用随机分布近似表示非确定性行为的系统进行建模和分析。
 目前已经存在使用随机传值进程模型建模和分析网络安全\cite{NetworkSecurity}等应用，
 但由于其是在Value-passing CCS\cite{Milner_CCS}基础上的概率扩展，
 以文献\parencite{NetworkSecurity,Prob_VPCCS}为例的模型仍然存在神域的问题。
@@ -164,18 +165,17 @@ If Then Else语法实现的分支控制在编程中也是非常重要的组成�
 为了避免神域带来的问题，我们可以将随机传值进程模型定义在$\mathbb{VPC}_{\mathsf{Th}}$的基础上，
 用Uniform Approach中的随机选择$\bigoplus_{i\in I}p_i\tau.T_i$
 扩展公式~\ref{eq:vpc}中$\mathbb{VPC}_{\mathsf{Th}}$项的定义。
-我们可以得到随机传值进程模型（Random VPC，记为$\mathbb{RVPC}_{\mathsf{Th}}$）项的定义：
+我们可以得到随机传值进程模型(Randomized VPC)，记为$\mathbb{RVPC}_{\mathsf{Th}}$项的定义：
 \begin{equation}\label{eq:rvpc}
    T:=\bigoplus_{i\in I}p_i \tau.T_i\mid \sum_{i\in I} \varphi_i\lambda_i.T_i\mid T \mid T'\mid (c)T\mid \varphi T\mid !a(x).T \mid !\bar{a}(t).T
 \end{equation}
 其中，与~\ref{ch:vpc}中定义的一样：$\lambda_i \in Act$，$\mathsf{Th}$为可判定的一阶理论。
 随机选择操作子$\bigoplus_{i\in I}p_i\tau.T_i$中，$0<p_i<1, \sum_{i\in I}p_i = 1$。
 $S=\bigoplus_{i\in I}p_i\tau.T_i$意味着$S$在$p_i$的概率下经过内部动作$\tau$到达$T_i$状态。
-
-$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$为所有$\mathbb{RVPC}_\mathsf{Th}$的项$T$的集合。
+$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$为所有$\mathbb{RVPC}_\mathsf{Th}$的项$T$的集合，其中若$P\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$中不含自由变量，则称$P$为$\mathbb{RVPC}_{\mathsf{Th}}$上的进程，进程的全集记为$\mathcal{P}_{\mathbb{RVPC}_{\mathsf{Th}}}$。
 
 在~\ref{ch:vpc}中$\mathbb{VPC}_{\mathsf{Th}}$的符号语义的基础上，
-增加\label{fig_rccs}定义的随机选择操作子的迁移规则，
+增加图~\ref{fig_rccs}定义的随机选择操作子的迁移规则，
 我们可以得到随机传值进程模型的符号语义，
 其中随机选择的条件为$\top$，
 表明该操作在任意条件下可执行；
@@ -232,7 +232,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    对于概率模型的等价性，目前有对全概率进程模型，即概率选择代替非确定性选择的进程模型的弱互模拟及分支互模拟的研究\cite{全概率的弱互模拟和分支互模拟}，
    仅适用于有限状态的概率进程模型的研究\cite{有限状态_1,有限状态_2}等。
    Uniform Approach在分支互模拟\cite{Branching_1, Branching_2}的基础上给出了
-   RCCS分支互模拟关系的定义，以及等价关系同余性的证明。
+   RCCS分支互模拟关系的定义，以及等价关系同余性的证明\cite{Fu_UniformApproach}。
    
    RCCS的分支互模拟是CCS分支互模拟的扩展，我们首先来看CCS的分支互模拟。
    $\mathcal{P}_{CCS}$上的分支互模拟的定义如下：
@@ -254,7 +254,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    在Uniform Approach中，这种动作称为\textit{状态保持的静态迁移（state-preserving silent transition）}，
    对应的，若$A\stackrel{\tau}{\rightarrow}\dots \stackrel{\tau}{\rightarrow}A'\not\sim A$，
    称为\textit{状态改变的静态迁移（state-changing silent transition）}。
-   $\Rightarrow_{\sim}$为$\stackrel{\tau}{\rightarrow}_{\sim}$的闭包。
+   $\Rightarrow_{\sim}$为$\stackrel{\tau}{\rightarrow}_{\sim}$的闭包\cite{Fu_UniformApproach}。
 
    Uniform Approach中RCCS的分支互模拟涉及等价集的概念，我们首先看$\mathcal{P}_{CCS}$上的等价集的定义：
    \begin{definition}
@@ -281,10 +281,10 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    状态保持的静态迁移在$A\stackrel{\tau}{\rightarrow}A'\mathcal{E}A$的基础上新增了
    $A\stackrel{p\tau}{\rightarrow} A'\mathcal{E}A,0<p<1$的可能，
    为了用类似$\Rightarrow_{\mathcal{E}}$的方式表示这种静态迁移，
-   Uniform Approach提出了\textit{等价树（Epsilon Tree）}的概念\cite{Fu_UniformApproach}，
+   Uniform Approach提出了\textit{等价树（Epsilon Tree）}的概念，
    将概率选择作为树的分支，节点$A$的关于等价关系$\mathcal{E}$的等价树上的任意节点$N\in [A]_{\mathcal{E}}$。
    同时，Uniform Approach定义了两种迁移：$l$-迁移($l$-transition)和$q$-迁移($q$-transition)，
-   分别表示等价树上的节点迁移到其他等价集动作和概率，Uniform Approach中定义的概率版分支互模拟是对$l$-迁移和$q$-迁移的相互模拟。
+   分别表示等价树上的节点迁移到其他等价集的动作和概率，Uniform Approach中定义的概率版分支互模拟是对$l$-迁移和$q$-迁移的相互模拟\cite{Fu_UniformApproach}。
 
    \begin{definition}[$l$-迁移($l$-transition)]
       $A\in \mathcal{P}_{RCCS}$，
@@ -308,7 +308,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 
    现在我们终于可以引入Uniform Approach中定义的RCCS的分支互模拟关系了！
 
-   \begin{definition}
+   \begin{definition}[分支互模拟]
       当$\mathcal{P}_{RCCS}$上的等价关系$\mathcal{E}$满足：
       \begin{itemize}
          \item[(1)] {
@@ -337,7 +337,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    
    \begin{definition}[符号互模拟]\label{def:symbolic_bisimulation}
       $\mathcal{E}$是一个$\mathcal{T}_{\mathbb{VPC}_{\mathsf{Th}}}$上的二元对称关系，
-      当$A\mathcal{E}B$满足下列条件时，称$\mathcal{E}$是一个符号互模拟关系：
+      当任意$A\mathcal{E}B$满足下列条件时，称$\mathcal{E}$是一个符号互模拟关系：
       \begin{itemize}
          \item[(1)] {
             若$A\stackrel{\tau}{\rightarrow}_{\varphi} A'$，则存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合$\{B\Rightarrow_{\psi_i} B_i\}_{i\in I}$，
@@ -378,7 +378,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    \subsection{条件等价树}
 
    根据~\ref{ch:bisimulation}中定义~\ref{def:symbolic_bisimulation}中定义的$\mathbb{VPC}_{\mathsf{Th}}$的符号互模拟关系，
-   我们观察$A(x)=(x\geq 5)\overline{a}(\mathsf{s}(x)).0)$和$A'(x)=(x\geq 3)\overline{a}(\mathsf{s}(x)).0$，
+   我们观察$A(x)=(x\geq 5)\overline{a}(\mathsf{s}(x)).0$和$A'(x)=(x\geq 3)\overline{a}(\mathsf{s}(x)).0$，
    根据$\mathbb{VPC}_\mathsf{Th}$的符号互模拟的定义，我们容易得到$A$和$A'$是不符号互模拟的，
    对于$A'(t)\stackrel{\overline{a}(\mathsf{s}(t))}{\longrightarrow}_{x\geq 3} 0$，
    因为$3<x<5$的这一部分动作是$A(x)$无法完成的，所以不存在$x\geq 3$的划分，
@@ -394,7 +394,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
      $A,A'\in \mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，$\mathcal{E}$是$\mathbb{RVPC}_{\mathsf{Th}}$上的等价关系，
      若$\varphi A \mathcal{E} \varphi A'$，则$A'\in [A]_{\varphi \mathcal{E}}$。
      $[A]_{\varphi \mathcal{E}}$称为等价关系$\mathcal{E}$在条件$\varphi$下包含$A$的等价集。 
-     我们用$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}/\varphi \mathcal{E}$表示所有$\mathbb{RVPC}_{\mathsf{Th}}$关于布尔表达式$\varphi$和等价关系$\mathcal{E}$的条件等价集的集合。 
+     我们用$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}/\varphi \mathcal{E}$表示所有$T\in\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$关于布尔表达式$\varphi$和等价关系$\mathcal{E}$的条件等价集的集合。 
    \end{definition} 
 
    由于$\mathbb{VPC}_{\mathsf{Th}}$是特殊的$\mathbb{RVPC}_{\mathsf{Th}}$，
@@ -550,7 +550,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
 从定义上看条件等价树的定义比较抽象，我们可以看几个简单有趣的例子：
 
 \begin{example}\label{eg:conditional}
-   $A(x)=(x>5)(\frac{1}{2}\tau.B(x)\oplus\frac{1}{2}\tau.C(x))|(x\leq 5)(\frac{1}{3}\tau.B(x)\oplus\frac{2}{3}\tau.C(x))$。
+   $A(x)\stackrel{def}{=}(x>5)(\frac{1}{2}\tau.B(x)\oplus\frac{1}{2}\tau.C(x))|(x\leq 5)(\frac{1}{3}\tau.B(x)\oplus\frac{2}{3}\tau.C(x))$。
    若$[A(x)]_{\mathcal{E}}=[B(x)]_{\mathcal{E}}=[C(x)]_{\mathcal{E}}$，
    我们可以得到$A(x)$的静态迁移树如图\ref{fig:eg_condition}，$A(x)$关于$(x>7)\mathcal{E}$的条件等价树如图\ref{fig:eg_condition2}。
 
@@ -598,7 +598,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
    $H(x)$的$(x<2)\mathcal{E}_1$条件等价树如图~\ref{fig_eg0_2}，
    其中$\mathsf{Th}\vdash (x<2)\Rightarrow (x\leq 3)$，
    由于$(x<2)\wedge(x\leq 2)G(x) = (x<2)G(x)$，$G(x)\in[H(x)]_{\mathcal{E}_1}$，
-   根据推论~\ref{co:all}，$(x\leq 2)G(x)\in [H(x)]_{(x<2)\mathcal{E}_1}$。
+   根据推论~\ref{co:all}，$(x<2)G(x)\in [H(x)]_{(x<2)\mathcal{E}_1}$。
    另一个分支同理。此时实际有$(x<2)H(x)\stackrel{\frac{2}{3}\tau}{\rightarrow}_{\top}[(x<2)G(x)]_{(x<2)\mathcal{E_1}}$，
    因此在条件树内部，我们可以将节点和边都视为状态无关。
 
@@ -732,8 +732,8 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟
       \begin{split}
       \mathcal{S} &= \{(G(x),G''(x,y)),\\
       &(G(x),(y>0)\tau.G''(x,\mathsf{p}(y))|\urcorner (y>0)\tau.G''(x,y)),\\
-      &(\overline{a}(x).G(x),(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)),\\
-      &(G(t),G''(t,y))|t\in V\}
+      &(\overline{a}(x).G(x),(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y))\}\\
+      &\cup \{(G(t),G''(t,y))|t\in V\}
       \end{split}
    \end{equation}
    其中$V$是$x$的取值范围。
@@ -1001,7 +1001,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
 \end{figure}
 在观察等价性的角度，我们认为$E(x)\stackrel{def}{=}\tau.E(x)$与$A(x)$应该是观察互模拟的，
 然而，这时找到$A(x)$的条件$l$转移和条件$q$转移就会变得困难，
-因此我们引入Uniform Approach中的共发散（codivergent）\cite{Fu_UniformApproach}的相关概念，并将其扩展为$\mathcal{T}){\mathbb{RVPC}_{\mathsf{Th}}}$下的共发散来解决这个问题。
+因此我们引入Uniform Approach中的共发散（codivergent）\cite{Fu_UniformApproach}的相关概念，并将其扩展为$\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$下的共发散来解决这个问题。
 
 \begin{definition}[发散]\label{def:divergent}
    对于$A\in\mathcal{T}_{\mathbb{RVPC}_{\mathsf{Th}}}$，
