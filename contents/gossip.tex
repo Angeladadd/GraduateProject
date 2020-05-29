@@ -282,7 +282,7 @@ Gossip协议的目的是为了在系统内对节点进行多播，
 
         % 对应的$Multicasting_{\mathsf{N}, \mathsf{KNOWN}}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top\mathcal{S}} []$
         \begin{itemize}
-            \item {{\bfseries Case 1: $a<n-1$。}
+            \item[(a)] {若$a<n-1$：
             $GossipSystem_{\mathsf{N},(a,b,c)}(x)$的$\top \mathcal{S}$条件等价树 $t$如图~\ref{fig:epsilon_1}所示。
             \begin{figure}[!htbp]
             	\small
@@ -302,16 +302,14 @@ Gossip协议的目的是为了在系统内对节点进行多播，
             我们可以用$$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{KNOWN}'}$$来模拟上述状态迁移。
             对称的模拟依然成立。
             }
-            \item {{\bfseries Case 2: $a=n-1$。}
-            \begin{itemize}
-               \item {
-                  {{\bfseries Case 2.1:} $b=1$。}
+            \item[(b)] {若$a=n-1$：
+             
+                  若$b=1$，
                   $GossipSystem_{\mathsf{N},(n-1,1,0)}(x)$的$\top \mathcal{S}$条件等价树 $t$只有一个根节点，对于
                   $(GossipSystem_{\mathsf{N},(n-1,1,0)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(n,0,0)}(x)]_{\top\mathcal{S}}$，
                   我们可以用$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{N}}$来模拟。
-               }
-               \item {{{\bfseries Case 2.1:} $b=0$。}
-                  
+               
+                  若$b=0$，  
                   $GossipSystem_{\mathsf{N},(n-1,0,1)}(x)$的$\top \mathcal{S}$条件等价树 $t$如图~\ref{fig:epsilon_2}所示。
                   \begin{figure}[!htbp]
                      \small
@@ -324,8 +322,6 @@ Gossip协议的目的是为了在系统内对节点进行多播，
                   $GossipSystem_{\mathsf{N},(n-1,1,0)}$为$t$的叶节点，
                   且有$(GossipSystem_{\mathsf{N},(n-1,0,1)}(x)\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top}[GossipSystem_{\mathsf{N},(n,0,0)}(x)]_{\top\mathcal{S}}$。
                   我们可以用$Multicasting_{\mathsf{N},\mathsf{KNOWN}}\rightsquigarrow_{\top\mathcal{S}}\stackrel{\overline{deliver}(x)}{\longrightarrow}_{\top} Multicasting_{\mathsf{N}, \mathsf{N}}$来模拟。
-               }
-            \end{itemize}
             }
         \end{itemize}
     }
@@ -358,14 +354,6 @@ Van RENESSE R提出了一种基于Gossip协议的错误检测机制：
 且Membership List在系统中不停的更新，
 因此也没有了感染者与被感染者的角色区分，
 也需要对名称进行了修改。
-
-在Gossip System节点的基础上，
-将原本对外暴露的$accept,deliver$通道用于连接$Membership$，
-作为链接网络的节点获取和更新本地Membership List的通道，
-修改后的节点如图
-\ref{fig:membership_node}
-所示。
-
 \begin{figure}[!htbp]
 	\small
 	\centering
@@ -373,6 +361,12 @@ Van RENESSE R提出了一种基于Gossip协议的错误检测机制：
     \caption{Gossip-Style Membership节点示意图}
     \label{fig:membership_node}
 \end{figure}
+在Gossip System节点的基础上，
+将原本对外暴露的$accept,deliver$通道用于连接$Membership$，
+作为链接网络的节点获取和更新本地Membership List的通道，
+修改后的节点如图
+\ref{fig:membership_node}
+所示。
 
 Gossip-Style Membership协议中的P2P系统定义如下，
 \begin{equation}\label{eq:network_system}
@@ -454,18 +448,20 @@ $MembershipCell$的定义如下：
    &\quad+update_i(\{Address:addr',HeartBeat:hb'\}).time(t').MembershipCell_i(addr',hb',t')
    \end{split}
 \end{equation}
-$n$个$MembershipCell$组成的$MembershipList$定义如下，在初始状态时，每一个$MembershipCell$中的数据为空($\epsilon$)：
+$n$个并发的$MembershipCell$组成的$MembershipList$定义如下，
+在初始状态时，每一个$MembershipCell$中的数据为空($\epsilon$)：
 \begin{equation}
    MembershipList\stackrel{def}{=}(MembershipCell_1(\epsilon)\mid \dots MembershipCell_n(\epsilon))
 \end{equation}
 
-此外，我们定义了一个$Counter$维护和更新节点的心跳，
+此外，我们定义了一个$Counter$维护和更新节点的心跳计数，
 在每一次Gossip周期$hb=hb+1$，
 $Membership$可以通过$heartbeat$通道获取心跳。
 \begin{equation}
    Counter(hb)\stackrel{def}{=}\overline{heartbeat}(\mathsf{s}(hb)).Counter(\mathsf{s}(hb))
 \end{equation}
-对于节点本地地址的维护，我们定义了一个$AddrInfo$，
+
+对于节点本地地址的维护，我们定义了一个$AddrInfo$来储存本地地址，
 $Membership$可以通过$address$通道获取本地地址。
 \begin{equation}
    AddrInfo(addr)\stackrel{def}{=}\overline{address}(addr)
@@ -479,17 +475,14 @@ $Membership$可以通过$address$通道获取本地地址。
     &\quad+deliver(x_1,x_2,\dots,x_n).Processing(x_1,x_2,\dots,x_n)\\
     &Processing(x_1,x_2,\dots,x_n)\stackrel{def}{=}(Check(x_1)\mid  \dots \mid Check(x_n) \mid Membership)\\
     &Check(x)\stackrel{def}{=}address(addr).((addr=x[Address])0|\urcorner(addr=x[Address])FindAndUpdate_1(x))\\
-    &FindAndUpdate_i(x)\stackrel{def}{=}select_i(x_i).(\\
-    &\quad(x_i = \epsilon) (\overline{update_i}(x).0)\\
-    &\quad| \urcorner(x_i = \epsilon)(\\
-    &\quad(x_i[Address]=x[Address])(\\
-    &\quad(x_i[HeartBeat]<x[HeartBeat])(\overline{update_i}(x).0)\\
+    &FindAndUpdate_i(x)\stackrel{def}{=}select_i(x_i).((x_i = \epsilon) (\overline{update_i}(x).0)\\
+    &\quad\mid \urcorner(x_i = \epsilon)((x_i[Address]=x[Address])((x_i[HeartBeat]<x[HeartBeat])(\overline{update_i}(x).0)\\
     &\quad\mid \urcorner (x_i[HeartBeat]<x[HeartBeat])0)\\
     &\quad\mid \urcorner (x_i[Address]=x[Address])FindAndUpdate_{i+1}(x))),i\leq n\\
     &FindAndUpdate_i(x)\stackrel{def}{=}0,i>n
     \end{split}
 \end{equation}
-其中$\mathsf{s}(x)$表示$\mathsf{s}(x)=x+1$。
+其中$\mathsf{s}(x)$表示$\mathsf{s}(x)=x+1$，$\mathsf{s}(x)$的实现可以通过FU Y在The Value-Passing Calculus中定义的Numeric System实现\cite{Fu_VPC}。
 
 $Membership$可以获取$MembershipList$中所有Cell中储存的信息，
 添加本地地址和心跳后，将这一组信息经$accept$通道发出，

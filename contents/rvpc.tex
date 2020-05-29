@@ -644,7 +644,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$在$\mathbb{VPC}_{\mathsf{Th}}$的基础上扩展�
       \caption[]{$G'(x,y)$的$(y>3)\mathcal{E}_3$条件等价树} 
       \label{fig_eg2}
    \end{figure}
-
+   其中$\mathsf{p}(x)$的实现可以通过FU Y的The Value-Passing Calculus中的Numeric System\cite{Fu_VPC}实现。
 \end{example}
 
 \subsection{随机传值进程模型的符号互模拟}\label{ch:symbolic_bisimulation}
@@ -745,7 +745,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟
          但由于$\mathbb{VPC}_{\mathsf{Th}}$是$\mathbb{RVPC}_{\mathsf{Th}}$的特例，
          此处依然可以使用$\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟证明。
          \begin{itemize}
-            \item {
+            \item[(a)] {
                对于$x$的每一个赋值$t\in V$，
                $\overline{a}(x).G(x)\rightsquigarrow_{(x=t)\mathcal{S}}\stackrel{\overline{a}(t)}{\longrightarrow}_{(x=t)}G(t)$。
                我们可以得到$(x=t)$的一个划分：$(x=t)=((y>1)\wedge (x=t))\vee ((y\leq 1)\wedge (x=t))$。
@@ -758,15 +758,15 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的符号互模拟可以看作是等价森林模拟
                且$\mathsf{Th}\vdash (x=t)\wedge (y\leq 1)\Rightarrow (t=t')$，
                $G''(t,y)\in[G(t)]_{(x=t)\wedge(y\leq 1)\mathcal{S}}$。$(x=t)\wedge(y>1)$相同。
             }
-            \item {
+            \item[(b)] {
                对$x$的每一个赋值$t\in V$，
-               $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y>1)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(x=t)\wedge(y>1)}G''(t,y)$$，
+               $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y>1)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(x=t)\wedge(y>1)}G''(t,y)$$
                
                存在集合$\{\overline{a}(x).G(x)\rightsquigarrow_{(x=t)(y>1)\mathcal{S}}\stackrel{\overline{a}(t')}{\longrightarrow}_{(x=t)}G(t')\}$
                可以模拟上述操作，其中$\mathsf{Th}\vdash ((x=t)\wedge (y>1))\Rightarrow (x=t) \wedge \mathsf{Th}\vdash ((x=t)\wedge (y>1))\Rightarrow t=t'$，$G(t)\in [G''(t,y)]_{(x=t)\wedge (y>1)\mathcal{S}}$。
                
                对$x$的每一个赋值$t\in V$，
-               $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y<5)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(x=t)\wedge(y<5)}G''(t,y)$$，
+               $$(y>1)\overline{a}(x).G''(x,y)|(y<5)\overline{a}(x).G''(x,y)\rightsquigarrow_{(x=t)\wedge(y<5)\mathcal{S}}\stackrel{\overline{a}(t)}{\rightarrow}_{(x=t)\wedge(y<5)}G''(t,y)$$
                
                存在集合$\{\overline{a}(x).G(x)\rightsquigarrow_{(x=t)(y<5)\mathcal{S}}\stackrel{\overline{a}(t')}{\longrightarrow}_{(x=t)}G(t')\}$
                可以模拟上述操作，其中$\mathsf{Th}\vdash ((x=t)\wedge (y<5))\Rightarrow (x=t) \wedge\mathsf{Th}\vdash ((x=t)\wedge (y<5))\Rightarrow t=t'$，$G(t)\in [G''(t,y)]_{(x=t)\wedge (y<5)\mathcal{S}}$。
