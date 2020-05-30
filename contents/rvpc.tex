@@ -1107,10 +1107,10 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          若对所有的$i\in I, A_i\in[A]_{\varphi =}$，我们可以根据$(A_i|C)$关于$\varphi\mathcal{R}'$的条件等价树构建$(B|D)$的$\varphi\mathcal{R}'$条件等价森林。
 
          若存在$A_i\notin [A]_{\varphi =}$，不妨设为$A_0$，
-         若有$A_1\notin[A]_{\varphi =}\wedge A_1\in [A_0]_{\varphi =}$，
+         若有$A_1\neq A_0 \wedge A_1|C\notin[A|C]_{\varphi =}\wedge A_1|C\in [A_0|C]_{\varphi =}$，
          此时有$A\rightsquigarrow_{\varphi = }\stackrel{q_0}{\rightarrow}_{\varphi}[A_0]_{\varphi=}$，
-         $A\rightsquigarrow_{\varphi = }\stackrel{q_1}{\rightarrow}_{\varphi}[A_0]_{\varphi=}$，
-         $A|C\rightsquigarrow_{\varphi = }\stackrel{q_0+q_1}{\longrightarrow}_{\varphi}[A_1|C]_{\varphi=}$。
+         $A\rightsquigarrow_{\varphi = }\stackrel{q_1}{\rightarrow}_{\varphi}[A_1]_{\varphi=}$，
+         $A|C\rightsquigarrow_{\varphi = }\stackrel{q_0+q_1}{\longrightarrow}_{\varphi}[A_0|C]_{\varphi=}$。
 
          根据$A=B$，存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
          $\{B\rightsquigarrow_{\varphi_i=}\stackrel{q_0}{\rightarrow}_{\varphi_i}B_i\in [A_0]_{\varphi_i =}\}_{i\in I}$
@@ -1126,7 +1126,7 @@ $\mathbb{RVPC}_{\mathsf{Th}}$的观察等价性，我们首先需要证明符号
          若$(A|C)\stackrel{\lambda}{\rightarrow}_{\varphi} (A'|C), \lambda\neq \tau$，
          则$A\stackrel{\lambda}{\rightarrow}_{\varphi} A'$，
          根据定义存在$\varphi$的划分$\{\varphi_i\}_{i\in I}$和集合
-         $\{B|D\rightsquigarrow_{\varphi_i=}\stackrel{\lambda}{\rightarrow}_{\varphi_i} [(A'|C)]_{\varphi_i=}\}_{i\in I}$。
+         $\{B|D\rightsquigarrow_{\varphi_i=}\stackrel{\lambda}{\rightarrow}_{\varphi_i} (B'|D)\in [(A'|C)]_{\varphi_i=}\}_{i\in I}$。
       }
    \end{itemize}
    对于条件$q$-迁移：$(A|C)\rightsquigarrow_{\varphi=}\stackrel{q}{\rightarrow}_{\varphi}\mathcal{C}$的证明方法是相同的。

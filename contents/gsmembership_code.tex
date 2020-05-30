@@ -1,7 +1,7 @@
 % !TeX root = ../thesis.tex
 \chapter{基于Gossip-Style Membership协议的通信系统的Go语言实现}\label{app:code}
 附录~\ref{app:code}中仅展示与$\mathbb{RVPC}_{\mathbb{Th}}$有关的部分，
-若要运行完整代码和更多运行结果，可以移步
+若要运行完整代码(包含前端展示界面)和更多运行结果，可以移步
 
 \url{https://github.com/Angeladadd/AGossipStyleMembershipProtocolImplementedUsingRVPC}。
 
@@ -147,13 +147,8 @@ main的Go语言实现，主要包含了多个节点并发执行的逻辑。
 	package main
 
 	import (
-		"encoding/json"
-		"fmt"
 		"./simple"
 		"strconv"
-		"log"
-		"net/http"
-		"io/ioutil"
 	)
 	
 	var nodes []*simple.Node
