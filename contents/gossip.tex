@@ -232,15 +232,20 @@ Gossip协议的目的是为了在系统内对节点进行多播，
    为了方便后续的证明，我们给出特定状态下的
    $GossipSystem_{\mathsf{N}}$的记法，
    其中并发操作子符合交换律。
-    \begin{equation}
-      \begin{split}
-   &GossipSystem_{\mathsf{N},(a,b,c)}(x)\\
-   &= (\stackrel{a}{\overbrace{InfectiousNode(x)\mid \dots \mid InfectiousNode(x)}}\\
-   &\mid \stackrel{b}{\overbrace{DeliveringNode(x)\mid \dots\mid DeliveringNode(x)}}\\
-   &\mid \stackrel{c}{\overbrace{UnInfectiousNode\mid \dots \mid UnInfectiousNode}})\\
-   &\backslash \{trans_{i,j}\mid i\in \mathsf{N} \wedge j\in \mathsf{N} \wedge i\neq j\}\cup \{time, timeout\}
-      \end{split}
-\end{equation}
+   \begin{figure}[!htbp]
+      \small
+      \centering
+      \includegraphics[width=8cm]{../figures/gossip_system_eq.png}
+   \end{figure}
+   %  \begin{equation}
+   %    \begin{split}
+   % &GossipSystem_{\mathsf{N},(a,b,c)}(x)\\
+   % &= (\stackrel{a}{\overbrace{InfectiousNode(x)\mid \dots \mid InfectiousNode(x)}}\\
+   % &\mid \stackrel{b}{\overbrace{DeliveringNode(x)\mid \dots\mid DeliveringNode(x)}}\\
+   % &\mid \stackrel{c}{\overbrace{UnInfectiousNode\mid \dots \mid UnInfectiousNode}})\\
+   % &\backslash \{trans_{i,j}\mid i\in \mathsf{N} \wedge j\in \mathsf{N} \wedge i\neq j\}\cup \{time, timeout\}
+   %    \end{split}
+% \end{equation}
  \end{definition}
  其中，$GossipSystem_{\mathsf{N},(a,b,c)}(x)$表示
  在系统的$n=|\mathsf{N}|$个节点中，有$a$个处于$InfectiousNode(x)$的状态，
@@ -523,7 +528,7 @@ Goroutine是一种轻量级线程，channel用于协程间的通信。
 \subsection{代码实现与仿真效果}
 
  由于代码的解释比较枯燥，本小节只展示关键部分的代码实现，
- 完整的代码实现及下载、运行方式可以参考附录~\ref{app:code}。
+ 完整的代码实现及下载、运行方式可以参考网站\parencite{git}。
  在编写代码的过程中，考虑到代码的可读性和字符的限制，
  我们对前述模型通道和进程状态的名称有所修改，
  但本质没有变化。
@@ -656,7 +661,7 @@ select会等待case中有能够执行的case时执行该case：
 \end{figure}
 
 我们也可以通过设置$p_{fail}$使系统中的节点以一定概率自动失效和恢复，
-动态效果可以通过附录~\ref{app:code}中的方式获得。
+动态效果可以参考网站\parencite{git}。
 
  \section{本章小结}
  本章我们以一种基于云计算失效检测协议Gossip-Style Membership协议的通信系统的
